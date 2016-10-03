@@ -51,14 +51,15 @@ namespace egorlab
 		size_t GetLength() const;
 
 		const char* GetData() const;
-		bool operator > (const CString &other);
-		bool operator < (const CString &other);
-		bool operator == (const CString &other);
-		CString& operator = (const CString &other);
-		CString& operator + (const CString &other);
-		CString& operator - (const CString &other);
-		CString& operator += (const CString);
-		CString& operator ++ (const CString);
+		bool operator> (const CString &other);
+		bool operator< (const CString &other);
+		bool operator== (const CString &other);
+		CString& operator= (const CString &other);
+		CString& operator+ (const CString &other);
+		CString& operator- (const CString &other);
+		CString& operator+= (const CString);
+		CString& operator++ ();
+		CString& operator++ (int);
 	};
 
 

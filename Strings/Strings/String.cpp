@@ -112,24 +112,26 @@ CString& CString::operator += (const CString)
 	return *this;
 }
 
-CString & operator ++()
+CString & CString::operator ++()
 {
 	++_size;
+	return *this;
 }
 
-CString operator ++(CString & n, int);
+CString& CString::operator ++(int)
 {
 	_size++;
+	return *this;
 }
 
-CString & operator --(CString & n);//Префиксный
-{
-
-}
-CString operator --(CString & n, int);//Постфиксный
-{
-
-}
+//CString & operator --(CString & n)//Префиксный
+//{
+//	
+//}
+//CString operator --(CString & n, int)//Постфиксный
+//{
+//
+//}
 
 /*[15:51:41] Kuleshov Alexey: типа += это тоже самое что + только с собой
 [15:52:06] Kuleshov Alexey: или == это тоже самое что != только с !

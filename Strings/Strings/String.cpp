@@ -124,14 +124,38 @@ CString& CString::operator ++(int)
 	return *this;
 }
 
-//CString & operator --(CString & n)//Префиксный
-//{
-//	
-//}
-//CString operator --(CString & n, int)//Постфиксный
-//{
-//
-//}
+CString & CString::operator --()
+{
+	int resSize = --_size; //уменьшили сайз до нужного
+	char *reserve = new char[resSize]; //сделали новый резерв. контейнер 
+	for (int i = 0; i < resSize; i++)    //скопировали в этот контейнер                            вся ппроблема в resSize, потом отводится больше памяти reserve чем надо и тд
+	{
+		reserve[i] = _content[i];
+	}
+	delete[] _content;// удалили старый
+	_content = new char[resSize + 1];//создали новый с новым размером
+	strcpy_s(_content, resSize + 1, reserve);// скопировали туда резерв
+	delete[] reserve;// удалили резерв
+	return *this;
+}
+
+CString& CString::operator --(int)
+{
+	int resSize = _size--; //уменьшили сайз до нужного
+	char *reserve = new char[resSize]; //сделали новый резерв. контейнер 
+	for (int i = 0; i < resSize; i++)    //скопировали в этот контейнер                            вся ппроблема в resSize, потом отводится больше памяти reserve чем надо и тд
+	{
+		reserve[i] = _content[i];
+	}
+	delete[] _content;// удалили старый
+	_content = new char[resSize + 1];//создали новый с новым размером
+	strcpy_s(_content, resSize + 1, reserve);// скопировали туда резерв
+	delete[] reserve;// удалили резерв
+	return *this;
+
+}
+
+
 
 /*[15:51:41] Kuleshov Alexey: типа += это тоже самое что + только с собой
 [15:52:06] Kuleshov Alexey: или == это тоже самое что != только с !

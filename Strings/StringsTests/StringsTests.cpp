@@ -156,6 +156,7 @@ void testMinus(const CString& string)
 	cout << test.GetData() << endl;
 }
 
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	//CLogger llll("c:\\temp\egorlab.log");

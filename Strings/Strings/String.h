@@ -60,6 +60,10 @@ namespace egorlab
 		CString& operator+= (const CString);
 		CString& operator++ ();
 		CString& operator++ (int);
+		CString& operator-- ();
+		CString& operator-- (int);
+		
+
 	};
 
 

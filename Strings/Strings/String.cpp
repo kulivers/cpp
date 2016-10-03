@@ -87,6 +87,11 @@ CString& CString::operator + (const CString &other)
 CString& CString::operator - (const CString &other)
 {
 	int resSize = _size - other._size; //уменьшили сайз до нужного
+	if (resSize < 0)
+	{
+		cout << "The first component is smaller then second" << endl;
+		break; // выход из оператора	не знаю как
+	}
 	char *reserve = new char[resSize]; //сделали новый резерв. контейнер 
 	for (int i = 0; i < resSize; i++)    //скопировали в этот контейнер                            вся ппроблема в resSize, потом отводится больше памяти reserve чем надо и тд
 	{
@@ -94,7 +99,7 @@ CString& CString::operator - (const CString &other)
 	}
 	delete[] _content;// удалили старый
 	_content = new char[resSize + 1];//создали новый с новым размером
-	strcpy_s(_content, resSize + 1, reserve);// скопировали туда резерв
+	strcpy_s(_content, resSize + 1, reserve);// скопировали туда резерв                 здесь падает
 	delete[] reserve;// удалили резерв
 	return *this;
 }
@@ -154,16 +159,16 @@ CString& CString::operator --(int)
 	return *this;
 
 }
-CString& CString::operator() (int x)
-{
-	return _content(x);
-}
+//CString& CString::operator() (int x)
+//{
+//	return _content(x);
+//}
 
 
-CString& CString::operator[] (int x)
-{
-	return _content[x];
-}
+//CString& CString::operator[] (int x)
+//{
+//	return _content[x];
+//}
 
 /*[15:51:41] Kuleshov Alexey: типа += это тоже самое что + только с собой
 [15:52:06] Kuleshov Alexey: или == это тоже самое что != только с !

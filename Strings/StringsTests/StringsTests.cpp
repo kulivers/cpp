@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "..\Strings\String.h"
 #include <iostream>
-
+#include "..\Strings\String.cpp"
 
 using namespace egorlab;
 
@@ -142,17 +142,18 @@ void LogMessageToFile(const CString& string)
 
 void testPlus(const CString& string)
 {
-	CString sda = "sssssss";
+	CString sda = "ssssss7";
 	CString test;
 	test = sda + string;
 	cout << test.GetData() << endl;
 }
 
-void testMinus(const CString& string)
+void testMinus(const CString& string)             //не предусмотренно если отнимаемый сайз больше и еще в контент ссссссс7 не попадает а попадает мусор: string	{_content=0x0165eea0 "aaa" _size=0x00000003 }	
+
 {
-	CString sda = "sssssssaaaaaaa";
+	CString sda = "ssssss7";
 	CString test;
-	test = sda - string;
+	test = sda - string.GetData();
 	cout << test.GetData() << endl;
 }
 
@@ -170,7 +171,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//Do("s1", LogMessageToFile);
 	//Do("s11", llll);
-	//testMinus("aaaaaaa");
+	testMinus("aaa");
 
 	return 0;
 }

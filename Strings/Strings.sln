@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Strings", "Strings\Strings.vcxproj", "{11AE0CC0-C349-4A08-9607-58302D4A91DE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StringsTests", "StringsTests\StringsTests.vcxproj", "{3761D5E0-CA8E-4C41-8CF3-AB04620663DA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{11AE0CC0-C349-4A08-9607-58302D4A91DE} = {11AE0CC0-C349-4A08-9607-58302D4A91DE}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{11AE0CC0-C349-4A08-9607-58302D4A91DE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{11AE0CC0-C349-4A08-9607-58302D4A91DE}.Debug|Win32.Build.0 = Debug|Win32
+		{11AE0CC0-C349-4A08-9607-58302D4A91DE}.Release|Win32.ActiveCfg = Release|Win32
+		{11AE0CC0-C349-4A08-9607-58302D4A91DE}.Release|Win32.Build.0 = Release|Win32
+		{3761D5E0-CA8E-4C41-8CF3-AB04620663DA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3761D5E0-CA8E-4C41-8CF3-AB04620663DA}.Debug|Win32.Build.0 = Debug|Win32
+		{3761D5E0-CA8E-4C41-8CF3-AB04620663DA}.Release|Win32.ActiveCfg = Release|Win32
+		{3761D5E0-CA8E-4C41-8CF3-AB04620663DA}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

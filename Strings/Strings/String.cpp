@@ -154,8 +154,16 @@ CString& CString::operator --(int)
 	return *this;
 
 }
+CString& CString::operator() (int x)
+{
+	return _content(x);
+}
 
 
+CString& CString::operator[] (int x)
+{
+	return _content[x];
+}
 
 /*[15:51:41] Kuleshov Alexey: типа += это тоже самое что + только с собой
 [15:52:06] Kuleshov Alexey: или == это тоже самое что != только с !

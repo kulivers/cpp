@@ -62,7 +62,8 @@ namespace egorlab
 		CString& operator++ (int);
 		CString& operator-- ();
 		CString& operator-- (int);
-		
+		CString& operator() (int x);
+		CString& operator[] (int x);
 
 	};
 

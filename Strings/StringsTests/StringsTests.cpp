@@ -156,6 +156,11 @@ void testMinus(const CString& string)
 	cout << test.GetData() << endl;
 }
 
+void testPreMinus(const CString& string)
+{
+	CString sda = "sssssss";
+	
+}
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -165,7 +170,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//Do("s1", LogMessageToFile);
 	//Do("s11", llll);
-	testMinus("aaaaaaa");
+	//testMinus("aaaaaaa");
+
 	return 0;
 }
 

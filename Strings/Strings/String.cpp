@@ -26,7 +26,7 @@ size_t CString::GetLength() const
 	return _size;
 }
 
-bool CString::operator > (const CString &other)
+bool CString::operator > (const CString &other) const
 {
  if (other._size < _size)
 	{
@@ -34,7 +34,7 @@ bool CString::operator > (const CString &other)
 	}
 }
 
-bool CString::operator <(const CString &other)
+bool CString::operator <(const CString &other) const
 {
 	if (other._size > _size)
 	{
@@ -47,7 +47,7 @@ const char* CString::GetData() const
 	return _content; 
 }
 
-bool CString::operator == (const CString &other) 
+bool CString::operator == (const CString &other) const
 {
 	if (other._size != _size)
 	{
@@ -83,26 +83,36 @@ CString& CString::operator + (const CString &other)
 	return *this;
 }
 
-
 CString& CString::operator - (const CString &other)
 {
 	int resSize = _size - other._size; //уменьшили сайз до нужного
 	if (resSize < 0)
 	{
 		cout << "The first component is smaller then second" << endl;
-		break; // выход из оператора	не знаю как
+		return *this;
 	}
-	char *reserve = new char[resSize]; //сделали новый резерв. контейнер 
-	for (int i = 0; i < resSize; i++)    //скопировали в этот контейнер                            вся ппроблема в resSize, потом отводится больше памяти reserve чем надо и тд
-	{
-		reserve[i] = _content[i];
-	}
-	delete[] _content;// удалили старый
-	_content = new char[resSize + 1];//создали новый с новым размером
-	strcpy_s(_content, resSize + 1, reserve);// скопировали туда резерв                 здесь падает
-	delete[] reserve;// удалили резерв
+	DecreaseSize(resSize);
+
 	return *this;
 }
+
+void CString::DecreaseSize(size_t newSize)
+{
+	//проверяем параметр, бросаем exception если он не тот
+	if (newSize >= _size)
+		throw new CStringException("Argument exception: DecreaseSize must be called with newSize less then _size");
+
+	char *reserve = new char[newSize + 1]; //сделали новый резерв. контейнер - на единицу больше для \0 в конце
+	for (int i = 0; i < newSize + 1; i++)    //скопировали в этот контейнер                            
+		reserve[i] = _content[i];
+
+	reserve[newSize] = 0; // \0 из _content не скопируется полюбому, пишем сами в последний элемент
+	_size = newSize;
+
+	delete[] _content;// удалили старый
+	_content = reserve; //переназначили новый
+}
+
 
 CString& CString::operator += (const CString)
 {
@@ -119,45 +129,41 @@ CString& CString::operator += (const CString)
 
 CString & CString::operator ++()
 {
-	++_size;
+	++_size; //!!! А ПРОБЕЛ В СТРОКУ КТО БУДЕТ ДОБАВЛЯТЬ?!?!?!?
 	return *this;
 }
 
 CString& CString::operator ++(int)
 {
-	_size++;
+	_size++; //!!! А ПРОБЕЛ В СТРОКУ КТО БУДЕТ ДОБАВЛЯТЬ?!?!?!?
 	return *this;
 }
 
 CString & CString::operator --()
 {
-	int resSize = --_size; //уменьшили сайз до нужного
-	char *reserve = new char[resSize]; //сделали новый резерв. контейнер 
-	for (int i = 0; i < resSize; i++)    //скопировали в этот контейнер                            вся ппроблема в resSize, потом отводится больше памяти reserve чем надо и тд
+	if(_size == 0)
 	{
-		reserve[i] = _content[i];
+		cout << "The first component is smaller then second" << endl;
+		return *this;
 	}
-	delete[] _content;// удалили старый
-	_content = new char[resSize + 1];//создали новый с новым размером
-	strcpy_s(_content, resSize + 1, reserve);// скопировали туда резерв
-	delete[] reserve;// удалили резерв
+	DecreaseSize(1);
+
 	return *this;
 }
 
+/////////////////////////////////////////////////////////////////////////////
+//ОПЕРАТОРЫ -- и --(int) СДЕЛАНЫ ОДИНАКОВО, ЭТО НЕ ЕСТЬ ПРАВИЛЬНО, СДЕЛАЙ КАК ДОЛЖНО БЫТЬ =) //
+/////////////////////////////////////////////////////////////////////////////
 CString& CString::operator --(int)
 {
-	int resSize = _size--; //уменьшили сайз до нужного
-	char *reserve = new char[resSize]; //сделали новый резерв. контейнер 
-	for (int i = 0; i < resSize; i++)    //скопировали в этот контейнер                            вся ппроблема в resSize, потом отводится больше памяти reserve чем надо и тд
+	if (_size == 0)
 	{
-		reserve[i] = _content[i];
+		cout << "The first component is smaller then second" << endl;
+		return *this;
 	}
-	delete[] _content;// удалили старый
-	_content = new char[resSize + 1];//создали новый с новым размером
-	strcpy_s(_content, resSize + 1, reserve);// скопировали туда резерв
-	delete[] reserve;// удалили резерв
-	return *this;
+	DecreaseSize(1);
 
+	return *this;
 }
 //CString& CString::operator() (int x)
 //{

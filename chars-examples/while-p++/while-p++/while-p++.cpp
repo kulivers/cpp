@@ -15,7 +15,7 @@ int main()
 	char* p = "Hi there";
 	char* q = "Hi there";
 
-	cout << "Strings are equal? That's " << (CompareStrings(p, q) ? "true" : "false") << endl;
+	cout << "Are the strings equal? That's very " << (CompareStrings(p, q) ? "true" : "false") << endl;
 
     return 0;
 }

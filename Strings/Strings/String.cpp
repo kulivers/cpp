@@ -28,7 +28,7 @@ size_t CString::GetLength() const
 
 bool CString::operator > (const CString &other) const
 {
-	if (other._size < _size)
+ if (other._size < _size)
 	{
 		return true;
 	}
@@ -42,9 +42,9 @@ bool CString::operator <(const CString &other) const
 	}
 }
 
-const char* CString::GetData() const
-{
-	return _content;
+const char* CString::GetData() const 
+{ 
+	return _content; 
 }
 
 bool CString::operator == (const CString &other) const
@@ -53,7 +53,7 @@ bool CString::operator == (const CString &other) const
 	{
 		return false;
 	}
-
+	
 	return (strcmp(other._content, _content) == 0);
 }
 
@@ -62,7 +62,7 @@ bool CString::operator == (const CString &other) const
 
 CString& CString::operator = (const CString &other)
 {
-	_size = other._size;
+	_size = other._size;	
 	delete[] _content;
 	_content = new char[_size + 1];
 	strcpy_s(_content, _size + 1, other._content);
@@ -97,20 +97,20 @@ CString& CString::operator - (const CString &other)
 }
 
 void CString::DecreaseSize(size_t newSize)
-{
-	//ïðîâåðÿåì ïàðàìåòð, áðîñàåì exception åñëè îí íå òîò
+	{
+	//проверяем параметр, бросаем exception если он не тот
 	if (newSize >= _size)
 		throw new CStringException("Argument exception: DecreaseSize must be called with newSize less then _size");
 
-	char *reserve = new char[newSize + 1]; //ñäåëàëè íîâûé ðåçåðâ. êîíòåéíåð - íà åäèíèöó áîëüøå äëÿ \0 â êîíöå
-	for (int i = 0; i < newSize + 1; i++)    //ñêîïèðîâàëè â ýòîò êîíòåéíåð                            
+	char *reserve = new char[newSize + 1]; //сделали новый резерв. контейнер - на единицу больше для \0 в конце
+	for (int i = 0; i < newSize + 1; i++)    //скопировали в этот контейнер                            
 		reserve[i] = _content[i];
 
-	reserve[newSize] = 0; // \0 èç _content íå ñêîïèðóåòñÿ ïîëþáîìó, ïèøåì ñàìè â ïîñëåäíèé ýëåìåíò
+	reserve[newSize] = 0; // \0 из _content не скопируется полюбому, пишем сами в последний элемент
 	_size = newSize;
 
-	delete[] _content;// óäàëèëè ñòàðûé
-	_content = reserve; //ïåðåíàçíà÷èëè íîâûé
+	delete[] _content;// удалили старый
+	_content = reserve; //переназначили новый
 }
 
 
@@ -129,19 +129,19 @@ CString& CString::operator += (const CString)
 
 CString & CString::operator ++()
 {
-	++_size; //!!! À ÏÐÎÁÅË Â ÑÒÐÎÊÓ ÊÒÎ ÁÓÄÅÒ ÄÎÁÀÂËßÒÜ?!?!?!?
+	++_size; //!!! А ПРОБЕЛ В СТРОКУ КТО БУДЕТ ДОБАВЛЯТЬ?!?!?!?
 	return *this;
 }
 
 CString& CString::operator ++(int)
 {
-	_size++; //!!! À ÏÐÎÁÅË Â ÑÒÐÎÊÓ ÊÒÎ ÁÓÄÅÒ ÄÎÁÀÂËßÒÜ?!?!?!?
+	_size++; //!!! А ПРОБЕЛ В СТРОКУ КТО БУДЕТ ДОБАВЛЯТЬ?!?!?!?
 	return *this;
 }
 
 CString & CString::operator --()
 {
-	if (_size == 0)
+	if(_size == 0)
 	{
 		cout << "The first component is smaller then second" << endl;
 		return *this;
@@ -152,7 +152,7 @@ CString & CString::operator --()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-//ÎÏÅÐÀÒÎÐÛ -- è --(int) ÑÄÅËÀÍÛ ÎÄÈÍÀÊÎÂÎ, ÝÒÎ ÍÅ ÅÑÒÜ ÏÐÀÂÈËÜÍÎ, ÑÄÅËÀÉ ÊÀÊ ÄÎËÆÍÎ ÁÛÒÜ =) //
+//ОПЕРАТОРЫ -- и --(int) СДЕЛАНЫ ОДИНАКОВО, ЭТО НЕ ЕСТЬ ПРАВИЛЬНО, СДЕЛАЙ КАК ДОЛЖНО БЫТЬ =) //
 /////////////////////////////////////////////////////////////////////////////
 CString& CString::operator --(int)
 {
@@ -180,8 +180,8 @@ CString& CString::operator --(int)
 [15:52:06] Kuleshov Alexey: èëè == ýòî òîæå ñàìîå ÷òî != òîëüêî ñ !
 [15:53:02] Kuleshov Alexey: bool operator!= (const CString& other)
 {
-return !(operator==(other));
-}
-
-
+       return !(operator==(other));
+	   }
+	   
+	   
 èç íåãî - äâà ++ è +=*/

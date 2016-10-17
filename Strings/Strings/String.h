@@ -51,9 +51,9 @@ namespace egorlab
 		size_t GetLength() const;
 
 		const char* GetData() const;
-		bool operator> (const CString &other);
-		bool operator< (const CString &other);
-		bool operator== (const CString &other);
+		bool operator> (const CString &other) const;
+		bool operator< (const CString &other) const;
+		bool operator== (const CString &other) const;
 		CString& operator= (const CString &other);
 		CString& operator+ (const CString &other);
 		CString& operator- (const CString &other);
@@ -65,8 +65,18 @@ namespace egorlab
 		CString& operator() (int x);
 		CString& operator[] (int x);
 
+	private:
+		void DecreaseSize(size_t newSize);
 	};
 
 
+	struct CStringException
+	{
+		string _exceptionMessage;
 
+		CStringException(const string& exceptionMessage)
+		{
+			_exceptionMessage = exceptionMessage;
+		}
+	};
 }

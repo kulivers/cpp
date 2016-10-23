@@ -5,11 +5,11 @@
 
 #define IN
 #define OUT
-#define HARDCORE
+//#define HARDCORE
 
 bool CompareStrings(const char* p, const char* q)
 {
-	//comparing strings p and q
+	//comparing strings p and q    *q-то что лежит по ссылке 
 	while (*p && *q && *p++ == *q++);
 	return !(*p || *q);
 }
@@ -38,22 +38,12 @@ char* CopyStrings(IN const char* in, OUT char* out)
 
 int main()
 {
-	char* p = new char[255] { "Hi thereeeeeeeeeeeee\0" };
-	char* q = "Hi there";
-
 	int a = 10;
-	int b = 20;
-	int c = 30;
-	int d = 40;
-
-	cout << (a = b = c = d) << endl;
-
-	CopyStrings(q, p);
-	cout << p << endl;
-
-	cout << "Are the strings equal? That's very " << (CompareStrings(p, q) ? "true" : "false") << endl;
-
-	delete[] p;
+	int& ra = a;
+	int* aa = &a;
+	ra = 20;
+	*aa = 30;
+	cout << ra;
 
     return 0;
 }

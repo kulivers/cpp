@@ -167,15 +167,20 @@ void testPreMinus(const CString& string)
 	
 }
 
+
+void TestDPlus()
+{
+	CString a = "aaa";
+	cout << a.GetData() << "." << endl;
+	a++;
+
+	cout << a.GetData() << "." << endl;
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
-	//CLogger llll("c:\\temp\egorlab.log");
-
-	//llll("a record to log");
-
-	//Do("s1", LogMessageToFile);
-	//Do("s11", llll);
-	TestMinus();
+	TestDPlus();
+		
 
 	return 0;
 }

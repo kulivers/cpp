@@ -127,15 +127,29 @@ CString& CString::operator += (const CString)
 	return *this;
 }
 
-CString & CString::operator ++()
+
+
+
+/*CString & CString::operator ++()
 {
-	++_size; //!!! А ПРОБЕЛ В СТРОКУ КТО БУДЕТ ДОБАВЛЯТЬ?!?!?!?
+	++_size;
+	_content[_size] = ' ';
 	return *this;
-}
+}*/
 
 CString& CString::operator ++(int)
 {
-	_size++; //!!! А ПРОБЕЛ В СТРОКУ КТО БУДЕТ ДОБАВЛЯТЬ?!?!?!?
+
+	char *reserve = new char[_size + 1]; //сделали новый резерв. контейнер - на единицу больше для \0 в конце
+	for (int i = 0; i < _size + 1; i++)    //скопировали в этот контейнер                            
+		reserve[i] = _content[i];
+
+	reserve[_size+1] = 0; // \0 из _content не скопируется полюбому, пишем сами в последний элемент
+	
+
+	delete[] _content;// удалили старый
+	_content = reserve; //переназначили новый
+	_content[_size] = ' ';
 	return *this;
 }
 
@@ -161,7 +175,7 @@ CString& CString::operator --(int)
 		cout << "The first component is smaller then second" << endl;
 		return *this;
 	}
-	DecreaseSize(1);
+	DecreaseSize(_size);
 
 	return *this;
 }

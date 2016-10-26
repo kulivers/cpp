@@ -139,17 +139,20 @@ CString& CString::operator += (const CString)
 
 CString& CString::operator ++(int)
 {
+	size_t newSize = _size + 1; //operator++ increases the _size
+	size_t realSize = newSize + 1; //i.e. real new size is a bit bigger because of the \0
+	size_t oldRealSize = _size + 1; //i.e. real size of the _content is a bit bigger because of the \0
 
-	char *reserve = new char[_size + 1]; //сделали новый резерв. контейнер - на единицу больше для \0 в конце
-	for (int i = 0; i < _size + 1; i++)    //скопировали в этот контейнер                            
+	char *reserve = new char[realSize]; //it will be a new content
+	for (int i = 0; i < oldRealSize; i++)    //copying old _content into the new one
 		reserve[i] = _content[i];
 
-	reserve[_size+1] = 0; // \0 из _content не скопируется полюбому, пишем сами в последний элемент
-	
+	reserve[???] = 0; // \0 из _content не скопируется полюбому, пишем сами в последний элемент
+	reserve[???] = ' '; //operator++ adds a space to the end
+
 
 	delete[] _content;// удалили старый
 	_content = reserve; //переназначили новый
-	_content[_size] = ' ';
 	return *this;
 }
 

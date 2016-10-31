@@ -96,8 +96,18 @@ CString& CString::operator - (const CString &other)
 	return *this;
 }
 
+
+
+
+/*CString & CString::operator ++()
+{
+	++_size;
+	_content[_size] = ' ';
+	return *this;
+}*/
+
 void CString::DecreaseSize(size_t newSize)
-	{
+{
 	//проверяем параметр, бросаем exception если он не тот
 	if (newSize >= _size)
 		throw new CStringException("Argument exception: DecreaseSize must be called with newSize less then _size");
@@ -113,45 +123,41 @@ void CString::DecreaseSize(size_t newSize)
 	_content = reserve; //переназначили новый
 }
 
-
-CString& CString::operator += (const CString)
-{
-	_size = _size * 2;
-	char *reserve = new char[_size + 1];
-	strcpy_s(reserve, _size + 1, _content);// êîïèðóåì èç êîíòåíòà â ðåçåðâ
-	strcat_s(reserve, _size + 1, _content);
-	delete[] _content;
-	_content = new char[_size + 1];
-	strcpy_s(_content, _size + 1, reserve);
-	delete[] reserve;
-	return *this;
-}
-
-
-
-
-/*CString & CString::operator ++()
-{
-	++_size;
-	_content[_size] = ' ';
-	return *this;
-}*/
-
 CString& CString::operator ++(int)
 {
-
-	char *reserve = new char[_size + 1]; //сделали новый резерв. контейнер - на единицу больше для \0 в конце
-	for (int i = 0; i < _size + 1; i++)    //скопировали в этот контейнер                            
+	int resSize = _size +2;
+	char *reserve = new char[resSize]; //сделали новый резерв. контейнер - на единицу больше для \0 в конце
+	for (int i = 0; i < resSize - 2; i++)    //скопировали в этот контейнер                            
 		reserve[i] = _content[i];
 
-	reserve[_size+1] = 0; // \0 из _content не скопируется полюбому, пишем сами в последний элемент
-	
+	_content[resSize - 1] = ' ';
+	reserve[resSize] = 0; // \0 из _content не скопируется полюбому, пишем сами в последний элемент
+
 
 	delete[] _content;// удалили старый
 	_content = reserve; //переназначили новый
-	_content[_size] = ' ';
+	
 	return *this;
 }
+
+
+//CString& CString::operator ++(int)
+//{
+//	_size = _size +2;
+//	char *reserve = new char[_size]; //сделали новый резерв. контейнер - на единицу больше для \0 в конце
+//	for (int i = 0; i < _size-1; i++)    //скопировали в этот контейнер                            
+//		reserve[i] = _content[i];
+//
+//	reserve[_size] = 0; // \0 из _content не скопируется полюбому, пишем сами в последний элемент
+//
+//
+//	delete[] _content;// удалили старый
+//	_content = reserve; //переназначили новый
+//	_content[_size-1] = ' ';
+//	return *this;
+//}
+
+
 
 CString & CString::operator --()
 {

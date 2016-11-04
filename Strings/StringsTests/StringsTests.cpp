@@ -177,10 +177,32 @@ void TestDPlus()
 	cout << a.GetData() << "." << endl;
 }
 
+
+void TestDNPlus()
+{
+	CString a = "aaa";
+
+	CString left = a;
+	CString right = a;
+	cout << "\"" << (left++).GetData() << "\"" << endl;
+	cout << "\"" << (++right).GetData() << "\"" << endl;
+	cout << a.GetData() << "." << endl;
+	if (a++ == ++a)
+	{
+		cout << "error" << endl;
+	}
+	else
+	{
+		cout << "GoOoOoOoOoD" << endl;
+
+	}
+	
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
-	TestDPlus();
-		
+	
+	TestDNPlus();
 
 	return 0;
 }

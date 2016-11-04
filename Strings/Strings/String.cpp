@@ -60,7 +60,7 @@ bool CString::operator == (const CString &other) const
 
 
 
-CString& CString::operator = (const CString &other)
+CString& CString::operator= (const CString &other)
 {
 	_size = other._size;	
 	delete[] _content;
@@ -107,7 +107,7 @@ CString& CString::operator - (const CString &other)
 }*/
 
 void CString::DecreaseSize(size_t newSize)
-{
+	{
 	//проверяем параметр, бросаем exception если он не тот
 	if (newSize >= _size)
 		throw new CStringException("Argument exception: DecreaseSize must be called with newSize less then _size");
@@ -123,40 +123,29 @@ void CString::DecreaseSize(size_t newSize)
 	_content = reserve; //переназначили новый
 }
 
-CString& CString::operator ++(int)
+CString CString::operator ++(int)//после
 {
-	int resSize = _size +2;
+	CString res = *this;
+	++*this;
+	return res;
+}
+
+CString& CString::operator ++()//до, работает  тру
+{
+	int resSize = _size + 2;
 	char *reserve = new char[resSize]; //сделали новый резерв. контейнер - на единицу больше для \0 в конце
 	for (int i = 0; i < resSize - 2; i++)    //скопировали в этот контейнер                            
 		reserve[i] = _content[i];
 
-	_content[resSize - 1] = ' ';
-	reserve[resSize] = 0; // \0 из _content не скопируется полюбому, пишем сами в последний элемент
+	reserve[resSize - 2] = ' ';
+	reserve[resSize - 1] = 0; // \0 из _content не скопируется полюбому, пишем сами в последний элемент
 
 
 	delete[] _content;// удалили старый
 	_content = reserve; //переназначили новый
-	
+	_size++;
 	return *this;
 }
-
-
-//CString& CString::operator ++(int)
-//{
-//	_size = _size +2;
-//	char *reserve = new char[_size]; //сделали новый резерв. контейнер - на единицу больше для \0 в конце
-//	for (int i = 0; i < _size-1; i++)    //скопировали в этот контейнер                            
-//		reserve[i] = _content[i];
-//
-//	reserve[_size] = 0; // \0 из _content не скопируется полюбому, пишем сами в последний элемент
-//
-//
-//	delete[] _content;// удалили старый
-//	_content = reserve; //переназначили новый
-//	_content[_size-1] = ' ';
-//	return *this;
-//}
-
 
 
 CString & CString::operator --()

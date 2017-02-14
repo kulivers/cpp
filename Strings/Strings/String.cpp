@@ -1,7 +1,9 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include "String.h"
 #include <cstring>
-
+#include <algorithm>
+using std::istream;
+using std::ostream;
 using namespace egorlab;
 
 CString::CString(const char* content)
@@ -91,7 +93,7 @@ CString& CString::operator - (const CString &other)
 		cout << "The first component is smaller then second" << endl;
 		return *this;
 	}
-	DecreaseSize(resSize);
+	ChangeSize(resSize);
 
 	return *this;
 }
@@ -99,29 +101,27 @@ CString& CString::operator - (const CString &other)
 
 
 
-/*CString & CString::operator ++()
-{
-	++_size;
-	_content[_size] = ' ';
-	return *this;
-}*/
 
-void CString::DecreaseSize(size_t newSize)
+void CString::ChangeSize(size_t newSize)
 	{
-	//проверяем параметр, бросаем exception если он не тот
-	if (newSize >= _size)
-		throw new CStringException("Argument exception: DecreaseSize must be called with newSize less then _size");
+	////проверяем параметр, бросаем exception если он не тот
+	//if (newSize >= _size)
+	//	throw new CStringException("Argument exception: ChangeSize must be called with newSize less then _size");
+	size_t oldsize = _size;
+	size_t minSize = min(newSize, _size);
 
 	char *reserve = new char[newSize + 1]; //сделали новый резерв. контейнер - на единицу больше для \0 в конце
-	for (int i = 0; i < newSize + 1; i++)    //скопировали в этот контейнер                            
+
+	for (size_t i = 0; i < minSize; i++)    //скопировали в этот контейнер                            
 		reserve[i] = _content[i];
 
-	reserve[newSize] = 0; // \0 из _content не скопируется полюбому, пишем сами в последний элемент
+	reserve[minSize] = 0; // \0 из _content не скопируется полюбому, пишем сами в последний элемент
 	_size = newSize;
-
 	delete[] _content;// удалили старый
 	_content = reserve; //переназначили новый
 }
+
+
 
 CString CString::operator ++(int)//после
 {
@@ -147,7 +147,11 @@ CString& CString::operator ++()//до, работает  тру
 	return *this;
 }
 
-
+char CString::operator *()
+{	
+	return *_content;
+}
+ 
 CString & CString::operator --()
 {
 	if(_size == 0)
@@ -155,27 +159,24 @@ CString & CString::operator --()
 		cout << "The first component is smaller then second" << endl;
 		return *this;
 	}
-	DecreaseSize(1);
+	ChangeSize(1);
 
 	return *this;
 }
 
-/////////////////////////////////////////////////////////////////////////////
-//ОПЕРАТОРЫ -- и --(int) СДЕЛАНЫ ОДИНАКОВО, ЭТО НЕ ЕСТЬ ПРАВИЛЬНО, СДЕЛАЙ КАК ДОЛЖНО БЫТЬ =) //
-/////////////////////////////////////////////////////////////////////////////
-CString& CString::operator --(int)
+
+//char* a = (char*)s;
+
+
+CString& operator* ()
 {
-	if (_size == 0)
-	{
-		cout << "The first component is smaller then second" << endl;
-		return *this;
-	}
-	DecreaseSize(_size);
+	
 
-	return *this;
 }
+
+
 //CString& CString::operator() (int x)
-//{
+//{                                                                                        
 //	return _content(x);
 //}
 
@@ -185,12 +186,4 @@ CString& CString::operator --(int)
 //	return _content[x];
 //}
 
-/*[15:51:41] Kuleshov Alexey: òèïà += ýòî òîæå ñàìîå ÷òî + òîëüêî ñ ñîáîé
-[15:52:06] Kuleshov Alexey: èëè == ýòî òîæå ñàìîå ÷òî != òîëüêî ñ !
-[15:53:02] Kuleshov Alexey: bool operator!= (const CString& other)
-{
-       return !(operator==(other));
-	   }
-	   
-	   
-èç íåãî - äâà ++ è +=*/
+

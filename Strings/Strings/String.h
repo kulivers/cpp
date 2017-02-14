@@ -58,17 +58,38 @@ namespace egorlab
 		CString& operator+ (const CString &other);
 		CString& operator- (const CString &other);
 		CString& operator+= (const CString);
+		char operator *();
 		CString& operator++ ();
 		CString operator++ (int);
 		CString& operator-- ();
 		CString& operator-- (int);
 		CString& operator() (int x);
 		CString& operator[] (int x);
+		CString& operator-> ();
+		CString& operator* (char *x);
 
 	private:
-		void DecreaseSize(size_t newSize);
+		void ChangeSize(size_t newSize);
+		friend istream& operator>>(istream& stream, CString& str);
+		friend ostream& operator<<(ostream& a, const CString& b);
 	};
 
+	ostream& operator<<(ostream& a, const CString& b)
+	{
+		a << b.GetData();
+		return a;
+	}
+
+	//перегрузка для cin
+	istream& operator>>(istream& stream, CString& str)
+	{
+		//char buf[256];
+		str.ChangeSize(1000);
+		stream >> str._content;
+		str.ChangeSize(strlen(str._content));
+
+		return stream;
+	}
 
 	struct CStringException
 	{

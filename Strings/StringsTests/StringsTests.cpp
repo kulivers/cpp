@@ -201,8 +201,15 @@ void TestDNPlus()
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	
-	TestDNPlus();
+
+	CString ss;
+	cout << "cin ss" << endl;
+	cin >> ss;
+	cout << "----------------" << endl;
+	cout << *ss << endl;
+
+	//(*ws).GetLength();
+	//ws->GetLength();
 
 	return 0;
 }

@@ -7,6 +7,7 @@
 #include <locale.h> 
 #include <vector>
 #include <ctime>
+#include "classes.h"
 using namespace std;
 
 
@@ -23,138 +24,10 @@ const int ace = 14;
 
 /////////////////////////////////////////////////////////////
 
+class CTable;
+class CCard;
+class CPlayer;
 
-
-
-class CCard
-{
-private:
-	int _number;
-	Suit _suit;
-public:
-	CCard()                   // конструктор
-	{ }
-	void set(int n, Suit s)  // установка значения
-	{
-		_suit = s; _number = n;
-	}
-	string GetAsString() const;
-	
-};
-
-
-
-class CPlayer
-{	
-private:
-	 vector <CCard> _cardsInHand;
-public:
-	CPlayer()                   // конструктор
-	{ }
-
-	void add(CCard n)  // 
-	{
-		_cardsInHand.push_back(n);
-	}
-	void DisplayCards(CPlayer p1);
-	~CPlayer()
-	{}
-	
-};
-
-
-
-
-
-  
-class CTable
-{
-private:
-	vector <CCard> _cardsOnTable;
-	CCard _cozir;// карта которая лежит под колодой
-public:
-	CTable()                   // конструктор
-	{ }
-	void setTrump(CCard v)
-	{
-		_cozir = v;
-	}
-
-	CCard getTrump() const
-	{
-		return _cozir;
-	}
-	~CTable()
-	{ }
-};
-
-void SpreadCards(vector<CCard>& deck, CPlayer& p2)
-{
-	for (int p = 0; p < 6; p++)  // раздача второму
-	{
-		p2.add(deck.back());
-		deck.pop_back();// чтобы карты в колоде уменьшались
-
-	}
-}
-
-void ShowTrump(const CTable& t)
-{
-	cout << "Tramp is " << t.getTrump().GetAsString().c_str() << endl;
-}
-
-
-void firstTurn(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t)
-{
-	SpreadCards(deck,  p1);
-	SpreadCards(deck,  p2);
-	p1.DisplayCards(p1);
-	cout << endl;
-	p2.DisplayCards(p2);
-	t.setTrump(deck.back());
-	deck.pop_back();
-	
-
-
-}
-
-
-/////////////////////////////////////////////////////////////
-
-void CPlayer::DisplayCards(CPlayer p1)
-{
-	for (int i = 0; i < p1._cardsInHand.size(); i++)
-	{
-		
-		cout << p1._cardsInHand[i].GetAsString().c_str() << " " << endl;
-	}
-}
-
-string CCard::GetAsString() const
-{
-	string result;
-	if (_number >= 2 && _number <= 10)
-		result = '0' + _number;
-	else
-	{
-		switch (_number)
-		{
-		case jack:  result = 'J'; break;
-		case queen: result = 'Q'; break;
-		case king:  result = 'K'; break;
-		case ace:   result = 'A'; break;
-		}
-	}
-	switch (_suit)
-	{
-	case clubs:    result += 'c'; break;
-	case diamonds: result += 'd'; break;
-	case hearts:   result += 'h'; break;
-	case spades:   result += 's'; break;
-	}
-
-	return result;
-}
 /////////////////////////////////////////////////////////////
 
 

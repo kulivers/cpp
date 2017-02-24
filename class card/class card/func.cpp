@@ -1,6 +1,7 @@
 #pragma once
 
-
+#include "classes.h"
+#include "Functions.h"
 
 
 void SpreadCards(vector<CCard>& deck, CPlayer& p2)

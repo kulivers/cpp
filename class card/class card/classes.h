@@ -5,7 +5,8 @@
 #include <locale.h> 
 #include <vector>
 #include <ctime>
-#include "Functions.h"
+#include <string.h>
+#include <vector>
 
 class CCard
 {
@@ -22,7 +23,6 @@ public:
 	string GetAsString() const;
 
 };
-
 
 
 class CPlayer
@@ -42,10 +42,6 @@ public:
 	{}
 
 };
-
-
-
-
 
 
 class CTable

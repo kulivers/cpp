@@ -86,8 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="class card.cpp" />
-    <ClCompile Include="classes2.cpp" />
-    <ClCompile Include="Functions2.cpp" />
+    <ClCompile Include="func.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

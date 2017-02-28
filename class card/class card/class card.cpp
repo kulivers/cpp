@@ -1,29 +1,19 @@
 // class card.cpp : Defines the entry point for the console application.CCard
 //
-
 #include "stdafx.h"
 #include <iostream>
 #include <cstdlib>
 #include <locale.h> 
 #include <vector>
 #include <ctime>
-#include "classes.h"
+#include "card.h"
+#include "table.h"
+#include "player.h"
+#include "Functions.h"
 
 
 
 using namespace std;
-
-
-
-enum Suit { clubs, diamonds, hearts, spades };
-// от 2 до 10 обычные числа
-
-
-const int jack = 11;
-const int queen = 12;
-const int king = 13;
-const int ace = 14;
-
 
 /////////////////////////////////////////////////////////////
 
@@ -38,8 +28,8 @@ class CPlayer;
 перетащи CCard на самый верх в файле, скомпилиться
 а лучше растащи каждый класс в свой h-ник
 и смотри, ты берешь из колоды одну случайную карту, но у нас колода уже перемешана, так что можно брать просто верхнюю
-а если сделаешь deck вектором, то 
-deck.back() вернет последнюю карту 
+а если сделаешь deck вектором, то
+deck.back() вернет последнюю карту
 http://www.cplusplus.com/reference/vector/vector/back/
 а deck.pop_back() аккуратно удалит ее из колоды
 http://www.cplusplus.com/reference/vector/vector/pop_..
@@ -85,7 +75,7 @@ int main()
 		deck[j] = deck[k];
 		deck[k] = temp;
 	}
-// показываем исходную колоду
+	// показываем исходную колоду
 	cout << " колода:\n";
 	for (j = 0; j < 52; j++)
 	{

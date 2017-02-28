@@ -1,9 +1,10 @@
 #pragma once
-#include "stdafx.h"
-#include <stdio.h>
-#include "func.cpp"
 
-void SpreadCards(vector<CCard>& deck, CPlayer& p2);
+#include <vector>
+#include "card.h"
+#include "table.h"
+#include "player.h"
+
+void firstTurn(std::vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t);
+void SpreadCards(std::vector<CCard>& deck, CPlayer& p2);
 void ShowTrump(const CTable& t);
-void CPlayer::DisplayCards(CPlayer p1);
-string CCard::GetAsString() const;

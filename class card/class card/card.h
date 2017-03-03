@@ -32,6 +32,17 @@ public:
 		_suit = s; _number = n;
 	}
 
+	int GetNumb()
+	{
+		return _number;
+	}
+
+
+	Suit GetSuit()
+	{
+		return _suit;
+	}
+
 	std::string GetAsString() const
 	{
 		std::string result;

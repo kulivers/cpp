@@ -1,5 +1,6 @@
 #pragma once
-
+#include <windows.h>
+#include <conio.h>
 #include <iostream>
 #include <cstdlib>
 #include <locale.h> 
@@ -18,6 +19,29 @@ public:
 	CPlayer()
 	{ }
 
+
+
+	bool EndTurn()
+	{
+		if (getch() == 13)
+		return true;
+	}
+
+	int GetNumbC(int i)
+	{
+		return _cardsInHand[i].GetNumb();
+	}
+
+	Suit GetSuitC(int i)
+	{
+		return _cardsInHand[i].GetSuit();
+	}
+
+	void DeleteItem(int n)
+	{
+		_cardsInHand.erase(_cardsInHand.begin() + n, _cardsInHand.begin() + n);
+		
+	}
 	void add(CCard n)
 	{
 		_cardsInHand.push_back(n);

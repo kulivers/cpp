@@ -9,6 +9,28 @@
 
 using namespace std;
 
+/*
+ну слудующую функцию забывай - игроки кидают любую карту, и пуст это будет тип бито
+и потом ход другого игрока - то же самое
+и такипока колода не закончится
+*/
+
+void DropToTable(CPlayer& p1, CTable& t, int i)
+{
+	CCard card;
+	card.set(p1.GetNumbC(i), p1.GetSuitC(i));
+	p1.DeleteItem(i);
+	t.PutOnTable(card);
+}
+
+
+void Discard(CTable& t, CPlayer& p1, CPlayer& p2)
+{
+	if ((p1.EndTurn() = true) && (p2.EndTurn() = true))
+	{
+		
+	}
+}
 void SpreadCards(vector<CCard>& deck, CPlayer& p2)
 {
 	for (int p = 0; p < 6; p++) 

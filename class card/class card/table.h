@@ -17,6 +17,10 @@ private:
 public:
 	CTable()
 	{ }
+	void PutOnTable(CCard card)
+	{
+		_cardsOnTable.push_back(card);
+	}
 	void setTrump(CCard v)
 	{
 		_cozir = v;

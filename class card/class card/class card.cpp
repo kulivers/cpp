@@ -42,8 +42,6 @@ http://www.cplusplus.com/reference/vector/vector/pop_..
 вотЪ)*/
 
 
-
-
 int main()
 {
 	setlocale(LC_ALL, "RUS");

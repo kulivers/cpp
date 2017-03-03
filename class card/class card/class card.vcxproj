@@ -80,7 +80,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="card.h" />
-    <ClInclude Include="classes.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="stdafx.h" />

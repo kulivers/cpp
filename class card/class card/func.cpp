@@ -12,21 +12,13 @@ using namespace std;
 /*
 ну слудующую функцию забывай - игроки кидают любую карту, и пуст это будет тип бито
 и потом ход другого игрока - то же самое
-и такипока колода не закончится
+и такипока колода не закончится                  
 */
-
-void DropToTable(CPlayer& p1, CTable& t, int i)
-{
-	CCard card;
-	card.set(p1.GetNumbC(i), p1.GetSuitC(i));
-	p1.DeleteItem(i);
-	t.PutOnTable(card);
-}
 
 
 void Discard(CTable& t, CPlayer& p1, CPlayer& p2)
 {
-	if ((p1.EndTurn() = true) && (p2.EndTurn() = true))
+	if (p1.EndTurn() && p2.EndTurn())
 	{
 		
 	}
@@ -56,7 +48,16 @@ void firstTurn(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t)
 	p2.DisplayCards(p2);
 	t.setTrump(deck.back());
 	deck.pop_back();
+}
 
 
 
+
+void DropToTableRandCard(CPlayer& p1, CTable& t)    
+{
+	CCard card = p1.GetRandomCard();
+	p1.DeleteItem(card);
+	t.PutOnTable(card);
+	/*CCard c = _cards.back();
+_cards.pop_back();*/
 }

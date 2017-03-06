@@ -19,9 +19,18 @@ public:
 	CPlayer()
 	{ }
 
+	
 
 
-	bool EndTurn()
+
+	CCard GetRandomCard()
+	{	
+		int randomNumb = rand() % _cardsInHand.size() - 1;
+		return _cardsInHand[randomNumb];
+	}
+
+
+	bool EndTurn()//датчик нажатия на enter в конце хода
 	{
 		if (getch() == 13)
 		return true;
@@ -37,8 +46,14 @@ public:
 		return _cardsInHand[i].GetSuit();
 	}
 
-	void DeleteItem(int n)
+	void DeleteItem(CCard card)
 	{
+		int n;
+		for (int i = 0; i < _cardsInHand.size(); i++)
+		{
+			if (card.GetAsString() == _cardsInHand[i].GetAsString())
+				n = i;
+		}
 		_cardsInHand.erase(_cardsInHand.begin() + n, _cardsInHand.begin() + n);
 		
 	}

@@ -9,6 +9,8 @@
 
 using namespace std;
 
+CCard CTable::_cozir;
+
 /*
 ну слудующую функцию забывай - игроки кидают любую карту, и пуст это будет тип бито
 и потом ход другого игрока - то же самое
@@ -52,12 +54,12 @@ void Distribution(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t)//э�
 
 void FirstDrop(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t)
 {
-	if (p1.SmallestSuit(t.getTrump) < p2.SmallestSuit(t.getTrump))
+	if (p1.SmallestSuit(t.getTrump().GetSuit()) < p2.SmallestSuit(t.getTrump().GetSuit()))
 		DropToTableRandCard(p1, t);
 	else
 		DropToTableRandCard(p2, t);
 
-	if (p1.SmallestSuit(t.getTrump) == p2.SmallestSuit(t.getTrump))// если оба без козырей
+	if (p1.SmallestSuit(t.getTrump().GetSuit()) == p2.SmallestSuit(t.getTrump().GetSuit()))// если оба без козырей
 		DropToTableRandCard(p1, t);//начинает первый, типо если будет онлайн игра то там все равно рандомно кто то первым будет
 }
 

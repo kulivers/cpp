@@ -25,7 +25,7 @@ public:
 		int SmallestNumb = 15; //туз-14
 		for (int i = 0; i < 6; i++)
 		{
-			if (_cardsInHand[i].GetSuit == suit && _cardsInHand[i].GetNumb() < SmallestNumb) // если козырь краты совпадает и номер карты меньше чем наименьший номер 
+			if (_cardsInHand[i].GetSuit() == suit && _cardsInHand[i].GetNumb() < SmallestNumb) // если козырь краты совпадает и номер карты меньше чем наименьший номер 
 				SmallestNumb = _cardsInHand[i].GetNumb();
 		}
 		return SmallestNumb;
@@ -41,7 +41,7 @@ public:
 
 	bool EndTurn()//датчик нажатия на enter в конце хода
 	{
-		if (getch() == 13)
+		if (_getch() == 13)
 		return true;
 	}
 

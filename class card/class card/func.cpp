@@ -39,7 +39,7 @@ void ShowTrump(const CTable& t)
 }
 
 
-void firstTurn(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t)
+void Distribution(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t)//это не первый ход а  раздача
 {
 	SpreadCards(deck, p1);
 	SpreadCards(deck, p2);
@@ -50,6 +50,17 @@ void firstTurn(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t)
 	deck.pop_back();
 }
 
+void FirstDrop(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t)
+{
+	if (p1.SmallestSuit(t.getTrump) < p2.SmallestSuit(t.getTrump))
+		DropToTableRandCard(p1, t);
+	else
+		DropToTableRandCard(p2, t);
+
+	if (p1.SmallestSuit(t.getTrump) == p2.SmallestSuit(t.getTrump))// если оба без козырей
+		DropToTableRandCard(p1, t);//начинает первый, типо если будет онлайн игра то там все равно рандомно кто то первым будет
+}
+
 
 
 
@@ -58,6 +69,6 @@ void DropToTableRandCard(CPlayer& p1, CTable& t)
 	CCard card = p1.GetRandomCard();
 	p1.DeleteItem(card);
 	t.PutOnTable(card);
-	/*CCard c = _cards.back();
-_cards.pop_back();*/
+	/*CCard c = p1.back();
+	p1.pop_back();*/
 }

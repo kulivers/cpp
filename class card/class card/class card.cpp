@@ -90,7 +90,7 @@ int main()
 	cout << endl;
 	cout << endl;
 	cout << endl;
-	firstTurn(deck, player1, player2, table);
+	void Distribution(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t);
 
 
 

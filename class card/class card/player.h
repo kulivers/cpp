@@ -20,7 +20,16 @@ public:
 	{ }
 
 	
-
+	int SmallestSuit(Suit suit) // наименьший козырь
+	{
+		int SmallestNumb = 15; //туз-14
+		for (int i = 0; i < 6; i++)
+		{
+			if (_cardsInHand[i].GetSuit == suit && _cardsInHand[i].GetNumb() < SmallestNumb) // если козырь краты совпадает и номер карты меньше чем наименьший номер 
+				SmallestNumb = _cardsInHand[i].GetNumb();
+		}
+		return SmallestNumb;
+	}
 
 
 	CCard GetRandomCard()

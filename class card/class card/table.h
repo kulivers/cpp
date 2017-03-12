@@ -13,7 +13,7 @@ class CTable
 {
 private:
 	std::vector <CCard> _cardsOnTable;
-	CCard _cozir;
+	static CCard _cozir;
 public:
 	CTable()
 	{ }
@@ -21,7 +21,7 @@ public:
 	{
 		_cardsOnTable.push_back(card);
 	}
-	void setTrump(CCard v)
+	static void setTrump(CCard v)
 	{
 		_cozir = v;
 	}

@@ -15,6 +15,7 @@ private:
 	std::vector <CCard> _cardsOnTable;
 	static CCard _cozir;
 public:
+
 	CTable()
 	{ }
 	void PutOnTable(CCard card)
@@ -24,6 +25,16 @@ public:
 	static void setTrump(CCard v)
 	{
 		_cozir = v;
+	}
+
+	CCard GetCard(int i)
+	{
+		return _cardsOnTable[i];
+	}
+
+	int AmountCardsOnTable()
+	{
+		return _cardsOnTable.size();
 	}
 
 	CCard getTrump() const

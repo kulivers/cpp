@@ -25,6 +25,16 @@ public:
 		return _cardsInHand.size();
 	}
 
+	bool HasTrump(Suit trump)
+	{
+		bool HasAnyTrumps = false;
+		for (int i = 0; i < _cardsInHand.size(); i++)
+		{
+			if (_cardsInHand[i].GetSuit() == trump)
+				HasAnyTrumps = true;
+		}
+		return HasAnyTrumps;
+	}
 	
 	int SmallestSuit(Suit suit) // наименьший козырь
 	{
@@ -37,6 +47,10 @@ public:
 		return SmallestNumb;
 	}
 
+	int GetSize()
+	{
+		return _cardsInHand.size();
+	}
 
 	CCard GetRandomCard()
 	{	
@@ -44,6 +58,10 @@ public:
 		return _cardsInHand[randomNumb];
 	}
 
+	CCard GetCardC(int i)
+	{
+		return _cardsInHand[i];
+	}
 
 	bool EndTurn()//датчик нажати€ на enter в конце хода
 	{

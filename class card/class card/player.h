@@ -20,11 +20,6 @@ public:
 	{ }
 
 
-	int AmountCardsInHand()
-	{
-		return _cardsInHand.size();
-	}
-
 	bool HasTrump(Suit trump)
 	{
 		bool HasAnyTrumps = false;
@@ -103,6 +98,17 @@ public:
 			std::cout << p1._cardsInHand[i].GetAsString().c_str() << " " << std::endl;
 		}
 	}
+
+	void TakeCardInHand(CPlayer p1, CTable t) // игрок берет карты
+	{
+		CCard save;
+		for (int i = 0; i < t.GetSize(); i++)
+		{
+			p1.add(t.GetCard(i));// кладем игроку карту в руку
+			t.DeleteItem(t.GetCard(i)); // убираем ее со стола
+		}
+	}
+
 
 	~CPlayer()
 	{}

@@ -27,15 +27,29 @@ public:
 		_cozir = v;
 	}
 
+	int GetSize()
+	{
+		return _cardsOnTable.size();
+	}
+
+	void DeleteItem(CCard card)         // пральна??!
+	{
+		int n;
+		for (int i = 0; i < _cardsOnTable.size(); i++)
+		{
+			if (card.GetAsString() == _cardsOnTable[i].GetAsString())
+				n = i;
+		}
+		_cardsOnTable.erase(_cardsOnTable.begin() + n, _cardsOnTable.begin() + n);
+		
+	}
+
 	CCard GetCard(int i)
 	{
 		return _cardsOnTable[i];
 	}
 
-	int AmountCardsOnTable()
-	{
-		return _cardsOnTable.size();
-	}
+	
 
 	CCard getTrump() const
 	{

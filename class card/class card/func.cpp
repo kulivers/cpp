@@ -16,10 +16,7 @@ using namespace std;
 */
 CCard CTable::_cozir;
 
-void Discard(CTable& t, CPlayer& p1, CPlayer& p2) //бито
-{
-	
-}
+
 void SpreadCards(vector<CCard>& deck, CPlayer& p2)//раздача карт одному игроку
 {
 	for (int p = 0; p < 6; p++) 
@@ -36,7 +33,7 @@ void ShowTrump(const CTable& t) // показать козырь
 }
 
 
-void Distribution(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t)//это не первый ход а  раздача
+void Distribution(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t)        //это не первый ход а  раздача
 {
 	SpreadCards(deck, p1);
 	SpreadCards(deck, p2);
@@ -47,17 +44,17 @@ void Distribution(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t)//э�
 	deck.pop_back();
 }
 
-void FirstDrop(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t)//кто первый ходит
+CPlayer WhoPlaysFirst(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t)//кто первый ходит
 {
 	if (p1.SmallestSuit(t.getTrump().GetSuit()) < p2.SmallestSuit(t.getTrump().GetSuit()))
-		DropToTableRandCard(p1, t);
+		return p1;
 	else
-		DropToTableRandCard(p2, t);
+		return p2;
 
 	if (p1.SmallestSuit(t.getTrump().GetSuit()) == p2.SmallestSuit(t.getTrump().GetSuit()))// если оба без козырей
-		DropToTableRandCard(p1, t);//начинает первый, типо если будет онлайн игра то там все равно рандомно кто то первым будет
+		return p1;//начинает первый, типо если будет онлайн игра то там все равно рандомно кто то первым будет
+	
 }
-
 
 bool RuleCanThrowUp(CCard card, CTable& t) // можно подкинуть?
 {
@@ -70,7 +67,6 @@ bool RuleCanThrowUp(CCard card, CTable& t) // можно подкинуть?
 		}
 }
 
-
 void DropToTableRandCard(CPlayer& p1, CTable& t)    //кидает рандомную карту
 {
 	CCard card = p1.GetRandomCard();
@@ -80,6 +76,13 @@ void DropToTableRandCard(CPlayer& p1, CTable& t)    //кидает рандом�
 	p1.pop_back();*/
 }
 
+void DropToTableCard(CCard card, CPlayer& p1, CTable& t)    //кидает карту
+{
+	p1.DeleteItem(card);
+	t.PutOnTable(card);
+	/*CCard c = p1.back();
+	p1.pop_back();*/
+}
 
 CCard CanCoverASuit(CCard card, CPlayer& p1, Suit trump)// может побить козырь?
 {
@@ -104,8 +107,6 @@ CCard CanCoverASuit(CCard card, CPlayer& p1, Suit trump)// может побит
 		save.set(minSuit, trump);
 		return save;
 }// возвращает карту с 0 номером если не может
-
-
 
 CCard CanCoverNotASuit(CCard card, CPlayer& p1, Suit trump)// может побить не козырь ? 
 {
@@ -148,4 +149,15 @@ CCard CanCoverNotASuit(CCard card, CPlayer& p1, Suit trump)// может поб�
 	
 	return save;// возвращает карту с 0 номером если не может
 
+}
+
+void ClearTheBoard(CTable &t, vector<CCard> save)// бито
+{
+	CCard saveC;
+	for (int i = 0; i < t.GetSize(); i++)
+	{
+		saveC = t.GetCard(i);
+		t.DeleteItem(saveC);
+		save.push_back(saveC);
+	}
 }

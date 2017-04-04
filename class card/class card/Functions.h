@@ -10,7 +10,7 @@ using namespace std;
 
 void SpreadCards(vector<CCard>& deck, CPlayer& p2);
 void ShowTrump(const CTable& t);
-void Distribution(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t);
+void Distribution(vector<CCard>& deck, CPlayer& p1, CPlayer& p2);
 CPlayer WhoPlaysFirst(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t);
 bool RuleCanThrowUp(CCard card, CTable& t);
 void DropToTableRandCard(CPlayer& p1, CTable& t);

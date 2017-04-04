@@ -15,15 +15,15 @@ using namespace std;
 и такипока колода не закончится                  
 */
 CCard CTable::_cozir;
+std::vector <CCard> CTable::_cardsOnTable;
 
 
-void SpreadCards(vector<CCard>& deck, CPlayer& p2)//раздача карт одному игроку
+void SpreadCards(vector<CCard>& deck, CPlayer& p)//раздача карт одному игроку
 {
-	for (int p = 0; p < 6; p++) 
+	while(p.GetSize() < 6 && !deck.empty()) 
 	{
-		p2.add(deck.back());
+		p.add(deck.back());
 		deck.pop_back();
-
 	}
 }
 
@@ -33,14 +33,15 @@ void ShowTrump(const CTable& t) // показать козырь
 }
 
 
-void Distribution(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t)        //это не первый ход а  раздача
+void Distribution(vector<CCard>& deck, CPlayer& p1, CPlayer& p2)        //это не первый ход а  раздача
 {
 	SpreadCards(deck, p1);
 	SpreadCards(deck, p2);
-	p1.DisplayCards(p1);
-	cout << endl;
-	p2.DisplayCards(p2);
-	t.setTrump(deck.back());
+	
+	if (deck.empty())
+		return;
+
+	CTable::setTrump(deck.back());
 	deck.pop_back();
 }
 
@@ -58,7 +59,7 @@ CPlayer WhoPlaysFirst(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t)/
 
 bool RuleCanThrowUp(CCard card, CTable& t) // можно подкинуть?
 {
-		for (int j = 0; j < t.AmountCardsOnTable(); j++)
+		for (int j = 0; j < t.GetSize(); j++)
 		{
 			if (card.GetNumb() == t.GetCard(j).GetNumb())
 				return true;
@@ -76,7 +77,7 @@ void DropToTableRandCard(CPlayer& p1, CTable& t)    //кидает рандом�
 	p1.pop_back();*/
 }
 
-void DropToTableCard(CCard card, CPlayer& p1, CTable& t)    //кидает карту
+void DropToTableCard(CCard card, CPlayer& p1, CTable& t)    //кидает определенную карту
 {
 	p1.DeleteItem(card);
 	t.PutOnTable(card);

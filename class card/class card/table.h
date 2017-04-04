@@ -12,7 +12,7 @@
 class CTable
 {
 private:
-	std::vector <CCard> _cardsOnTable;
+	static std::vector <CCard> _cardsOnTable;
 	static CCard _cozir;
 public:
 
@@ -27,7 +27,7 @@ public:
 		_cozir = v;
 	}
 
-	int GetSize()
+	static int GetSize()
 	{
 		return _cardsOnTable.size();
 	}

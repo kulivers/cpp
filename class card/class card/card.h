@@ -37,18 +37,34 @@ public:
 		return _number;
 	}
 
-
 	Suit GetSuit()
 	{
 		return _suit;
 	}
 
+	bool operator== (const CCard& other) const
+	{
+		if (this == &other)
+			return true;
+
+		if (_suit != other._suit)
+			return false;
+
+		if (_number != other._number)
+			return false;
+
+		return true;
+	}
+
 	std::string GetAsString() const
 	{
 		std::string result;
-
+		char buffer[3];
 		if (_number >= 2 && _number <= 10)
-			result = '0' + _number;
+		{
+			_itoa_s(_number, buffer, 3, 10);
+			result = buffer;
+		}
 		else
 		{
 			switch (_number)

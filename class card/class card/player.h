@@ -8,6 +8,7 @@
 #include <ctime>
 #include <string.h>
 #include <vector>
+#include <algorithm>
 
 #include "card.h"
 
@@ -50,6 +51,9 @@ public:
 	CCard GetRandomCard()
 	{	
 		int randomNumb = rand() % _cardsInHand.size() - 1;
+		if (randomNumb < 0)
+			randomNumb = 0;
+
 		return _cardsInHand[randomNumb];
 	}
 
@@ -74,17 +78,12 @@ public:
 		return _cardsInHand[i].GetSuit();
 	}
 
-	void DeleteItem(CCard card)
+	void DeleteItem(CCard card) 
 	{
-		int n;
-		for (int i = 0; i < _cardsInHand.size(); i++)
-		{
-			if (card.GetAsString() == _cardsInHand[i].GetAsString())
-				n = i;
-		}
-		_cardsInHand.erase(_cardsInHand.begin() + n, _cardsInHand.begin() + n);
-		
+		auto it = find(_cardsInHand.begin(), _cardsInHand.end(), card);
+		_cardsInHand.erase(it);
 	}
+
 	void add(CCard n)
 	{
 		_cardsInHand.push_back(n);
@@ -94,9 +93,9 @@ public:
 	{
 		for (int i = 0; i < p1._cardsInHand.size(); i++)
 		{
-
-			std::cout << p1._cardsInHand[i].GetAsString().c_str() << " " << std::endl;
+			std::cout << p1._cardsInHand[i].GetAsString().c_str() << " ";
 		}
+		std::cout << std::endl;
 	}
 
 	void TakeCardInHand(CPlayer p1, CTable t) // игрок берет карты

@@ -18,7 +18,7 @@ public:
 
 	CTable()
 	{ }
-	void PutOnTable(CCard card)
+	static void PutOnTable(CCard card)
 	{
 		_cardsOnTable.push_back(card);
 	}
@@ -33,7 +33,7 @@ public:
 		return _cardsOnTable.size();
 	}
 
-	void DeleteItem(CCard card)         // пральна??!
+	static void DeleteItem(CCard card)         // пральна??!
 	{
 		int n;
 		for (int i = 0; i < _cardsOnTable.size(); i++)
@@ -45,14 +45,14 @@ public:
 		
 	}
 
-	CCard GetCard(int i)
+	static CCard GetCard(int i)
 	{
 		return _cardsOnTable[i];
 	}
 
 
 
-	Suit getTrump() const
+	static Suit getTrump() 
 	{
 		return _cozir.GetSuit();
 	}

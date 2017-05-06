@@ -19,6 +19,8 @@ DEFENDER
 STATUS
 */
 
+using namespace std;
+
 class CPlayer
 {
 private:
@@ -114,13 +116,13 @@ public:
 		std::cout << std::endl;
 	}
 
-	void TakeCardInHand(CPlayer p1, CTable t) // игрок берет карты со стола
+	void TakeCardInHand() // игрок берет карты со стола
 	{
 		CCard save;
-		for (int i = 0; i < t.GetSize(); i++)
+		for (int i = 0; i < CTable::GetSize(); i++)
 		{
-			p1.add(t.GetCard(i));// кладем игроку карту в руку
-			t.DeleteItem(t.GetCard(i)); // убираем ее со стола
+			add(CTable::GetCard(i));// кладем игроку карту в руку
+			CTable::DeleteItem(CTable::GetCard(i)); // убираем ее со стола
 		}
 	}
 
@@ -135,17 +137,17 @@ public:
 	}
 
 
-	CCard CanCoverASuit(CCard card, CPlayer& p1, Suit trump)// может побить козырь?
+	CCard CanCoverASuit(CCard card)// может побить козырь?
 	{
 		CCard save;
-		vector<CCard> CanCover; //козыря больше нашего, выберем наименьший
-		save.set(0, trump); // если есть козыря но не может побить то вернется ето
-		if (p1.HasTrump(trump) == true)// у игрока есть козыря?
+		std::vector<CCard> CanCover; //козыря больше нашего, выберем наименьший
+		save.set(0, CTable::getTrump()); // если есть козыря но не может побить то вернется ето
+		if (HasTrump(CTable::getTrump()))// у игрока есть козыря?
 		{
-			for (int i = 0; i < p1.GetSize(); i++)
+			for (int i = 0; i < GetSize(); i++)
 			{
-				if (card.GetNumb() > p1.GetNumbC(i))
-					save.set(p1.GetNumbC(i), p1.GetSuitC(i));
+				if (card.GetNumb() > GetNumbC(i))
+					save.set(GetNumbC(i), GetSuitC(i));
 				CanCover.push_back(save);
 			}
 		}
@@ -155,28 +157,30 @@ public:
 			if (minSuit < CanCover[i].GetNumb())
 				minSuit = CanCover[i].GetNumb();
 		}
-		save.set(minSuit, trump);
+		save.set(minSuit, CTable::getTrump());
 		return save;
 	}// возвращает карту с 0 номером если не может
 
-	CCard CanCoverNotASuit(CCard card, CPlayer& p1, Suit trump)// может побить не козырь ? 
+
+
+	CCard CanCoverNotASuit(CCard card,  Suit trump)// может побить не козырь ? 
 	{
 		CCard save;
 		save.set(0, trump); // если есть козыря но не может побить то вернется ето
-		vector<CCard> CanCover;  // карты которыми мы можем покрыть (не козыря) сначала, а потом елси таких нет, пихаем туда все козыря и ищем наименьший
-		for (int i = 0; i < p1.GetSize(); i++)
+		std::vector<CCard> CanCover;  // карты которыми мы можем покрыть (не козыря) сначала, а потом елси таких нет, пихаем туда все козыря и ищем наименьший
+		for (int i = 0; i < GetSize(); i++)
 		{
-			if (p1.GetNumbC(i) > card.GetNumb() && p1.GetSuitC(i) == card.GetSuit())
-				CanCover.push_back(p1.GetCardC(i));
+			if (GetNumbC(i) > card.GetNumb() && GetSuitC(i) == card.GetSuit())
+				CanCover.push_back(GetCardC(i));
 		}
 
 		//numbers.empty()=1 если вектор пустой
 		if (CanCover.size() == 0)// ищем козыря
 		{
-			for (int i = 0; i < p1.GetSize(); i++)
+			for (int i = 0; i < GetSize(); i++)
 			{
-				if (p1.GetSuitC(i) == trump)
-					CanCover.push_back(p1.GetCardC(i));
+				if (GetSuitC(i) == trump)
+					CanCover.push_back(GetCardC(i));
 			}
 
 			int minSuit = 1000;
@@ -202,22 +206,51 @@ public:
 
 	}
 
-
-	bool CanPopUp(CTable& t)
+	void BeatOneCard(CCard lastCard)  // когда атакер кинул под дефендера одну карту и он бьется, до цикла подкидывальщиков
 	{
-		int a = 0;
-		for (int i = 0; i < t.GetSize(); i++)
+		//если на столе четное колличество карт то подкидывают одну карту
+		CCard dropToTable;
+
+		if (lastCard.GetSuit() == CTable::getTrump()) // если последняя карта на столе(которую подкинули), это козырь
+		{
+			dropToTable = this->CanCoverASuit(lastCard); //возвращает карту
+			DropToTableCard(dropToTable);
+		}
+		else
+		{
+			dropToTable = dropToTable = this->CanCoverNotASuit(lastCard, CTable::getTrump());
+			DropToTableCard(dropToTable);
+		}
+		if (dropToTable.GetNumb() == 0)
+		{
+			this->TakeCardInHand();
+		}
+
+	}
+
+
+	void DropToTableCard(CCard card)    //кидает определенную карту
+	{
+		(*this).DeleteItem(card);
+		CTable::PutOnTable(card);
+		/*CCard c = p1.back();
+		p1.pop_back();*/
+	}
+
+
+	bool CanPopUp()
+	{
+		for (int i = 0; i < CTable::GetSize(); i++)
 		{
 			for (int j = 0; j < _cardsInHand.size(); j++)
 			{
-				if (t.GetCard(i).GetNumb() == _cardsInHand[i].GetNumb())
-					a++;
+				if (CTable::GetCard(i).GetNumb() == _cardsInHand[i].GetNumb())
+					return true;
 			}
 		}
-		if (a != 0)
-			return true;
-		else
-			return false;
+		
+		return false;
+		
 	}
 
 

@@ -31,19 +31,19 @@ void SpreadCards(vector<CCard>& deck, CPlayer& p)        //раздача кар
 
 void ShowTrump(const CTable& t) // показать козырь
 {
-	cout << "Tramp is " << t.getTrump().GetAsString().c_str() << endl;
+	cout << "Tramp is " << t.getTrump() << endl;
 }
 
 
 
 CPlayer WhoPlaysFirst(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t)//кто первый ходит
 {
-	if (p1.SmallestSuit(t.getTrump().GetSuit()) < p2.SmallestSuit(t.getTrump().GetSuit()))
+	if (p1.SmallestSuit(t.getTrump()) < p2.SmallestSuit(CTable::getTrump()))
 		return p1;
 	else
 		return p2;
 
-	if (p1.SmallestSuit(t.getTrump().GetSuit()) == p2.SmallestSuit(t.getTrump().GetSuit()))// если оба без козырей
+	if (p1.SmallestSuit(t.getTrump()) == p2.SmallestSuit(t.getTrump()))// если оба без козырей
 		return p1;//начинает первый, типо если будет онлайн игра то там все равно рандомно кто то первым будет
 	
 }
@@ -59,39 +59,20 @@ bool RuleCanThrowUp(CCard card, CTable& t) // можно подкинуть?
 		}
 }
 
-void DropToTableRandCard(CPlayer& p1, CTable& t)    //кидает рандомную карту
+CCard DropToTableRandCard(CPlayer& p1)    //кидает рандомную карту
 {
 	CCard card = p1.GetRandomCard();
 	p1.DeleteItem(card);
-	t.PutOnTable(card);
+	CTable::PutOnTable(card);
 	/*CCard c = p1.back();
 	p1.pop_back();*/
-}
 
-void DropToTableCard(CCard card, CPlayer& p1, CTable& t)    //кидает определенную карту
-{
-	p1.DeleteItem(card);
-	t.PutOnTable(card);
-	/*CCard c = p1.back();
-	p1.pop_back();*/
+	return card;
 }
 
 
 
-CPlayer WhoseTurn(vector<CPlayer>& players, CPlayer& lastP)                         //удалить можно
-{ 
-	int IndxOfLast;
-	for (int i = 0; i < players.size(); i++)//находим чей ход
-	{
-		for (int j = 0; j < players[i].GetSize(); i++)
-		{
-			if (players[i].GetCardC(j) == lastP.GetCardC(j))// если хоть одна карта совпадает то это тот игрок
 
-				IndxOfLast = i;
-		}
-	}
-	return players[IndxOfLast + 1];
-}
 
 
 void DistributionOfLakingCards(vector<CPlayer>& players, vector<CCard>& deck)//раздача карт тем у кого не хватает
@@ -104,7 +85,8 @@ void DistributionOfLakingCards(vector<CPlayer>& players, vector<CCard>& deck)//�
 			{
 				CCard save;
 				save.set(deck[0].GetNumb(), deck[0].GetSuit()); //правильно что 0?
-				deck.erase(deck.begin());						// и здесь
+				//deck.erase(deck.begin());						// и здесь
+				deck.pop_back();
 				players[i].add(save);
 			}
 		}
@@ -112,7 +94,11 @@ void DistributionOfLakingCards(vector<CPlayer>& players, vector<CCard>& deck)//�
 }
 
 
-
+void Distribution(vector<CPlayer>& _players, vector<CCard>& deck)
+{
+	CTable::setTrump(deck.front());
+	DistributionOfLakingCards(_players, deck);
+}
 
 bool TheEndOfGame(vector<CPlayer>& players)
 {
@@ -145,10 +131,12 @@ int NumberOfPlayer(CPlayer a, vector<CPlayer> players)
 
 
 
-void Turn(vector<CPlayer>& _players, vector<CCard>& deck, CTable& t, CPlayer FirstTurnPlayer)//в цикле после первого хода
+void Turn(vector<CPlayer>& _players, vector<CCard>& deck, const CPlayer& FirstTurnPlayer)//в цикле после первого хода
 {
 	if (deck.size() != 0)
 		DistributionOfLakingCards(_players, deck); //раздаем карты кому не хватает
+
+
 
 
 	int AttackPlayer = NumberOfPlayer(FirstTurnPlayer, _players) + 1;
@@ -180,30 +168,45 @@ void Turn(vector<CPlayer>& _players, vector<CCard>& deck, CTable& t, CPlayer Fir
 		SecondPopUpPlayer = DefendPlayer + 1;
 	}
 
-	DropToTableRandCard(_players[AttackPlayer], t); //здесь атакер кидает под дефуендера
+	CCard lastcard = DropToTableRandCard(_players[AttackPlayer]); //здесь атакер кидает под дефуендера
 
 	// сделать так, что если колличество карт на столе - четное значение, то кидает карту Подкидывающий 1 или 2(только одну), а если нечетное то Дефендер отбивается
 	// цикл пока подкидывальщики могут подкинуть подкидывают )0)) а дефендер отбивается если может
 
+	// здесь дефендер бьется
+	_players[DefendPlayer].BeatOneCard(lastcard);
 
-	while (_players[FirstPopUpPlayer].CanPopUp(t) || _players[SecondPopUpPlayer].CanPopUp(t))
+
+	while (_players[FirstPopUpPlayer].CanPopUp() || _players[SecondPopUpPlayer].CanPopUp())
 	{
 		//если на столе четное колличество карт то подкидывают одну карту
-
-		if (t.GetSize() % 2 == 0)
+		CCard lastCard;
+		CCard dropToTable;
+		if (CTable::GetSize() % 2 == 0)
 		{
-			if (_players[FirstPopUpPlayer].CanPopUp(t))
-				DropToTableRandCard(_players[FirstPopUpPlayer], t);
+			if (_players[FirstPopUpPlayer].CanPopUp())
+				lastCard = DropToTableRandCard(_players[FirstPopUpPlayer]);
 			else
-				DropToTableRandCard(_players[SecondPopUpPlayer], t);
+				lastCard = DropToTableRandCard(_players[SecondPopUpPlayer]);
 		}
 
+		
 		// если нечетное то бьется
-		if (t.GetSize() % 2 != 0)
+		if (CTable::GetSize() % 2 != 0)
 		{
-			if (t.GetCard(t.GetSize()).GetSuit() == t.getTrump()) // если последняя карта на столе(которую подкинули), это козырь
+			if (lastCard.GetSuit() == CTable::getTrump()) // если последняя карта на столе(которую подкинули), это козырь
 			{
-				_players[FirstPopUpPlayer].CanCoverASuit(); //возвращает карту
+				dropToTable = _players[DefendPlayer].CanCoverASuit(lastCard); //возвращает карту
+				_players[DefendPlayer].DropToTableCard(dropToTable);
+			}
+			else
+			{
+				dropToTable = dropToTable = _players[DefendPlayer].CanCoverNotASuit(lastCard, CTable::getTrump());
+				_players[DefendPlayer].DropToTableCard(dropToTable);
+			}
+			if (dropToTable.GetNumb() == 0)
+			{
+				_players[DefendPlayer].TakeCardInHand();
 			}
 		}
 	}
@@ -211,3 +214,82 @@ void Turn(vector<CPlayer>& _players, vector<CCard>& deck, CTable& t, CPlayer Fir
 	
 	
 }
+
+
+void TurnForTwoPlayers(vector<CPlayer>& _players, vector<CCard>& deck, const CPlayer& FirstTurnPlayer)
+{
+	if (deck.size() != 0)
+		DistributionOfLakingCards(_players, deck); //раздаем карты кому не хватает
+
+
+
+
+	int AttackPlayer = NumberOfPlayer(FirstTurnPlayer, _players) + 1;
+	int DefendPlayer;
+	if (AttackPlayer == _players.size())// задаем DefendPlayer
+	{
+		DefendPlayer = 0;
+	}
+	else
+	{
+		DefendPlayer = AttackPlayer + 1;
+	}
+
+
+	
+	if (DefendPlayer == _players.size())
+	{
+		
+		AttackPlayer = 0;
+	}
+	if (DefendPlayer == 0)
+	{
+		AttackPlayer = _players.size();
+	}
+
+	CCard lastcard = DropToTableRandCard(_players[AttackPlayer]); //здесь атакер кидает под дефуендера
+
+	// сделать так, что если колличество карт на столе - четное значение, то кидает карту Подкидывающий 1 или 2(только одну), а если нечетное то Дефендер отбивается
+	// цикл пока подкидывальщики могут подкинуть подкидывают )0)) а дефендер отбивается если может
+
+	// здесь дефендер бьется
+	_players[DefendPlayer].BeatOneCard(lastcard);
+
+
+	while (_players[AttackPlayer].CanPopUp())
+	{
+		//если на столе четное колличество карт то подкидывают одну карту
+		CCard lastCard;
+		CCard dropToTable;
+		if (CTable::GetSize() % 2 == 0)
+		{
+			if (_players[AttackPlayer].CanPopUp())
+				lastCard = DropToTableRandCard(_players[AttackPlayer]);
+		}
+
+
+		// если нечетное то бьется
+		if (CTable::GetSize() % 2 != 0)
+		{
+			if (lastCard.GetSuit() == CTable::getTrump()) // если последняя карта на столе(которую подкинули), это козырь
+			{
+				dropToTable = _players[DefendPlayer].CanCoverASuit(lastCard); //возвращает карту
+				_players[DefendPlayer].DropToTableCard(dropToTable);
+			}
+			else
+			{
+				dropToTable = dropToTable = _players[DefendPlayer].CanCoverNotASuit(lastCard, CTable::getTrump());
+				_players[DefendPlayer].DropToTableCard(dropToTable);
+			}
+			if (dropToTable.GetNumb() == 0)
+			{
+				_players[DefendPlayer].TakeCardInHand();
+			}
+		}
+	}
+
+
+
+}
+
+

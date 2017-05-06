@@ -7,6 +7,7 @@
 #include <ctime>
 #include <string.h>
 #include <vector>
+#include <iostream>
 
 
 //must be declared BEFORE CCard
@@ -88,3 +89,18 @@ public:
 		return result;
 	}
 };
+
+inline std::iostream& operator<<(std::iostream& stream, Suit suit) 
+{
+	std::string result;
+	switch (suit)
+	{
+		case clubs:    result += 'c'; break;
+		case diamonds: result += 'd'; break;
+		case hearts:   result += 'h'; break;
+		case spades:   result += 's'; break;
+	}
+
+	stream << result.c_str();
+	return stream;
+}

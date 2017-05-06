@@ -90,13 +90,16 @@ int main()
 	}
 	cout << endl;
 
-	CPlayer player1, player2;
+
+
+
 	CTable table;
-	vector<CPlayer> _players;
+	vector<CPlayer> _players(3);
+	
 	cout << endl;
 	cout << endl;
 	cout << endl;
-	Distribution(deck, player1, player2);
+	Distribution(_players, deck);
 
 	cout << " колода после раздачи: " << endl;
 	for (j = 0; j < deck.size(); j++)
@@ -118,7 +121,7 @@ int main()
 	while (TheEndOfGame(_players) != true)
 	{
 		cout << "---------------" << endl;
-		MakeTurn(deck, player1, player2);
+		Turn(_players, deck, player1);
 
 		cout << "1й игрок: ";
 		player1.DisplayCards(player1);

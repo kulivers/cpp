@@ -23,16 +23,6 @@ class CPlayer;
 
 /////////////////////////////////////////////////////////////
 
-void MakeTurn(vector<CCard>& deck, CPlayer& p1, CPlayer& p2)
-{
-	if (p1.GetSize() > 0)
-		p1.DeleteItem(p1.GetRandomCard());
-
-	if (p2.GetSize() > 0)
-		p2.DeleteItem(p2.GetRandomCard());
-
-	Distribution(deck, p1, p2);
-}
 
 /*аа, нее, все правильно у тебя, просто сама функция firstTurn выше чем CCard, и компилятор ее не понимает
 перетащи CCard на самый верх в файле, скомпилиться
@@ -102,7 +92,7 @@ int main()
 
 	CPlayer player1, player2;
 	CTable table;
-
+	vector<CPlayer> _players;
 	cout << endl;
 	cout << endl;
 	cout << endl;
@@ -125,7 +115,7 @@ int main()
 	player2.DisplayCards(player2);
 
 
-	while (CTable::GetSize() + player1.GetSize() + player2.GetSize() > 1)
+	while (TheEndOfGame(_players) != true)
 	{
 		cout << "---------------" << endl;
 		MakeTurn(deck, player1, player2);

@@ -42,6 +42,7 @@ public:
 		return _suit;
 	}
 
+	
 	bool operator== (const CCard& other) const
 	{
 		if (this == &other)
@@ -55,6 +56,7 @@ public:
 
 		return true;
 	}
+
 
 	std::string GetAsString() const
 	{

@@ -11,11 +11,19 @@
 #include <algorithm>
 
 #include "card.h"
+/*
+ENUM
+ATTACKER
+DEFENDER
+
+STATUS
+*/
 
 class CPlayer
 {
 private:
 	std::vector <CCard> _cardsInHand;
+
 public:
 	CPlayer()
 	{ }
@@ -56,13 +64,21 @@ public:
 
 		return _cardsInHand[randomNumb];
 	}
+	
+	bool HasCards()
+	{
+		if (!_cardsInHand.empty())
+			return true;
+		else
+			return false;
+	}
 
 	CCard GetCardC(int i)
 	{
 		return _cardsInHand[i];
 	}
 
-	bool EndTurn()//датчик нажатия на enter в конце хода
+	bool EndTurn() //датчик нажатия на enter в конце хода
 	{
 		if (_getch() == 13)
 		return true;
@@ -89,7 +105,7 @@ public:
 		_cardsInHand.push_back(n);
 	}
 
-	void DisplayCards(CPlayer p1)
+	void DisplayCards(CPlayer p1) 
 	{
 		for (int i = 0; i < p1._cardsInHand.size(); i++)
 		{
@@ -98,7 +114,7 @@ public:
 		std::cout << std::endl;
 	}
 
-	void TakeCardInHand(CPlayer p1, CTable t) // игрок берет карты
+	void TakeCardInHand(CPlayer p1, CTable t) // игрок берет карты со стола
 	{
 		CCard save;
 		for (int i = 0; i < t.GetSize(); i++)
@@ -108,7 +124,104 @@ public:
 		}
 	}
 
+	CPlayer equal(CPlayer player)
+	{
+		CPlayer save;
+		for (int i = 0; i < player.GetSize(); i++)
+		{
+			save.add(player.GetCardC(i));
+		}
+		return save;
+	}
 
+
+	CCard CanCoverASuit(CCard card, CPlayer& p1, Suit trump)// может побить козырь?
+	{
+		CCard save;
+		vector<CCard> CanCover; //козыря больше нашего, выберем наименьший
+		save.set(0, trump); // если есть козыря но не может побить то вернется ето
+		if (p1.HasTrump(trump) == true)// у игрока есть козыря?
+		{
+			for (int i = 0; i < p1.GetSize(); i++)
+			{
+				if (card.GetNumb() > p1.GetNumbC(i))
+					save.set(p1.GetNumbC(i), p1.GetSuitC(i));
+				CanCover.push_back(save);
+			}
+		}
+		int minSuit = 1000;
+		for (int i = 0; i < CanCover.size(); i++)//выбираем наименьший
+		{
+			if (minSuit < CanCover[i].GetNumb())
+				minSuit = CanCover[i].GetNumb();
+		}
+		save.set(minSuit, trump);
+		return save;
+	}// возвращает карту с 0 номером если не может
+
+	CCard CanCoverNotASuit(CCard card, CPlayer& p1, Suit trump)// может побить не козырь ? 
+	{
+		CCard save;
+		save.set(0, trump); // если есть козыря но не может побить то вернется ето
+		vector<CCard> CanCover;  // карты которыми мы можем покрыть (не козыря) сначала, а потом елси таких нет, пихаем туда все козыря и ищем наименьший
+		for (int i = 0; i < p1.GetSize(); i++)
+		{
+			if (p1.GetNumbC(i) > card.GetNumb() && p1.GetSuitC(i) == card.GetSuit())
+				CanCover.push_back(p1.GetCardC(i));
+		}
+
+		//numbers.empty()=1 если вектор пустой
+		if (CanCover.size() == 0)// ищем козыря
+		{
+			for (int i = 0; i < p1.GetSize(); i++)
+			{
+				if (p1.GetSuitC(i) == trump)
+					CanCover.push_back(p1.GetCardC(i));
+			}
+
+			int minSuit = 1000;
+			for (int i = 0; i < CanCover.size(); i++)//выбираем наименьший
+			{
+				if (minSuit < CanCover[i].GetNumb())
+					minSuit = CanCover[i].GetNumb();
+			}
+			save.set(minSuit, trump);
+		}
+		else// если можно побить не козырем                        //здесь начал тупить, ниже проверить
+		{
+			int minNumb = 1000;
+			for (int i = 0; i < CanCover.size(); i++)//выбираем наименьший
+			{
+				if (CanCover[i].GetNumb() < minNumb)
+					minNumb = CanCover[i].GetNumb();
+			}
+			save.set(minNumb, card.GetSuit());
+		}
+
+		return save;// возвращает карту с 0 номером если не может
+
+	}
+
+
+	bool CanPopUp(CTable& t)
+	{
+		int a = 0;
+		for (int i = 0; i < t.GetSize(); i++)
+		{
+			for (int j = 0; j < _cardsInHand.size(); j++)
+			{
+				if (t.GetCard(i).GetNumb() == _cardsInHand[i].GetNumb())
+					a++;
+			}
+		}
+		if (a != 0)
+			return true;
+		else
+			return false;
+	}
+
+
+	
 	~CPlayer()
 	{}
 

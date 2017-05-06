@@ -22,6 +22,7 @@ public:
 	{
 		_cardsOnTable.push_back(card);
 	}
+
 	static void setTrump(CCard v)
 	{
 		_cozir = v;
@@ -49,11 +50,11 @@ public:
 		return _cardsOnTable[i];
 	}
 
-	
 
-	CCard getTrump() const
+
+	Suit getTrump() const
 	{
-		return _cozir;
+		return _cozir.GetSuit();
 	}
 	~CTable()
 	{ }

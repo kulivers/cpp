@@ -75,19 +75,18 @@ CCard DropToTableRandCard(CPlayer& p1)    //кидает рандомную ка
 
 
 
-void DistributionOfLakingCards(vector<CPlayer>& players, vector<CCard>& deck)//раздача карт тем у кого не хватает
+void DistributionOfLakingCards(vector<CPlayer>& _players, vector<CCard>& deck)//раздача карт тем у кого не хватает
 {
-	for (int i = 0; i < players.size(); i++)
+	CCard save;
+	for (int i = 0; i < _players.size(); i++)//идем по  игрокам
 	{
-		if (players.size() < 7)
+		if (_players[i].GetSize() < 7)//если кол-во карт у игрока не будет = 6
 		{
-			while (players.size() == 6)
+			while (_players[i].GetSize() != 6)
 			{
-				CCard save;
-				save.set(deck[0].GetNumb(), deck[0].GetSuit()); //правильно что 0?
-				//deck.erase(deck.begin());						// и здесь
+				save.set(deck[deck.size()].GetNumb(), deck[deck.size()].GetSuit()); //правильно ? типо последнюю карту берем
 				deck.pop_back();
-				players[i].add(save);
+				_players[i].add(save);
 			}
 		}
 	}
@@ -226,13 +225,14 @@ void TurnForTwoPlayers(vector<CPlayer>& _players, vector<CCard>& deck, const CPl
 
 	int AttackPlayer = NumberOfPlayer(FirstTurnPlayer, _players) + 1;
 	int DefendPlayer;
+
 	if (AttackPlayer == _players.size())// задаем DefendPlayer
 	{
 		DefendPlayer = 0;
 	}
 	else
 	{
-		DefendPlayer = AttackPlayer + 1;
+		DefendPlayer = _players.size();
 	}
 
 
@@ -255,12 +255,13 @@ void TurnForTwoPlayers(vector<CPlayer>& _players, vector<CCard>& deck, const CPl
 	// здесь дефендер бьется
 	_players[DefendPlayer].BeatOneCard(lastcard);
 
+	CCard lastCard;
+	CCard dropToTable;
 
 	while (_players[AttackPlayer].CanPopUp())
 	{
 		//если на столе четное колличество карт то подкидывают одну карту
-		CCard lastCard;
-		CCard dropToTable;
+	
 		if (CTable::GetSize() % 2 == 0)
 		{
 			if (_players[AttackPlayer].CanPopUp())

@@ -107,11 +107,11 @@ public:
 		_cardsInHand.push_back(n);
 	}
 
-	void DisplayCards(CPlayer p1) 
+	void DisplayCards() 
 	{
-		for (int i = 0; i < p1._cardsInHand.size(); i++)
+		for (int i = 0; i < _cardsInHand.size(); i++)
 		{
-			std::cout << p1._cardsInHand[i].GetAsString().c_str() << " ";
+			std::cout << _cardsInHand[i].GetAsString().c_str() << " ";
 		}
 		std::cout << std::endl;
 	}
@@ -119,8 +119,10 @@ public:
 	void TakeCardInHand() // игрок берет карты со стола
 	{
 		CCard save;
+		
 		for (int i = 0; i < CTable::GetSize(); i++)
 		{
+
 			add(CTable::GetCard(i));// кладем игроку карту в руку
 			CTable::DeleteItem(CTable::GetCard(i)); // убираем ее со стола
 		}

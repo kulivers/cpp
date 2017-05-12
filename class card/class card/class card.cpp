@@ -61,7 +61,7 @@ int main()
 	}
 
 	// показываем исходную колоду
-	cout << "Исходная колода:\n";
+/*	cout << "Исходная колода:\n";
 	for (j = 0; j < deck.size(); j++)
 	{
 		cout << deck[j].GetAsString().c_str();
@@ -70,7 +70,7 @@ int main()
 			cout << endl;
 	}
 	cout << endl;
-
+	*/
 	srand(time(NULL));         // инициализируем генератор случайных чисел
 	for (j = 0; j < deck.size(); j++)
 	{
@@ -80,7 +80,7 @@ int main()
 		deck[k] = temp;
 	}
 	// показываем исходную колоду
-	cout << "колода до раздачи:\n";
+/*	cout << "колода до раздачи:\n";
 	for (j = 0; j < deck.size(); j++)
 	{
 		cout << deck[j].GetAsString().c_str();
@@ -90,18 +90,19 @@ int main()
 	}
 	cout << endl;
 
-
+	*/
 
 
 	CTable table;
-	vector<CPlayer> _players(3);
+	vector<CPlayer> _players(2);
 	
 	cout << endl;
 	cout << endl;
 	cout << endl;
+	
 	Distribution(_players, deck);
 
-	cout << " колода после раздачи: " << endl;
+/*	cout << " колода после раздачи: " << endl;
 	for (j = 0; j < deck.size(); j++)
 	{
 		cout << deck[j].GetAsString().c_str();
@@ -110,14 +111,15 @@ int main()
 			cout << endl;
 	}
 	cout << endl;
+*/
+	for (int i = 0; i < _players.size(); i++) // 
+	{
+		cout << i << "й игрок: " << endl;
+		_players[i].DisplayCards();
+		cout << endl << endl;
+	}
 
-	cout << "1й игрок: ";
-	player1.DisplayCards(player1);
-		
-	cout << "2й игрок: ";
-	player2.DisplayCards(player2);
-
-
+	/*
 	while (TheEndOfGame(_players) != true)
 	{
 		cout << "---------------" << endl;
@@ -130,6 +132,6 @@ int main()
 		_getch();
 
 	}
-
+	*/
 	return 0;
 }

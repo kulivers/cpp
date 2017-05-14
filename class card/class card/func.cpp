@@ -36,16 +36,20 @@ void ShowTrump(const CTable& t) // показать козырь
 
 
 
-CPlayer WhoPlaysFirst(vector<CCard>& deck, CPlayer& p1, CPlayer& p2, CTable& t)//кто первый ходит
+int WhoPlaysFirst(vector<CCard>& deck, vector<CPlayer>& _players, CTable& t)//кто первый ходит
 {
-	if (p1.SmallestSuit(t.getTrump()) < p2.SmallestSuit(CTable::getTrump()))
-		return p1;
-	else
-		return p2;
-
-	if (p1.SmallestSuit(t.getTrump()) == p2.SmallestSuit(t.getTrump()))// если оба без козырей
-		return p1;//начинает первый, типо если будет онлайн игра то там все равно рандомно кто то первым будет
+	int index;
 	
+	int minSuit = 999;
+	for (int i = 0; i < _players.size(); i++)
+	{
+		if (_players[i].SmallestSuit(CTable::getTrump())< minSuit)
+		{
+			minSuit = _players[i].SmallestSuit(CTable::getTrump());
+			index = i;
+		}
+	}
+	return index;
 }
 
 bool RuleCanThrowUp(CCard card, CTable& t) // можно подкинуть?
@@ -84,7 +88,7 @@ void DistributionOfLakingCards(vector<CPlayer>& _players, vector<CCard>& deck)//
 		{
 			while (_players[i].GetSize() != 6)
 			{
-				save.set(deck[deck.size()].GetNumb(), deck[deck.size()].GetSuit()); //правильно ? типо последнюю карту берем
+				save = deck.back();
 				deck.pop_back();
 				_players[i].add(save);
 			}
@@ -130,7 +134,7 @@ int NumberOfPlayer(CPlayer a, vector<CPlayer> players)
 
 
 
-void Turn(vector<CPlayer>& _players, vector<CCard>& deck, const CPlayer& FirstTurnPlayer)//в цикле после первого хода
+void Turn(vector<CPlayer>& _players, vector<CCard>& deck, int FirstTurnPlayer)//в цикле после первого хода
 {
 	if (deck.size() != 0)
 		DistributionOfLakingCards(_players, deck); //раздаем карты кому не хватает
@@ -138,7 +142,7 @@ void Turn(vector<CPlayer>& _players, vector<CCard>& deck, const CPlayer& FirstTu
 
 
 
-	int AttackPlayer = NumberOfPlayer(FirstTurnPlayer, _players) + 1;
+	int AttackPlayer = FirstTurnPlayer + 1;
 	int DefendPlayer;
 	int FirstPopUpPlayer;
 	int SecondPopUpPlayer;
@@ -215,7 +219,7 @@ void Turn(vector<CPlayer>& _players, vector<CCard>& deck, const CPlayer& FirstTu
 }
 
 
-void TurnForTwoPlayers(vector<CPlayer>& _players, vector<CCard>& deck, const CPlayer& FirstTurnPlayer)
+void TurnForTwoPlayers(vector<CPlayer>& _players, vector<CCard>& deck, int FirstTurnPlayer)
 {
 	if (deck.size() != 0)
 		DistributionOfLakingCards(_players, deck); //раздаем карты кому не хватает
@@ -223,37 +227,38 @@ void TurnForTwoPlayers(vector<CPlayer>& _players, vector<CCard>& deck, const CPl
 
 
 
-	int AttackPlayer = NumberOfPlayer(FirstTurnPlayer, _players) + 1;
+	int AttackPlayer;
 	int DefendPlayer;
 
-	if (AttackPlayer == _players.size())// задаем DefendPlayer
+
+	if (FirstTurnPlayer == 0)
+	{
+		AttackPlayer = 1;
+	}
+	else
+	{
+		AttackPlayer = 0;
+	}
+
+	
+	if (AttackPlayer == 1)// задаем DefendPlayer
 	{
 		DefendPlayer = 0;
 	}
 	else
 	{
-		DefendPlayer = _players.size();
+		DefendPlayer = 1;
 	}
 
 
 	
-	if (DefendPlayer == _players.size())
-	{
-		
-		AttackPlayer = 0;
-	}
-	if (DefendPlayer == 0)
-	{
-		AttackPlayer = _players.size();
-	}
-
 	CCard lastcard = DropToTableRandCard(_players[AttackPlayer]); //здесь атакер кидает под дефуендера
 
 	// сделать так, что если колличество карт на столе - четное значение, то кидает карту Подкидывающий 1 или 2(только одну), а если нечетное то Дефендер отбивается
 	// цикл пока подкидывальщики могут подкинуть подкидывают )0)) а дефендер отбивается если может
 
 	// здесь дефендер бьется
-	_players[DefendPlayer].BeatOneCard(lastcard);
+	_players[DefendPlayer].BeatOneCard(lastcard);//zdes
 
 	CCard lastCard;
 	CCard dropToTable;

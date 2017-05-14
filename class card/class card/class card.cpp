@@ -61,26 +61,7 @@ int main()
 	}
 
 	// показываем исходную колоду
-/*	cout << "Исходная колода:\n";
-	for (j = 0; j < deck.size(); j++)
-	{
-		cout << deck[j].GetAsString().c_str();
-		cout << "  ";
-		if (!((j + 1) % 13))      // начинаем новую строку после каждой 13-й карты
-			cout << endl;
-	}
-	cout << endl;
-	*/
-	srand(time(NULL));         // инициализируем генератор случайных чисел
-	for (j = 0; j < deck.size(); j++)
-	{
-		int k = rand() % deck.size();     // выбираем случайную карту
-		CCard temp = deck[j];     // и меняем ее с текущей
-		deck[j] = deck[k];
-		deck[k] = temp;
-	}
-	// показываем исходную колоду
-/*	cout << "колода до раздачи:\n";
+	cout << "Исходная колода:\n";
 	for (j = 0; j < deck.size(); j++)
 	{
 		cout << deck[j].GetAsString().c_str();
@@ -90,7 +71,26 @@ int main()
 	}
 	cout << endl;
 
-	*/
+	srand(time(NULL));         // инициализируем генератор случайных чисел
+	for (j = 0; j < deck.size(); j++)
+	{
+		int k = rand() % deck.size();     // выбираем случайную карту
+		CCard temp = deck[j];     // и меняем ее с текущей
+		deck[j] = deck[k];
+		deck[k] = temp;
+	}
+	// показываем исходную колоду
+	cout << "колода до раздачи:\n";
+	for (j = 0; j < deck.size(); j++)
+	{
+		cout << deck[j].GetAsString().c_str();
+		cout << "  ";
+		if (!((j + 1) % 13))      // начинаем новую строку после каждой 13-й карты
+			cout << endl;
+	}
+	cout << endl;
+
+
 
 
 	CTable table;
@@ -114,24 +114,27 @@ int main()
 */
 	for (int i = 0; i < _players.size(); i++) // 
 	{
-		cout << i << "й игрок: " << endl;
+		cout << i+1 << "й игрок: " << endl;
 		_players[i].DisplayCards();
 		cout << endl << endl;
 	}
 
-	/*
+	
+
 	while (TheEndOfGame(_players) != true)
 	{
-		cout << "---------------" << endl;
-		Turn(_players, deck, player1);
-
-		cout << "1й игрок: ";
-		player1.DisplayCards(player1);
-		cout << "2й игрок: ";
-		player2.DisplayCards(player2);
+		cout << "Начало хода" << endl;
+		TurnForTwoPlayers(_players, deck, WhoPlaysFirst(deck, _players, table));
+		for (int i = 0; i < _players.size(); i++)  
+		{
+			cout << i + 1 << "й игрок: " << endl;
+			_players[i].DisplayCards();
+			cout << endl << endl;
+		}
+		cout << "Конец хода" << endl;	
 		_getch();
 
 	}
-	*/
+	
 	return 0;
 }

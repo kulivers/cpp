@@ -220,7 +220,7 @@ public:
 		}
 		else
 		{
-			dropToTable = dropToTable = this->CanCoverNotASuit(lastCard, CTable::getTrump());
+		dropToTable = this->CanCoverNotASuit(lastCard, CTable::getTrump());
 			DropToTableCard(dropToTable);
 		}
 		if (dropToTable.GetNumb() == 0)

@@ -10,7 +10,7 @@
 #include <iostream>
 
 
-//must be declared BEFORE CCard
+
 enum Suit { clubs, diamonds, hearts, spades };
 
 
@@ -19,6 +19,9 @@ const int jack = 11;
 const int queen = 12;
 const int king = 13;
 const int ace = 14;
+
+
+
 
 class CCard
 {
@@ -43,7 +46,7 @@ public:
 		return _suit;
 	}
 
-	
+
 	bool operator== (const CCard& other) const
 	{
 		if (this == &other)
@@ -90,15 +93,15 @@ public:
 	}
 };
 
-inline std::iostream& operator<<(std::iostream& stream, Suit suit) 
+inline std::iostream& operator<<(std::iostream& stream, Suit suit)
 {
 	std::string result;
 	switch (suit)
 	{
-		case clubs:    result += 'c'; break;
-		case diamonds: result += 'd'; break;
-		case hearts:   result += 'h'; break;
-		case spades:   result += 's'; break;
+	case clubs:    result += 'c'; break;
+	case diamonds: result += 'd'; break;
+	case hearts:   result += 'h'; break;
+	case spades:   result += 's'; break;
 	}
 
 	stream << result.c_str();

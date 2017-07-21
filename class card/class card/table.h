@@ -42,20 +42,34 @@ public:
 				n = i;
 		}
 		_cardsOnTable.erase(_cardsOnTable.begin() + n, _cardsOnTable.begin() + n);
-		
+
 	}
 
-	static CCard GetCard(int i)
+	static CCard GetCard(int i)// тут
 	{
 		return _cardsOnTable[i];
 	}
 
+	static int getNumbOfTrump()
+	{
+		return _cozir.GetNumb();
+	}
 
-
-	static Suit getTrump() 
+	static Suit getTrump()
 	{
 		return _cozir.GetSuit();
 	}
+	
+
+
+	void ClearTheBoard()
+	{
+		for (int i = 0; i < CTable::GetSize(); i++)
+		{
+			DeleteItem(GetCard(i));
+		}
+	}
+
 	~CTable()
 	{ }
 

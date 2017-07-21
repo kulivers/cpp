@@ -41,11 +41,11 @@ public:
 		}
 		return HasAnyTrumps;
 	}
-	
+
 	int SmallestSuit(Suit suit) // наименьший козырь
 	{
 		int SmallestNumb = 15; //туз-14
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < _cardsInHand.size(); i++)
 		{
 			if (_cardsInHand[i].GetSuit() == suit && _cardsInHand[i].GetNumb() < SmallestNumb) // если козырь краты совпадает и номер карты меньше чем наименьший номер 
 				SmallestNumb = _cardsInHand[i].GetNumb();
@@ -59,14 +59,14 @@ public:
 	}
 
 	CCard GetRandomCard()
-	{	
+	{
 		int randomNumb = rand() % _cardsInHand.size() - 1;
 		if (randomNumb < 0)
 			randomNumb = 0;
 
 		return _cardsInHand[randomNumb];
 	}
-	
+
 	bool HasCards()
 	{
 		if (!_cardsInHand.empty())
@@ -83,7 +83,7 @@ public:
 	bool EndTurn() //датчик нажати€ на enter в конце хода
 	{
 		if (_getch() == 13)
-		return true;
+			return true;
 	}
 
 	int GetNumbC(int i)
@@ -96,10 +96,20 @@ public:
 		return _cardsInHand[i].GetSuit();
 	}
 
-	void DeleteItem(CCard card) 
+	void DeleteItem(CCard card) //здась
 	{
-		auto it = find(_cardsInHand.begin(), _cardsInHand.end(), card);
-		_cardsInHand.erase(it);
+		int index = 9999;
+		for (int i = 0; i < _cardsInHand.size(); i++)// индекс кар€вый, может быть что нет карты
+		{
+			if (card.GetNumb() == _cardsInHand[i].GetNumb() && card.GetSuit() == _cardsInHand[i].GetSuit())
+				index = i;
+		}
+		if (index != 9999)
+			_cardsInHand.erase(_cardsInHand.begin() + index);
+
+
+		//auto it = find(_cardsInHand.begin(), _cardsInHand.end(), card);
+		//_cardsInHand.erase(it);
 	}
 
 	void add(CCard n)
@@ -107,7 +117,7 @@ public:
 		_cardsInHand.push_back(n);
 	}
 
-	void DisplayCards() 
+	void DisplayCards()
 	{
 		for (int i = 0; i < _cardsInHand.size(); i++)
 		{
@@ -119,7 +129,7 @@ public:
 	void TakeCardInHand() // игрок берет карты со стола
 	{
 		CCard save;
-		
+
 		for (int i = 0; i < CTable::GetSize(); i++)
 		{
 
@@ -139,7 +149,8 @@ public:
 	}
 
 
-	CCard CanCoverASuit(CCard card)// может побить козырь?
+	CCard CanCoverASuit(CCard card)//  возвращает карту с 1000 номером если не может (ок)
+
 	{
 		CCard save;
 		std::vector<CCard> CanCover; //козыр€ больше нашего, выберем наименьший
@@ -148,24 +159,25 @@ public:
 		{
 			for (int i = 0; i < GetSize(); i++)
 			{
-				if (card.GetNumb() > GetNumbC(i))
+				if ((GetNumbC(i) > card.GetNumb()) && (CTable::getTrump() == GetSuitC(i))) // не заходит сюда!!!јјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјјј!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!‘
+				{
 					save.set(GetNumbC(i), GetSuitC(i));
-				CanCover.push_back(save);
+					CanCover.push_back(save);
+				}
 			}
 		}
 		int minSuit = 1000;
 		for (int i = 0; i < CanCover.size(); i++)//выбираем наименьший
 		{
-			if (minSuit < CanCover[i].GetNumb())
+			if (CanCover[i].GetNumb() < minSuit)
 				minSuit = CanCover[i].GetNumb();
 		}
 		save.set(minSuit, CTable::getTrump());
 		return save;
-	}// возвращает карту с 0 номером если не может
+	}
 
 
-
-	CCard CanCoverNotASuit(CCard card,  Suit trump)// может побить не козырь ? 
+	CCard CanCoverNotASuit(CCard card, Suit trump)// может побить не козырь ?  (ок)
 	{
 		CCard save;
 		save.set(0, trump); // если есть козыр€ но не может побить то вернетс€ ето
@@ -174,6 +186,8 @@ public:
 		{
 			if (GetNumbC(i) > card.GetNumb() && GetSuitC(i) == card.GetSuit())
 				CanCover.push_back(GetCardC(i));
+			if (GetSuitC(i) == CTable::getTrump())
+				CanCover.push_back(GetCardC(i));
 		}
 
 		//numbers.empty()=1 если вектор пустой
@@ -181,7 +195,7 @@ public:
 		{
 			for (int i = 0; i < GetSize(); i++)
 			{
-				if (GetSuitC(i) == trump)
+				if (GetSuitC(i) == CTable::getTrump())
 					CanCover.push_back(GetCardC(i));
 			}
 
@@ -193,7 +207,7 @@ public:
 			}
 			save.set(minSuit, trump);
 		}
-		else// если можно побить не козырем                        //здесь начал тупить, ниже проверить
+		else// если можно побить не козырем                        //здесь начал тупить, ниже проверить 
 		{
 			int minNumb = 1000;
 			for (int i = 0; i < CanCover.size(); i++)//выбираем наименьший
@@ -204,7 +218,7 @@ public:
 			save.set(minNumb, card.GetSuit());
 		}
 
-		return save;// возвращает карту с 0 номером если не может
+		return save;// возвращает карту с 1000 номером если не может
 
 	}
 
@@ -216,17 +230,31 @@ public:
 		if (lastCard.GetSuit() == CTable::getTrump()) // если последн€€ карта на столе(которую подкинули), это козырь
 		{
 			dropToTable = this->CanCoverASuit(lastCard); //возвращает карту
-			DropToTableCard(dropToTable);
+
+			if (dropToTable.GetNumb() == 1000)
+
+			{
+				//удал€ем карту с номером 1000
+				DeleteItem(dropToTable);
+				this->TakeCardInHand();
+			}
+			else
+				DropToTableCard(dropToTable);
 		}
 		else
 		{
-		dropToTable = this->CanCoverNotASuit(lastCard, CTable::getTrump());
-			DropToTableCard(dropToTable);
+			dropToTable = this->CanCoverNotASuit(lastCard, CTable::getTrump());
+
+			if (dropToTable.GetNumb() == 1000)
+			{
+				DeleteItem(dropToTable);
+				this->TakeCardInHand();
+			}
+			else
+				DropToTableCard(dropToTable);
 		}
-		if (dropToTable.GetNumb() == 0)
-		{
-			this->TakeCardInHand();
-		}
+		cout << dropToTable.GetNumb() << " " << dropToTable.GetSuit() << endl;
+
 
 	}
 
@@ -246,17 +274,17 @@ public:
 		{
 			for (int j = 0; j < _cardsInHand.size(); j++)
 			{
-				if (CTable::GetCard(i).GetNumb() == _cardsInHand[i].GetNumb())
+				if (CTable::GetCard(i).GetNumb() == _cardsInHand[i].GetNumb())//«ƒ≈—“№ ќЎ»Ѕ ј
 					return true;
 			}
 		}
-		
+
 		return false;
-		
+
 	}
 
 
-	
+
 	~CPlayer()
 	{}
 

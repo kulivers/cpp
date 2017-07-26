@@ -161,6 +161,7 @@ int main()
 				AttackPlayer = 0;
 			else
 				AttackPlayer = 1;
+		
 			table.ClearTheBoard();
 			//_getch();
 
@@ -191,7 +192,7 @@ int main()
 		}
 
 
-			table.ClearTheBoard();
+			table.ClearTheBoard();//не робит
 	}
 	cout << endl;
 	return 0;

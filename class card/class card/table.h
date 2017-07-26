@@ -33,7 +33,7 @@ public:
 		return _cardsOnTable.size();
 	}
 
-	static void DeleteItem(CCard card)         // пральна??!
+	static void DeleteItem(CCard card)         // пральна??! NET
 	{
 		int n;
 		for (int i = 0; i < _cardsOnTable.size(); i++)
@@ -41,7 +41,9 @@ public:
 			if (card.GetAsString() == _cardsOnTable[i].GetAsString())
 				n = i;
 		}
-		_cardsOnTable.erase(_cardsOnTable.begin() + n, _cardsOnTable.begin() + n);
+		_cardsOnTable.erase(_cardsOnTable.begin() + n);// ЗДЕСЬ НИЧЕГО НЕ ПРОИСХОДИИТ
+
+		//vecIntSecond.erase(vecIntSecond.begin() + 1);///стираем 1 элемент вектора
 
 	}
 

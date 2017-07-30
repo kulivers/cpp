@@ -157,14 +157,13 @@ int main()
 			numbOfTurn++;
 
 			if (AttackPlayer == 1)// меняем
-				DefendPlayer = 0;
-			else
-				DefendPlayer = 1;
-
-			if (DefendPlayer == 1)// меняем
 				AttackPlayer = 0;
 			else
 				AttackPlayer = 1;
+
+
+			
+
 			table.ClearTheBoard();
 			//_getch();
 
@@ -185,14 +184,11 @@ int main()
 			numbOfTurn++;
 
 			if (AttackPlayer == 1)// меняем
-				DefendPlayer = 0;
-			else
-				DefendPlayer = 1;
-
-			if (DefendPlayer == 1)// меняем
 				AttackPlayer = 0;
 			else
 				AttackPlayer = 1;
+
+			
 		}
 
 

@@ -31,7 +31,34 @@ void SpreadCards(vector<CCard>& deck, CPlayer& p)        //раздача кар
 
 void ShowTrump(const CTable& t) // показать козырь
 {
-	cout << "Numb: " << t.getNumbOfTrump() << " Suit" << t.getTrump() << endl;
+	if (t.getNumbOfTrump() < 11 )
+		cout << t.getNumbOfTrump() << " " ;
+	
+	if (t.getNumbOfTrump() == 11)
+		cout << "jack " ;
+	if (t.getNumbOfTrump() == 12)
+		cout << "queen ";
+	if (t.getNumbOfTrump() == 13)
+		cout << "king ";
+	if (t.getNumbOfTrump() == 14)
+		cout << "ace ";
+
+
+
+	if (t.getTrump() == clubs)
+		cout << "clubs" << endl;
+
+	if (t.getTrump() == diamonds)
+		cout << "diamonds" << endl;
+
+	if (t.getTrump() == hearts)
+		cout << "hearts" << endl;
+
+	if (t.getTrump() == spades)
+		cout << "spades" << endl;
+
+
+
 }
 
 
@@ -88,9 +115,12 @@ void DistributionOfLakingCards(vector<CPlayer>& _players, vector<CCard>& deck)//
 		{
 			while (_players[i].GetSize() != 6)
 			{
+				if (deck.size() != 0)
+				{
 				save = deck.back();
 				deck.pop_back();
 				_players[i].add(save);
+				}
 			}
 		}
 	}
@@ -240,7 +270,35 @@ void TurnForTwoPlayers(vector<CPlayer>& _players, vector<CCard>& deck, int Attac
 
 
 	CCard lastcard = DropToTableRandCard(_players[AttackPlayer]); //здесь атакер кидает под дефуендера 
-	cout << "Игрок " << AttackPlayer+1 << " кидает на стол: " << lastcard.GetNumb() << " " << lastcard.GetSuit() << endl;
+	cout << "Игрок " << AttackPlayer+1 << " кидает на стол: " ;
+	//enum Suit { clubs, diamonds, hearts, spades };
+
+
+	if (lastcard.GetNumb() < 11)
+		cout << lastcard.GetNumb() << " ";
+
+	if (lastcard.GetNumb() == 11)
+		cout << "jack ";
+	if (lastcard.GetNumb() == 12)
+		cout << "queen ";
+	if (lastcard.GetNumb() == 13)
+		cout << "king ";
+	if (lastcard.GetNumb() == 14)
+		cout << "ace ";
+
+
+	if (lastcard.GetSuit() == clubs)
+		cout << "clubs" << endl;
+
+	if (lastcard.GetSuit() == diamonds)
+		cout << "diamonds" << endl;
+
+	if (lastcard.GetSuit() == hearts)
+		cout << "hearts" << endl;
+	
+	if (lastcard.GetSuit() == spades)
+		cout << "spades" << endl;
+
 
 	// сделать так, что если колличество карт на столе - четное значение, то кидает карту Подкидывающий 1 или 2(только одну), а если нечетное то Дефендер отбивается
 	// цикл пока подкидывальщики могут подкинуть подкидывают )0)) а дефендер отбивается если может

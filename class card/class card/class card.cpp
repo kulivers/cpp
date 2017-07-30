@@ -123,7 +123,7 @@ int main()
 	}
 
 
-	cout << "козырь:  clubs, diamonds, hearts, spades-----------";
+	cout << "Kозырь: ";
 	ShowTrump(table);
 	cout << endl;
 
@@ -132,13 +132,17 @@ int main()
 	int AttackPlayer;
 	int DefendPlayer;
 
+
+
+	//иногда не показывается номер карты(перд diemonds вроде только), не меняются аттакер и дефендер
+	//дада я знаю про switch  case, но сделал потупому потому что запутался с enumами
 	while (TheEndOfGame(_players) != true)
 	{
 
 			if (numbOfTurn == 0)
 		{
 			AttackPlayer = WhoPlaysFirst(deck, _players, table);
-			cout << "Начало" << numbOfTurn + 1 << "го хода" << endl;
+			cout << "Начало " << numbOfTurn + 1 << "го хода" << endl;
 
 			TurnForTwoPlayers(_players, deck, AttackPlayer);
 
@@ -161,7 +165,6 @@ int main()
 				AttackPlayer = 0;
 			else
 				AttackPlayer = 1;
-		
 			table.ClearTheBoard();
 			//_getch();
 
@@ -179,6 +182,7 @@ int main()
 				cout << endl;
 			}
 			cout << "Конец хода" << endl;
+			numbOfTurn++;
 
 			if (AttackPlayer == 1)// меняем
 				DefendPlayer = 0;
@@ -192,8 +196,11 @@ int main()
 		}
 
 
-			table.ClearTheBoard();//не робит
+			table.ClearTheBoard();
+
 	}
-	cout << endl;
+
+
+	cout << "кОНЕЦ ИГРЫ" << endl;
 	return 0;
 }

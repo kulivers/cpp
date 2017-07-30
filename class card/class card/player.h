@@ -23,13 +23,32 @@ using namespace std;
 
 class CPlayer
 {
+	enum Activity { attack, defend };
 private:
 	std::vector <CCard> _cardsInHand;
-
+	Activity _condition;
 public:
 	CPlayer()
 	{ }
 
+
+	void ChangeCondition()
+	{
+		if (_condition == attack)
+			_condition = defend;
+		else
+		_condition = attack;
+	}
+
+	void SetAttack()
+	{
+		_condition = attack;
+	}
+
+	void SetDefend()
+	{
+		_condition = defend;
+	}
 
 	bool HasTrump(Suit trump)
 	{
@@ -253,7 +272,32 @@ public:
 			else
 				DropToTableCard(dropToTable);
 		}
-		cout << dropToTable.GetNumb() << " " << dropToTable.GetSuit() << endl;
+		
+
+		if (dropToTable.GetNumb() < 11)
+			cout << dropToTable.GetNumb() << " ";
+
+		if (dropToTable.GetNumb() == 11)
+			cout << "jack ";
+		if (dropToTable.GetNumb() == 12)
+			cout << "queen ";
+		if (dropToTable.GetNumb() == 13)
+			cout << "king ";
+		if (dropToTable.GetNumb() == 14)
+			cout << "ace ";
+
+
+		if (dropToTable.GetSuit() == clubs)
+			cout << "clubs" << endl;
+
+		if (dropToTable.GetSuit() == diamonds)
+			cout << "diamonds" << endl;
+
+		if (dropToTable.GetSuit() == hearts)
+			cout << "hearts" << endl;
+
+		if (dropToTable.GetSuit() == spades)
+			cout << "spades" << endl;
 
 
 	}
@@ -274,8 +318,9 @@ public:
 		{
 			for (int j = 0; j < _cardsInHand.size(); j++)
 			{
-				if (CTable::GetCard(i).GetNumb() == _cardsInHand[i].GetNumb())//ÇÄÅÑÒÜ ÎØÈÁÊÀ
+				if (CTable::GetCard(i).GetNumb() == _cardsInHand[j].GetNumb())
 					return true;
+				
 			}
 		}
 

@@ -1,12 +1,12 @@
 ﻿#pragma once
-
-
 #include "stdafx.h"
+#include <algorithm>
+#include <iterator>
+
+
 #include "card.h"
 #include "table.h"
 #include "player.h"
-#include <iterator>
-#include <algorithm>
 #include "Functions.h"
 
 using namespace std;
@@ -88,6 +88,9 @@ void DistributionOfLakingCards(vector<CPlayer>& _players, vector<CCard>& deck)//
 		{
 			while (_players[i].GetSize() != 6)
 			{
+				if (deck.size() == 0)
+					return;
+
 				save = deck.back();
 				deck.pop_back();
 				_players[i].add(save);

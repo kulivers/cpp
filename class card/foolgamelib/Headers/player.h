@@ -10,6 +10,7 @@
 #include <vector>
 #include <algorithm>
 
+#include "table.h"
 #include "card.h"
 /*
 ENUM
@@ -274,7 +275,7 @@ public:
 		{
 			for (int j = 0; j < _cardsInHand.size(); j++)
 			{
-				if (CTable::GetCard(i).GetNumb() == _cardsInHand[i].GetNumb())//ÇÄÅÑÒÜ ÎØÈÁÊÀ
+				if (CTable::GetCard(i).GetNumb() == _cardsInHand[j].GetNumb())//ÇÄÅÑÒÜ ÎØÈÁÊÀ
 					return true;
 			}
 		}

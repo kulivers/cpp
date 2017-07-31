@@ -45,9 +45,9 @@ http://www.cplusplus.com/reference/vector/vector/pop_..
 int main()
 {
 	setlocale(LC_ALL, "RUS");
-	SetConsoleCP(1251);// установка кодовой страницы win-cp 1251 в поток ввода (CP_UTF8)
-	SetConsoleOutputCP(1251); // установка кодовой страницы win-cp 1251 в поток вывода
-	system("chcp 1251");
+	//SetConsoleCP(1251);// установка кодовой страницы win-cp 1251 в поток ввода (CP_UTF8)
+	//SetConsoleOutputCP(1251); // установка кодовой страницы win-cp 1251 в поток вывода
+	//system("chcp 1251");
 
 	const int deckSize = 17;
 	vector<CCard> deck(deckSize);

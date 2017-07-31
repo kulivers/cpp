@@ -7,6 +7,7 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 #include "player.h"
+#include "functions.h"
 
 TEST_CASE("getOneBit")
 {
@@ -35,6 +36,71 @@ SCENARIO("Add card to player and delete it")
 			THEN("no cards are in player's hand")
 			{
 				REQUIRE(0 == player.GetSize());
+			}
+		}
+	}
+}
+
+vector<CCard> GetSixClubs()
+{
+	vector<CCard> result(6);
+	result[0].set(6, Suit::clubs);
+	result[1].set(7, Suit::clubs);
+	result[2].set(8, Suit::clubs);
+	result[3].set(9, Suit::clubs);
+	result[4].set(10, Suit::clubs);
+	result[5].set(11, Suit::clubs);
+
+	return result;
+}
+
+vector<CCard> GetSixDiamonds()
+{
+	vector<CCard> result(6);
+	result[0].set(6, Suit::diamonds);
+	result[1].set(7, Suit::diamonds);
+	result[2].set(8, Suit::diamonds);
+	result[3].set(9, Suit::diamonds);
+	result[4].set(10, Suit::diamonds);
+	result[5].set(11, Suit::diamonds);
+
+	return result;
+}
+
+SCENARIO("Find a player who plays first when there're no trump")
+{
+	GIVEN("Two players with any trump card")
+	{
+		CTable t; //not used at all, why is in parameters?
+		vector<CCard> deck; //not used at all, why is in parameters?
+		vector<CPlayer> players;
+
+		WHEN("Trump is hearts")
+		{
+			CCard trump;
+			trump.set(10, Suit::hearts);
+			t.setTrump(trump);
+			{
+				WHEN("One player with six clubs")
+				{
+					players.push_back(CPlayer());
+					auto cards = GetSixClubs();
+					for (auto cardIt = cards.begin(); cardIt != cards.end(); cardIt++)
+						players.back().add(*cardIt);
+
+					WHEN("Another player with six diamonds")
+					{
+						players.push_back(CPlayer());
+						cards = GetSixDiamonds();
+						for (auto cardIt = cards.begin(); cardIt != cards.end(); cardIt++)
+							players.back().add(*cardIt);
+
+						THEN("The first of them could move first")
+						{
+							REQUIRE(WhoPlaysFirst(deck, players, t) == 0);
+						}
+					}
+				}
 			}
 		}
 	}

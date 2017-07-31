@@ -138,7 +138,7 @@ SCENARIO("Find a player who plays first when only the second has the trump")
 
 						THEN("The second of them should move first")
 						{
-							REQUIRE(WhoPlaysFirst(deck, players, t) == 0);
+							REQUIRE(WhoPlaysFirst(deck, players, t) == 1);
 						}
 					}
 				}

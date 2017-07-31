@@ -146,3 +146,45 @@ SCENARIO("Find a player who plays first when only the second has the trump")
 		}
 	}
 }
+
+SCENARIO("Find a player who plays first when both have the trump")
+{
+	GIVEN("Two players but only one with 6th of trump card")
+	{
+		CTable t; //not used at all, why is it in parameters?
+		vector<CCard> deck; //not used at all, why is it in parameters?
+		vector<CPlayer> players;
+
+		GIVEN("Trump is hearts")
+		{
+			CCard trump;
+			trump.set(10, Suit::hearts);
+			t.setTrump(trump);
+			{
+				GIVEN("One player with five clubs and 9th of heart")
+				{
+					players.push_back(CPlayer());
+					auto cards = GetSixClubs();
+					cards[4].set(9, Suit::hearts);
+					for (auto cardIt = cards.begin(); cardIt != cards.end(); cardIt++)
+						players.back().add(*cardIt);
+
+					WHEN("Another player with five diamonds and one heart")
+					{
+						players.push_back(CPlayer());
+						cards = GetSixDiamonds();
+						cards.back().set(6, Suit::hearts);
+
+						for (auto cardIt = cards.begin(); cardIt != cards.end(); cardIt++)
+							players.back().add(*cardIt);
+
+						THEN("The second of them should move first")
+						{
+							REQUIRE(WhoPlaysFirst(deck, players, t) == 1);
+						}
+					}
+				}
+			}
+		}
+	}
+}

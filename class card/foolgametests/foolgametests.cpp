@@ -69,19 +69,19 @@ vector<CCard> GetSixDiamonds()
 
 SCENARIO("Find a player who plays first when there're no trump")
 {
-	GIVEN("Two players with any trump card")
+	GIVEN("Two players with no trump card")
 	{
-		CTable t; //not used at all, why is in parameters?
-		vector<CCard> deck; //not used at all, why is in parameters?
+		CTable t; //not used at all, why is it in parameters?
+		vector<CCard> deck; //not used at all, why is it in parameters?
 		vector<CPlayer> players;
 
-		WHEN("Trump is hearts")
+		GIVEN("Trump is hearts")
 		{
 			CCard trump;
 			trump.set(10, Suit::hearts);
 			t.setTrump(trump);
 			{
-				WHEN("One player with six clubs")
+				GIVEN("One player with six clubs")
 				{
 					players.push_back(CPlayer());
 					auto cards = GetSixClubs();
@@ -96,6 +96,47 @@ SCENARIO("Find a player who plays first when there're no trump")
 							players.back().add(*cardIt);
 
 						THEN("The first of them could move first")
+						{
+							REQUIRE(WhoPlaysFirst(deck, players, t) == 0);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+SCENARIO("Find a player who plays first when only the second has the trump")
+{
+	GIVEN("Two players but only one with trump card")
+	{
+		CTable t; //not used at all, why is it in parameters?
+		vector<CCard> deck; //not used at all, why is it in parameters?
+		vector<CPlayer> players;
+
+		GIVEN("Trump is hearts")
+		{
+			CCard trump;
+			trump.set(10, Suit::hearts);
+			t.setTrump(trump);
+			{
+				GIVEN("One player with six clubs")
+				{
+					players.push_back(CPlayer());
+					auto cards = GetSixClubs();
+					for (auto cardIt = cards.begin(); cardIt != cards.end(); cardIt++)
+						players.back().add(*cardIt);
+
+					WHEN("Another player with five diamonds and one heart")
+					{
+						players.push_back(CPlayer());
+						cards = GetSixDiamonds();
+						cards.back().set(6, Suit::hearts);
+						
+						for (auto cardIt = cards.begin(); cardIt != cards.end(); cardIt++)
+							players.back().add(*cardIt);
+
+						THEN("The second of them should move first")
 						{
 							REQUIRE(WhoPlaysFirst(deck, players, t) == 0);
 						}

@@ -35,7 +35,7 @@ public:
 	bool HasTrump(Suit trump)
 	{
 		bool HasAnyTrumps = false;
-		for (int i = 0; i < _cardsInHand.size(); i++)
+		for (size_t i = 0; i < _cardsInHand.size(); i++)
 		{
 			if (_cardsInHand[i].GetSuit() == trump)
 				HasAnyTrumps = true;
@@ -68,12 +68,9 @@ public:
 		return _cardsInHand[randomNumb];
 	}
 
-	bool HasCards()
+	bool HasCards() const
 	{
-		if (!_cardsInHand.empty())
-			return true;
-		else
-			return false;
+		return !_cardsInHand.empty();
 	}
 
 	CCard GetCardC(int i)

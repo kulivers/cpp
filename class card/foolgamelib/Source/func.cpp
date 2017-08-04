@@ -106,18 +106,18 @@ void Distribution(vector<CPlayer>& _players, vector<CCard>& deck)
 	DistributionOfLakingCards(_players, deck);
 }
 
-bool TheEndOfGame(vector<CPlayer>& players)
+bool TheEndOfGame(const vector<CPlayer>& players, const vector<CCard>& deck)// добавить условие что в колоде тоже нет карт
 {
-	int CountNotAnEmptyPlayers = 0; //колличество непустых игроков
+	if (deck.size() != 0)
+		return false;
+
 	for (int i = 0; i < players.size(); i++)
 	{
-		if (players[i].HasCards() == true)
-			CountNotAnEmptyPlayers++;
+		if (!players[i].HasCards())
+			return true;
 	}
-	if (CountNotAnEmptyPlayers == 1)
-		return true;
-	else
-		return false;
+
+	return false;
 }
 
 
@@ -243,14 +243,14 @@ void TurnForTwoPlayers(vector<CPlayer>& _players, vector<CCard>& deck, int Attac
 
 
 	CCard lastcard = DropToTableRandCard(_players[AttackPlayer]); //здесь атакер кидает под дефуендера 
-	cout << "Игрок " << AttackPlayer+1 << " кидает на стол: " << lastcard.GetNumb() << " " << lastcard.GetSuit() << endl;
+	cout << "Игрок " << AttackPlayer + 1 << " кидает на стол: " << lastcard.GetNumb() << " " << lastcard.GetSuit() << endl;
 
 	// сделать так, что если колличество карт на столе - четное значение, то кидает карту Подкидывающий 1 или 2(только одну), а если нечетное то Дефендер отбивается
 	// цикл пока подкидывальщики могут подкинуть подкидывают )0)) а дефендер отбивается если может
 
 	// здесь дефендер бьется
 
-	cout << "Игрок " << DefendPlayer+1 << " кидает на стол: ";
+	cout << "Игрок " << DefendPlayer + 1 << " кидает на стол: ";
 	_players[DefendPlayer].BeatOneCard(lastcard);//ОК
 	CCard dropToTable;
 
@@ -267,7 +267,7 @@ void TurnForTwoPlayers(vector<CPlayer>& _players, vector<CCard>& deck, int Attac
 				break;
 			else
 			{
-					lastcard = DropToTableRandCard(_players[AttackPlayer]);// здесь адо чтобы подкидывал ту которую можно, а не рандомную
+				lastcard = DropToTableRandCard(_players[AttackPlayer]);// здесь адо чтобы подкидывал ту которую можно, а не рандомную
 			}
 		}
 
@@ -291,7 +291,7 @@ void TurnForTwoPlayers(vector<CPlayer>& _players, vector<CCard>& deck, int Attac
 			}
 		}
 	}
-	
+
 
 
 }

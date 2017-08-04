@@ -132,7 +132,7 @@ int main()
 	int AttackPlayer;
 	int DefendPlayer;
 
-	while (TheEndOfGame(_players) != true)
+	while (TheEndOfGame(_players, deck) != true)
 	{
 
 			if (numbOfTurn == 0)
@@ -180,14 +180,14 @@ int main()
 			cout << "Конец хода" << endl;
 
 			if (AttackPlayer == 1)// меняем
-				DefendPlayer = 0;
-			else
-				DefendPlayer = 1;
-
-			if (DefendPlayer == 1)// меняем
 				AttackPlayer = 0;
 			else
 				AttackPlayer = 1;
+
+			if (DefendPlayer == 1)// меняем
+				DefendPlayer = 0;
+			else
+				DefendPlayer = 1;
 		}
 
 

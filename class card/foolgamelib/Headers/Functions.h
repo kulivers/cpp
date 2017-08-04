@@ -16,7 +16,7 @@ bool RuleCanThrowUp(CCard card, CTable& t);
 CCard DropToTableRandCard(CPlayer& p1, CTable& t);
 
 void ClearTheBoard(CTable &t, vector<CCard> save);
-bool TheEndOfGame(vector<CPlayer>& players);
+bool TheEndOfGame(const vector<CPlayer>& players, const vector<CCard>& deck);
 void DistributionOfLakingCards(vector<CPlayer>& players, vector<CCard>& deck);
 CPlayer WhoseTurn(vector<CPlayer>& players, CPlayer& lastP);
 

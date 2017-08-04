@@ -12,7 +12,9 @@
 TEST_CASE("getOneBit")
 {
 	uint8_t data[1];
-	
+
+	data[0] = 1;
+
 	data[0] = 1 << 7;
 	REQUIRE(1 == true);
 }
@@ -132,7 +134,7 @@ SCENARIO("Find a player who plays first when only the second has the trump")
 						players.push_back(CPlayer());
 						cards = GetSixDiamonds();
 						cards.back().set(6, Suit::hearts);
-						
+
 						for (auto cardIt = cards.begin(); cardIt != cards.end(); cardIt++)
 							players.back().add(*cardIt);
 
@@ -146,6 +148,29 @@ SCENARIO("Find a player who plays first when only the second has the trump")
 		}
 	}
 }
+
+SCENARIO("When player is empty, but deck is not empty")
+{
+	GIVEN("player is empty,  deck is not empty ")
+	{
+		vector<CPlayer> players;
+		players.push_back(CPlayer());
+		vector<CCard> deck;
+		deck.push_back(CCard(6, clubs));
+
+		WHEN("End Of Game")
+		{
+			THEN("Func = true")
+			{
+				{
+					REQUIRE(TheEndOfGame(players, deck) == false);
+				}
+			}
+		}
+	}
+}
+
+
 
 SCENARIO("Find a player who plays first when both have the trump")
 {

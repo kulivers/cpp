@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 
-#include "stdafx.h"
+
 #include <algorithm>
 #include <iterator>
 

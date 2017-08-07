@@ -9,9 +9,9 @@
 #include <string.h>
 #include <vector>
 #include <algorithm>
-
 #include "table.h"
 #include "card.h"
+
 /*
 ENUM
 ATTACKER

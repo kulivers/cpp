@@ -9,6 +9,7 @@
 #include "player.h"
 #include "functions.h"
 
+
 TEST_CASE("getOneBit")
 {
 	uint8_t data[1];
@@ -245,3 +246,27 @@ SCENARIO("Find a player who plays first when both have the trump")
 		}
 	}
 }
+
+
+//SCENARIO("Testing Conditions")
+//{
+//	GIVEN("CGame")
+//	{
+//		vector<CCard> _deck;
+//		vector<CPlayer> _players;
+//		CTable _table;
+//		int AttackPlayer;
+//		int DefendPlayer;
+//		
+//
+//		WHEN("End Of Game")
+//		{
+//			THEN("Func = true")
+//			{
+//				{
+//					REQUIRE(TheEndOfGame(players, deck) == false);
+//				}
+//			}
+//		}
+//	}
+//}

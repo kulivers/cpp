@@ -17,10 +17,6 @@ using namespace std;
 
 /////////////////////////////////////////////////////////////
 
-class CTable;
-class CCard;
-class CPlayer;
-
 /////////////////////////////////////////////////////////////
 
 
@@ -183,6 +179,14 @@ int main()
 				AttackPlayer = 0;
 			else
 				AttackPlayer = 1;
+
+			if (DefendPlayer == 1)// меняем
+				DefendPlayer = 0;
+			else
+				if (AttackPlayer == 1)// меняем
+					AttackPlayer = 0;
+				else
+					AttackPlayer = 1;
 
 			if (DefendPlayer == 1)// меняем
 				DefendPlayer = 0;

@@ -146,14 +146,15 @@ public:
 		return save;
 	}
 
-
+	
 	CCard CanCoverASuit(CCard card)//  возвращает карту с 1000 номером если не может (ок)
 
 	{
 		CCard save;
 		std::vector<CCard> CanCover; //козыря больше нашего, выберем наименьший
 		save.set(0, CTable::getTrump()); // если есть козыря но не может побить то вернется ето
-		if (HasTrump(CTable::getTrump()))// у игрока есть козыря?
+	
+		if (HasTrump(CTable::getTrump())) 
 		{
 			for (int i = 0; i < GetSize(); i++)
 			{
@@ -164,7 +165,9 @@ public:
 				}
 			}
 		}
+
 		int minSuit = 1000;
+
 		for (int i = 0; i < CanCover.size(); i++)//выбираем наименьший
 		{
 			if (CanCover[i].GetNumb() < minSuit)
@@ -281,6 +284,15 @@ public:
 
 	}
 
+
+	bool CanBeat(CCard card)
+	{
+		if (CanCoverASuit(card).GetNumb() != 1000 && CanCoverNotASuit(card, CTable::getTrump()).GetNumb() != 1000)
+			return true;
+		else
+			return false;
+		
+	}
 
 
 	~CPlayer()

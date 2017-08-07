@@ -82,6 +82,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="game.h" />
     <ClInclude Include="Headers\card.h" />
     <ClInclude Include="Headers\Functions.h" />
     <ClInclude Include="Headers\player.h" />

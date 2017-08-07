@@ -149,6 +149,38 @@ SCENARIO("Find a player who plays first when only the second has the trump")
 	}
 }
 
+
+SCENARIO("CanCoverASuit test")
+{
+	GIVEN("suit =0    ||    6 0 on the table   ||   player has hards: 5 0, 7 1, 8 3, 7 0, 10 0")
+	{
+		CPlayer player;
+		CCard card(6, clubs);
+		CCard trump(13, clubs);
+		CTable table;
+		table.setTrump(trump);
+		player.add(CCard(5, clubs));
+		player.add(CCard(7, diamonds));
+		player.add(CCard(8, diamonds));
+		player.add(CCard(7, clubs));
+		player.add(CCard(10, clubs));
+
+		player.CanCoverASuit(card);
+
+		WHEN("Covered")
+		{
+			THEN("CanCoverASuit = 7, clubs")
+			{
+				{
+					REQUIRE(player.CanCoverASuit(card) == CCard(7, clubs));
+				}
+			}
+		}
+	}
+}
+
+
+
 SCENARIO("When player is empty, but deck is not empty")
 {
 	GIVEN("player is empty,  deck is not empty ")

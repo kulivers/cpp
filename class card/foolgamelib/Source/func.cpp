@@ -1,4 +1,6 @@
 ﻿#pragma once
+
+
 #include "stdafx.h"
 #include <algorithm>
 #include <iterator>
@@ -18,6 +20,10 @@ using namespace std;
 */
 CCard CTable::_cozir;
 std::vector <CCard> CTable::_cardsOnTable;
+
+
+
+
 
 
 void SpreadCards(vector<CCard>& deck, CPlayer& p)        //раздача карт одному игроку

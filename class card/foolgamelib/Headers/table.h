@@ -60,7 +60,10 @@ public:
 		return _cozir.GetSuit();
 	}
 	
-
+	static CCard getTrumpCard()
+	{
+		return CCard(_cozir.GetNumb(), _cozir.GetSuit());
+	}
 
 	void ClearTheBoard()
 	{

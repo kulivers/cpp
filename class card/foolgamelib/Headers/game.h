@@ -35,14 +35,14 @@ bool AllPlayersHaveNoCards(vector<CPlayer> _players);
 
 class CGame
 {
-private:
+public:
 	enum Condition { StartOfTheGame, AfterDistribution, PlayerCanPopUp, PlayerCantPopUp, PlayerCanCoverCard, PlayerCantCoverCard, TheEndOfGame };
 	/*static vector<CCard> _deck;
 	static vector<CPlayer> _players;
 	static CTable _table;
 	int AttackPlayer;
 	int DefendPlayer;*/
-public:
+
 
 	CGame()
 	{ }
@@ -60,14 +60,14 @@ public:
 		_table.setTrump(table.getTrumpCard()); 
 	}*/
 
-	Condition condition;
+	static Condition condition;
 	static vector<CCard> _deck;
 	static vector<CPlayer> _players;
 	static CTable _table;
-	int AttackPlayer;
-	int DefendPlayer;
+	static int AttackPlayer;
+	static int DefendPlayer;
 
-	Condition SetCondition()
+	static Condition SetCondition()
 	{
 		if (_deck.size() == 36)
 			return StartOfTheGame;
@@ -85,17 +85,22 @@ public:
 			return  PlayerCantPopUp;
 	
 	
-		if (_players[DefendPlayer].CanBeat(CTable::GetCard(CTable::GetSize())) == true)
-			return  PlayerCanCoverCard;
+
+		if (CTable::GetSize() != 0)//здесь упал
+			if (_players[DefendPlayer].CanBeat(CTable::GetCard(CTable::GetSize())) == true)
+				return  PlayerCanCoverCard;
 	
-		if (_players[DefendPlayer].CanBeat(CTable::GetCard(CTable::GetSize())) == false)
+		if (_deck.size() != 0 &&_players[DefendPlayer].CanBeat(CTable::GetCard(CTable::GetSize())) == false)// and here too
 			return  PlayerCantCoverCard;
 
-		if (AllPlayersHaveNoCards(_players) == true)
+
+
+
+		if (IsTheEndOfGame(_players, _deck) == true)
 			return  TheEndOfGame;
 			
 	}
-	static bool TheEndOfGame(const vector<CPlayer>& players, const vector<CCard>& deck);
+	static bool IsTheEndOfGame(const vector<CPlayer>& players, const vector<CCard>& deck);
 
 	
 };

@@ -19,6 +19,12 @@ using namespace std;
 CCard CTable::_cozir;
 std::vector <CCard> CTable::_cardsOnTable;
 
+CGame::Condition CGame::condition;
+vector<CCard> CGame::_deck;
+vector<CPlayer> CGame::_players;
+CTable CGame::_table;
+int CGame::AttackPlayer;
+int CGame::DefendPlayer;
 
 
 void SpreadCards(vector<CCard>& deck, CPlayer& p)        //раздача карт одному игроку
@@ -109,7 +115,7 @@ void Distribution(vector<CPlayer>& _players, vector<CCard>& deck)
 	DistributionOfLakingCards(_players, deck);
 }
 
- bool CGame::TheEndOfGame(const vector<CPlayer>& players, const vector<CCard>& deck)// добавить условие что в колоде тоже нет карт
+ bool CGame::IsTheEndOfGame(const vector<CPlayer>& players, const vector<CCard>& deck)// добавить условие что в колоде тоже нет карт
 {
 	if (deck.size() != 0)
 		return false;

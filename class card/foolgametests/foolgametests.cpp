@@ -70,45 +70,6 @@ vector<CCard> GetSixDiamonds()
 	return result;
 }
 
-SCENARIO("Find a player who plays first when there're no trump")
-{
-	GIVEN("Two players with no trump card")
-	{
-		CTable t; //not used at all, why is it in parameters?
-		vector<CCard> deck; //not used at all, why is it in parameters?
-		vector<CPlayer> players;
-
-		GIVEN("Trump is hearts")
-		{
-			CCard trump;
-			trump.set(10, Suit::hearts);
-			t.setTrump(trump);
-			{
-				GIVEN("One player with six clubs")
-				{
-					players.push_back(CPlayer());
-					auto cards = GetSixClubs();
-					for (auto cardIt = cards.begin(); cardIt != cards.end(); cardIt++)
-						players.back().add(*cardIt);
-
-					WHEN("Another player with six diamonds")
-					{
-						players.push_back(CPlayer());
-						cards = GetSixDiamonds();
-						for (auto cardIt = cards.begin(); cardIt != cards.end(); cardIt++)
-							players.back().add(*cardIt);
-
-						THEN("The first of them could move first")
-						{
-							REQUIRE(WhoPlaysFirst(deck, players, t) == 0);
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
 SCENARIO("Find a player who plays first when only the second has the trump")
 {
 	GIVEN("Two players but only one with trump card")
@@ -182,27 +143,6 @@ SCENARIO("CanCoverASuit test")
 
 
 
-SCENARIO("When player is empty, but deck is not empty")
-{
-	GIVEN("player is empty,  deck is not empty ")
-	{
-		vector<CPlayer> players;
-		players.push_back(CPlayer());
-		vector<CCard> deck;
-		deck.push_back(CCard(6, clubs));
-
-		WHEN("End Of Game")
-		{
-			THEN("Func = true")
-			{
-				{
-					REQUIRE(CGame::TheEndOfGame(players, deck) == false);
-				}
-			}
-		}
-	}
-}
-
 
 
 SCENARIO("Find a player who plays first when both have the trump")
@@ -248,25 +188,54 @@ SCENARIO("Find a player who plays first when both have the trump")
 }
 
 
-//SCENARIO("Testing Conditions")
-//{
-//	GIVEN("CGame")
-//	{
-//		vector<CCard> _deck;
-//		vector<CPlayer> _players;
-//		CTable _table;
-//		int AttackPlayer;
-//		int DefendPlayer;
-//		
-//
-//		WHEN("End Of Game")
-//		{
-//			THEN("Func = true")
-//			{
-//				{
-//					REQUIRE(TheEndOfGame(players, deck) == false);
-//				}
-//			}
-//		}
-//	}
-//}
+SCENARIO("When player is empty, but deck is not empty")
+{
+	GIVEN("player is empty,  deck is not empty ")
+	{
+		vector<CPlayer> players;
+		players.push_back(CPlayer());
+		players.push_back(CPlayer());
+		vector<CCard> deck;
+		deck.push_back(CCard(6, clubs));
+		
+
+
+
+		WHEN("End Of Game")
+		{
+			THEN("Func = true")
+			{
+				{
+					REQUIRE(CGame::IsTheEndOfGame(players, deck) == false);
+				}
+			}
+		}
+	}
+}
+
+
+
+
+SCENARIO("Testing Conditions")
+{
+	GIVEN("CGame")
+	{
+	
+		CGame::_players.push_back(CPlayer());
+		CGame::_players.push_back(CPlayer());
+		
+		CGame::_deck.push_back(CCard(6, clubs));
+		CGame::_table.PutOnTable(CCard(4, clubs));
+
+
+		WHEN("End Of Game")
+		{
+			THEN("Func = true")
+			{
+				{
+					REQUIRE(CGame::SetCondition() == CGame::Condition::TheEndOfGame);
+				}
+			}
+		}
+	}
+}

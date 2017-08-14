@@ -128,7 +128,7 @@ int main()
 	int AttackPlayer;
 	int DefendPlayer;
 
-	while (TheEndOfGame(_players, deck) != true)
+	while (IsTheEndOfGame(_players, deck) != true)
 	{
 
 			if (numbOfTurn == 0)

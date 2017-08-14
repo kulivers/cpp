@@ -29,7 +29,8 @@ CPlayer WhoseTurn(vector<CPlayer>& players, CPlayer& lastP);
 
 void Turn(vector<CPlayer>& _players, vector<CCard>& deck, int FirstTurnPlayer);//в цикле после первого хода
 void TurnForTwoPlayers(vector<CPlayer>& _players, vector<CCard>& deck, int FirstTurnPlayer);
-
+bool AllPlayersHaveSixCards(vector<CPlayer> _players);
+bool AllPlayersHaveNoCards(vector<CPlayer> _players);
 
 
 class CGame
@@ -94,7 +95,7 @@ public:
 			return  TheEndOfGame;
 			
 	}
-
+	static bool TheEndOfGame(const vector<CPlayer>& players, const vector<CCard>& deck);
 
 	
 };

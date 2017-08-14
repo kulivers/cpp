@@ -196,7 +196,7 @@ SCENARIO("When player is empty, but deck is not empty")
 			THEN("Func = true")
 			{
 				{
-					REQUIRE(TheEndOfGame(players, deck) == false);
+					REQUIRE(CGame::TheEndOfGame(players, deck) == false);
 				}
 			}
 		}

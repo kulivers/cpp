@@ -33,7 +33,7 @@
     <ClInclude Include="Headers\table.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game.h">
+    <ClInclude Include="Headers\game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -109,7 +109,7 @@ void Distribution(vector<CPlayer>& _players, vector<CCard>& deck)
 	DistributionOfLakingCards(_players, deck);
 }
 
-bool TheEndOfGame(const vector<CPlayer>& players, const vector<CCard>& deck)// добавить условие что в колоде тоже нет карт
+ bool CGame::TheEndOfGame(const vector<CPlayer>& players, const vector<CCard>& deck)// добавить условие что в колоде тоже нет карт
 {
 	if (deck.size() != 0)
 		return false;

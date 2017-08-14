@@ -9,7 +9,7 @@
 #include "card.h"
 #include "table.h"
 #include "player.h"
-#include "Functions.h"
+#include "game.h"
 
 
 

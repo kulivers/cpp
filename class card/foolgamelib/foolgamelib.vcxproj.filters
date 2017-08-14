@@ -27,9 +27,6 @@
     <ClInclude Include="Headers\card.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\Functions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Headers\player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -44,7 +41,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\func.cpp">
+    <ClCompile Include="Source\game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

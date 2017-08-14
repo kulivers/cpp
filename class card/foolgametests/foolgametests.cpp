@@ -7,7 +7,7 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 #include "player.h"
-#include "functions.h"
+#include "game.h"
 
 
 TEST_CASE("getOneBit")

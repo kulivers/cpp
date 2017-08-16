@@ -269,13 +269,13 @@ public:
 	}
 
 
-	bool CanPopUp()
+	bool CanPopUp()//подкинуть
 	{
 		for (int i = 0; i < CTable::GetSize(); i++)
 		{
 			for (int j = 0; j < _cardsInHand.size(); j++)
 			{
-				if (CTable::GetCard(i).GetNumb() == _cardsInHand[j].GetNumb())//ЗДЕСТЬ ОШИБКА
+				if (CTable::GetCard(i).GetNumb() == _cardsInHand[j].GetNumb())
 					return true;
 			}
 		}
@@ -287,10 +287,14 @@ public:
 
 	bool CanBeat(CCard card)
 	{
-		if (CanCoverASuit(card).GetNumb() != 1000 && CanCoverNotASuit(card, CTable::getTrump()).GetNumb() != 1000)
-			return true;
-		else
-			return false;
+		if (card.GetSuit() == CTable::getTrump())
+			if (CanCoverASuit(card).GetNumb() != 1000)
+				return true;
+		if (card.GetSuit() != CTable::getTrump())
+			if (CanCoverNotASuit(card, CTable::getTrump()).GetNumb() != 1000)
+				return true;
+
+		return false;
 		
 	}
 

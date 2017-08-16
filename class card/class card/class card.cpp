@@ -45,6 +45,11 @@ int main()
 	//SetConsoleOutputCP(1251); // установка кодовой страницы win-cp 1251 в поток вывода
 	//system("chcp 1251");
 
+	CGame game;
+	game._players.push_back();
+
+
+
 	const int deckSize = 17;
 	vector<CCard> deck(deckSize);
 	int j;
@@ -89,114 +94,157 @@ int main()
 
 
 
-	CTable table;
-	vector<CPlayer> _players(2);
-
-	cout << endl;
-	cout << endl;
-	cout << endl;
-
-	Distribution(_players, deck);
-
-
-	/*	cout << " колода после раздачи: " << endl;
-		for (j = 0; j < deck.size(); j++)
-		{
-		cout << deck[j].GetAsString().c_str();
-		cout << "  ";
-		if (!((j + 1) % 13))      // начинаем новую строку после каждой 13-й карты
-		cout << endl;
-		}
-		cout << endl;
-		*/
-
-	cout << "Раздача" << endl;
-	for (int i = 0; i < _players.size(); i++) // 
+	switch (tolower(*argv[1]))
 	{
-		cout << i + 1 << "й игрок: " << endl;
-		_players[i].DisplayCards();
-		cout << endl << endl;
-	}
+		// Error. Unreachable declaration.  
+		char szChEntered[] = "Character entered was: ";
 
-
-	cout << "козырь:  clubs, diamonds, hearts, spades-----------";
-	ShowTrump(table);
-	cout << endl;
-
-
-	int numbOfTurn = 0;
-	int AttackPlayer;
-	int DefendPlayer;
-
-	while (IsTheEndOfGame(_players, deck) != true)
+	case 'a':
 	{
-
-			if (numbOfTurn == 0)
-		{
-			AttackPlayer = WhoPlaysFirst(deck, _players, table);
-			cout << "Начало" << numbOfTurn + 1 << "го хода" << endl;
-
-			TurnForTwoPlayers(_players, deck, AttackPlayer);
-
-			for (int i = 0; i < _players.size(); i++)
-			{
-				cout << i + 1 << "й игрок: " << endl;
-				_players[i].DisplayCards();
-				cout << endl;
-			}
-
-			cout << "Конец хода" << endl;
-			numbOfTurn++;
-
-			if (AttackPlayer == 1)// меняем
-				DefendPlayer = 0;
-			else
-				DefendPlayer = 1;
-
-			if (DefendPlayer == 1)// меняем
-				AttackPlayer = 0;
-			else
-				AttackPlayer = 1;
-			table.ClearTheBoard();
-			//_getch();
-
-		}
-		else
-		{
-			cout << "Начало" << numbOfTurn + 1 << "го хода" << endl;
-
-			TurnForTwoPlayers(_players, deck, AttackPlayer); //ЗДЕСЬ
-
-			for (int i = 0; i < _players.size(); i++)
-			{
-				cout << i + 1 << "й игрок: " << endl;
-				_players[i].DisplayCards();
-				cout << endl;
-			}
-			cout << "Конец хода" << endl;
-
-			if (AttackPlayer == 1)// меняем
-				AttackPlayer = 0;
-			else
-				AttackPlayer = 1;
-
-			if (DefendPlayer == 1)// меняем
-				DefendPlayer = 0;
-			else
-				if (AttackPlayer == 1)// меняем
-					AttackPlayer = 0;
-				else
-					AttackPlayer = 1;
-
-			if (DefendPlayer == 1)// меняем
-				DefendPlayer = 0;
-			else
-				DefendPlayer = 1;
-		}
-
-
-			table.ClearTheBoard();
+		// Declaration of szChEntered OK. Local scope.  
+		char szChEntered[] = "Character entered was: ";
+		cout << szChEntered << "a\n";
 	}
-	cout << endl;
+	break;
+
+	case 'b':
+		// Value of szChEntered undefined.  
+		cout << szChEntered << "b\n";
+		break;
+
+
+
+
+
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//CTable table;
+	//vector<CPlayer> _players(2);
+
+	//cout << endl;
+	//cout << endl;
+	//cout << endl;
+
+	//Distribution(_players, deck);
+
+
+	///*	cout << " колода после раздачи: " << endl;
+	//for (j = 0; j < deck.size(); j++)
+	//{
+	//cout << deck[j].GetAsString().c_str();
+	//cout << "  ";
+	//if (!((j + 1) % 13))      // начинаем новую строку после каждой 13-й карты
+	//cout << endl;
+	//}
+	//cout << endl;
+	//*/
+
+	//cout << "Раздача" << endl;
+	//for (int i = 0; i < _players.size(); i++) // 
+	//{
+	//	cout << i + 1 << "й игрок: " << endl;
+	//	_players[i].DisplayCards();
+	//	cout << endl << endl;
+	//}
+
+
+	//cout << "козырь:  clubs, diamonds, hearts, spades-----------";
+	//ShowTrump(table);
+	//cout << endl;
+
+
+	//int numbOfTurn = 0;
+	//int AttackPlayer;
+	//int DefendPlayer;
+
+	//while (IsTheEndOfGame(_players, deck) != true)
+	//{
+
+	//	if (numbOfTurn == 0)
+	//	{
+	//		AttackPlayer = WhoPlaysFirst(deck, _players, table);
+	//		cout << "Начало" << numbOfTurn + 1 << "го хода" << endl;
+
+	//		TurnForTwoPlayers(_players, deck, AttackPlayer);
+
+	//		for (int i = 0; i < _players.size(); i++)
+	//		{
+	//			cout << i + 1 << "й игрок: " << endl;
+	//			_players[i].DisplayCards();
+	//			cout << endl;
+	//		}
+
+	//		cout << "Конец хода" << endl;
+	//		numbOfTurn++;
+
+	//		if (AttackPlayer == 1)// меняем
+	//			DefendPlayer = 0;
+	//		else
+	//			DefendPlayer = 1;
+
+	//		if (DefendPlayer == 1)// меняем
+	//			AttackPlayer = 0;
+	//		else
+	//			AttackPlayer = 1;
+	//		table.ClearTheBoard();
+	//		//_getch();
+
+	//	}
+	//	else
+	//	{
+	//		cout << "Начало" << numbOfTurn + 1 << "го хода" << endl;
+
+	//		TurnForTwoPlayers(_players, deck, AttackPlayer); //ЗДЕСЬ
+
+	//		for (int i = 0; i < _players.size(); i++)
+	//		{
+	//			cout << i + 1 << "й игрок: " << endl;
+	//			_players[i].DisplayCards();
+	//			cout << endl;
+	//		}
+	//		cout << "Конец хода" << endl;
+
+	//		if (AttackPlayer == 1)// меняем
+	//			AttackPlayer = 0;
+	//		else
+	//			AttackPlayer = 1;
+
+	//		if (DefendPlayer == 1)// меняем
+	//			DefendPlayer = 0;
+	//		else
+	//			if (AttackPlayer == 1)// меняем
+	//				AttackPlayer = 0;
+	//			else
+	//				AttackPlayer = 1;
+
+	//		if (DefendPlayer == 1)// меняем
+	//			DefendPlayer = 0;
+	//		else
+	//			DefendPlayer = 1;
+	//	}
+
+
+	//	table.ClearTheBoard();
+	//}
+	//cout << endl;

@@ -49,15 +49,15 @@ public:
 
 	/* void setAandD(int a, int d)
 	{
-		AttackPlayer = a;
-		DefendPlayer = d;
+	AttackPlayer = a;
+	DefendPlayer = d;
 	}
 
 	static void SetItems(vector<CCard> deck, vector<CPlayer> players, CTable table, int attackPlayer, int defendPlayer)
 	{
-		_deck = deck;
-		_players = players;
-		_table.setTrump(table.getTrumpCard()); 
+	_deck = deck;
+	_players = players;
+	_table.setTrump(table.getTrumpCard());
 	}*/
 
 	static Condition condition;
@@ -69,38 +69,42 @@ public:
 
 	static Condition SetCondition()
 	{
+
 		if (_deck.size() == 36)
 			return StartOfTheGame;
 
 
 
-		if (AllPlayersHaveSixCards(_players) == true && _deck.size() == (36 - 6 * _players.size()))
+		if (AllPlayersHaveSixCards(_players) && _deck.size() == (36 - 6 * _players.size()))
 			return  AfterDistribution;
 
-		
-		if (_table.GetSize() != 0 && _table.GetSize() % 2 == 0 && _players[AttackPlayer].CanPopUp()==true)
+
+		if (_table.GetSize() != 0 && _table.GetSize() % 2 == 0 && _players[AttackPlayer].CanPopUp() == true)
 			return  PlayerCanPopUp;
 
 		if (_table.GetSize() != 0 && _table.GetSize() % 2 == 0 && _players[AttackPlayer].CanPopUp() == false)
 			return  PlayerCantPopUp;
-	
-	
 
-		if (CTable::GetSize() != 0)//здесь упал
-			if (_players[DefendPlayer].CanBeat(CTable::GetCard(CTable::GetSize())) == true)
-				return  PlayerCanCoverCard;
-	
-		if (_deck.size() != 0 &&_players[DefendPlayer].CanBeat(CTable::GetCard(CTable::GetSize())) == false)// and here too
+
+
+
+
+		if (_table.GetSize() % 2 != 0 && _players[DefendPlayer].CanBeat(CGame::_table.GetCard(_table.GetSize() - 1)))
+			return  PlayerCanCoverCard;
+
+		if (_table.GetSize() % 2 != 0 && _players[DefendPlayer].CanBeat(CGame::_table.GetCard(_table.GetSize() - 1))==false)
+			if (IsTheEndOfGame(_players, _deck) == true)
+				return  TheEndOfGame;
+			else
 			return  PlayerCantCoverCard;
 
 
 
 
-		if (IsTheEndOfGame(_players, _deck) == true)
-			return  TheEndOfGame;
-			
+		
+
 	}
 	static bool IsTheEndOfGame(const vector<CPlayer>& players, const vector<CCard>& deck);
 
-	
+
 };

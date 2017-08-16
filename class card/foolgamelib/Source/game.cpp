@@ -2,6 +2,7 @@
 
 
 #include "stdafx.h"
+#include <iostream>
 #include <algorithm>
 #include <iterator>
 #include "card.h"
@@ -122,7 +123,7 @@ void Distribution(vector<CPlayer>& _players, vector<CCard>& deck)
 
 	for (int i = 0; i < players.size(); i++)
 	{
-		if (!players[i].HasCards())
+		if (!(players[i].HasCards()) && _deck.size() == 0)
 			return true;
 	}
 

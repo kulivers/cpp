@@ -214,26 +214,303 @@ SCENARIO("When player is empty, but deck is not empty")
 }
 
 
-
-
-SCENARIO("Testing Conditions")
+SCENARIO("Testing Conditions 7")
 {
 	GIVEN("CGame")
 	{
-	
+
+		CGame::_deck.clear();
+		CGame::_players.clear();
+		CGame::_table.ClearTheBoard();
+		
+		CGame::_players.push_back(CPlayer());
+		CGame::_players.push_back(CPlayer());
+		CGame::_players[1].add(CCard(10, clubs));
+		CGame::_table.PutOnTable(CCard(4, clubs));
+		
+
+		WHEN("End Of Game")
+		{
+			THEN("Func = End Of Game")
+			{
+				{
+					REQUIRE(CGame::SetCondition() == CGame::Condition::TheEndOfGame);
+				}
+			}
+		}
+	}
+}
+
+
+
+
+SCENARIO("Testing Conditions 1")
+{
+	GIVEN("CGame")
+	{
+
+		CGame::_players.push_back(CPlayer());
+		CGame::_players.push_back(CPlayer());
+		for (int i = 0; i < 36; i++)
+		{
+		CGame::_deck.push_back(CCard(1, clubs));
+		}
+		WHEN("StartOfTheGame")
+		{
+			THEN("Func = StartOfTheGame")
+			{
+				{
+					REQUIRE(CGame::SetCondition() == CGame::Condition::StartOfTheGame);
+				}
+			}
+		}
+	}
+}
+
+
+SCENARIO("Testing Conditions 2")//здесь показывает что 6 игроков а не 6 карт
+{
+	GIVEN("CGame")
+	{
+		CGame::_deck.clear();
+		CGame::_players.clear();
+
 		CGame::_players.push_back(CPlayer());
 		CGame::_players.push_back(CPlayer());
 		
-		CGame::_deck.push_back(CCard(6, clubs));
-		CGame::_table.PutOnTable(CCard(4, clubs));
+
+		for (int i = 0; i < 24; i++)	
+		{
+			CGame::_deck.push_back(CCard(1, clubs));
+		}
 
 
-		WHEN("End Of Game")
+		for (int i = 0; i < 6; i++)
+		{
+			CGame::_players[0].add(CCard(1, clubs));
+		}
+
+
+
+		for (int i = 0; i < 6; i++)
+		{
+			CGame::_players[1].add(CCard(1, clubs));
+		}
+
+
+		WHEN("AfterDistribution")
 		{
 			THEN("Func = true")
 			{
 				{
-					REQUIRE(CGame::SetCondition() == CGame::Condition::TheEndOfGame);
+					REQUIRE(CGame::SetCondition() == CGame::Condition::AfterDistribution);
+				}
+			}
+		}
+	}
+}
+
+
+
+
+SCENARIO("Testing Conditions 3")//	enum Condition { -StartOfTheGame, -AfterDistribution, -PlayerCanPopUp, PlayerCantPopUp, PlayerCanCoverCard, PlayerCantCoverCard, -TheEndOfGame };
+
+{
+	GIVEN("CGame")
+	{
+		CGame::_deck.clear();
+		CGame::_players.clear();
+		CGame::_table.ClearTheBoard();
+		
+		CGame::_players.push_back(CPlayer());
+		CGame::_players.push_back(CPlayer());
+
+		for (int i = 0; i < 24; i++)
+		{
+			CGame::_deck.push_back(CCard(1, clubs));
+		}
+
+		CGame::_players[0].add(CCard(5, clubs));
+		CGame::_players[0].add(CCard(7, diamonds));
+		CGame::_players[0].add(CCard(jack, spades));
+		CGame::_players[0].add(CCard(10, clubs));
+		CGame::_players[0].add(CCard(queen, clubs));
+
+
+		CGame::_players[1].add(CCard(6, clubs));
+		CGame::_players[1].add(CCard(8, diamonds));
+		CGame::_players[1].add(CCard(6, hearts));
+		CGame::_players[1].add(CCard(jack, clubs));
+		CGame::_players[1].add(CCard(9, clubs));
+
+		CGame::_table.PutOnTable(CCard(6, diamonds));
+		CGame::_table.PutOnTable(CCard(5, hearts));
+
+		
+		
+		CGame::AttackPlayer = 1;
+		CGame::DefendPlayer = 0;
+		WHEN("PlayerCanPopUp")
+		{
+			THEN("Func = true")
+			{
+				{
+					REQUIRE(CGame::SetCondition() == CGame::Condition::PlayerCanPopUp);
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+SCENARIO("Testing Conditions 4")//	enum Condition { -StartOfTheGame, -AfterDistribution, -PlayerCanPopUp, -PlayerCantPopUp, PlayerCanCoverCard, PlayerCantCoverCard, -TheEndOfGame };
+
+{
+	GIVEN("CGame")
+	{
+		CGame::_deck.clear();
+		CGame::_players.clear();
+		CGame::_table.ClearTheBoard();
+		CGame::AttackPlayer = 0;
+		for (int i = 0; i < 24; i++)
+		{
+			CGame::_deck.push_back(CCard(1, clubs));
+		}
+
+		CGame::_players.push_back(CPlayer());
+		CGame::_players.push_back(CPlayer());
+		
+		CGame::_players[0].add(CCard(12, clubs));
+		CGame::_players[0].add(CCard(7, diamonds));
+		CGame::_players[0].add(CCard(jack, spades));
+		CGame::_players[0].add(CCard(10, clubs));
+		CGame::_players[0].add(CCard(queen, clubs));
+
+
+		CGame::_players[1].add(CCard(6, clubs));
+		CGame::_players[1].add(CCard(8, diamonds));
+		CGame::_players[1].add(CCard(6, hearts));
+		CGame::_players[1].add(CCard(jack, clubs));
+		CGame::_players[1].add(CCard(9, clubs));
+
+		CGame::_table.PutOnTable(CCard(6, diamonds));
+		CGame::_table.PutOnTable(CCard(5, hearts));
+
+		CGame::AttackPlayer = 0;
+
+		WHEN("PlayerCantPopUp")
+		{
+			THEN("Func = true")
+			{
+				{
+					REQUIRE(CGame::SetCondition() == CGame::Condition::PlayerCantPopUp);
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+SCENARIO("Testing Conditions 5")//	enum Condition { -StartOfTheGame, -AfterDistribution, -PlayerCanPopUp, -PlayerCantPopUp, PlayerCanCoverCard, PlayerCantCoverCard, -TheEndOfGame };
+
+{
+	GIVEN("CGame")
+	{
+		CGame::_deck.clear();
+		CGame::_players.clear();
+		CGame::_table.ClearTheBoard();
+		CGame::AttackPlayer = 0;
+		CGame::DefendPlayer = 1;
+
+		for (int i = 0; i < 24; i++)
+		{
+			CGame::_deck.push_back(CCard(1, clubs));
+		}
+
+		CGame::_players.push_back(CPlayer());
+		CGame::_players.push_back(CPlayer());
+
+		CGame::_players[0].add(CCard(12, clubs));
+		CGame::_players[0].add(CCard(7, diamonds));
+		CGame::_players[0].add(CCard(jack, spades));
+		CGame::_players[0].add(CCard(10, clubs));
+		CGame::_players[0].add(CCard(queen, clubs));
+
+
+		CGame::_players[1].add(CCard(6, clubs));
+		CGame::_players[1].add(CCard(8, diamonds));
+		CGame::_players[1].add(CCard(6, hearts));
+		CGame::_players[1].add(CCard(jack, clubs));
+		CGame::_players[1].add(CCard(9, clubs));
+
+		CGame::_table.PutOnTable(CCard(6, diamonds));
+
+
+		WHEN("PlayerCanCoverCard")
+		{
+			THEN("Func = true")
+			{
+				{
+					REQUIRE(CGame::SetCondition() == CGame::Condition::PlayerCanCoverCard);
+				}
+			}
+		}
+	}
+}
+
+
+
+SCENARIO("Testing Conditions 6")	
+//	enum Condition { -StartOfTheGame, -AfterDistribution, -PlayerCanPopUp, -PlayerCantPopUp, -PlayerCanCoverCard, -PlayerCantCoverCard, -TheEndOfGame };
+
+{
+	GIVEN("CGame")
+	{
+		CGame::_deck.clear();
+		CGame::_players.clear();
+		CGame::_table.ClearTheBoard();
+		CGame::AttackPlayer = 1;
+		CGame::DefendPlayer = 0;
+
+		for (int i = 0; i < 24; i++)
+		{
+			CGame::_deck.push_back(CCard(1, clubs));
+		}
+
+		CGame::_players.push_back(CPlayer());
+		CGame::_players.push_back(CPlayer());
+
+		CGame::_table.setTrump(CCard(3, hearts));
+
+		CGame::_players[0].add(CCard(12, clubs));
+		CGame::_players[0].add(CCard(jack, spades));
+		CGame::_players[0].add(CCard(10, clubs));
+		CGame::_players[0].add(CCard(queen, clubs));
+
+
+		CGame::_players[1].add(CCard(6, clubs));
+		CGame::_players[1].add(CCard(8, diamonds));
+		CGame::_players[1].add(CCard(6, hearts));
+		CGame::_players[1].add(CCard(jack, clubs));
+		CGame::_players[1].add(CCard(9, clubs));
+
+		CGame::_table.PutOnTable(CCard(6, diamonds));
+
+
+		WHEN("PlayerCantCoverCard")
+		{
+			THEN("Func = true")
+			{
+				{
+					REQUIRE(CGame::SetCondition() == CGame::Condition::PlayerCantCoverCard);
 				}
 			}
 		}

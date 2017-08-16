@@ -41,7 +41,8 @@ public:
 			if (card.GetAsString() == _cardsOnTable[i].GetAsString())
 				n = i;
 		}
-		_cardsOnTable.erase(_cardsOnTable.begin() + n, _cardsOnTable.begin() + n);
+		_cardsOnTable.erase(_cardsOnTable.begin() + n, _cardsOnTable.begin() + n);//не работает
+
 
 	}
 
@@ -67,11 +68,10 @@ public:
 
 	void ClearTheBoard()
 	{
-		for (int i = 0; i < CTable::GetSize(); i++)
-		{
-			DeleteItem(GetCard(i));
-		}
+		_cardsOnTable.clear();
 	}
+	
+
 
 	~CTable()
 	{ }

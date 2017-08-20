@@ -324,9 +324,7 @@ bool AllPlayersHaveNoCards(vector<CPlayer> _players)
 	return true;
 }
 
-
-
-int main()
+int b_main()
 {
 	return 0;
-};
+}

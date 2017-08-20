@@ -45,27 +45,32 @@ int main()
 	//SetConsoleOutputCP(1251); // установка кодовой страницы win-cp 1251 в поток вывода
 	//system("chcp 1251");
 
-	CGame game;
-	game._players.push_back();
 
 
+	CGame::_deck.clear();
+	CGame::_players.clear();
+	CGame::_table.ClearTheBoard();
 
-	const int deckSize = 17;
-	vector<CCard> deck(deckSize);
+	CGame::_players.push_back(CPlayer());
+	CGame::_players.push_back(CPlayer());
+
+
+	const int deckSize = 36;
+	
 	int j;
 	cout << endl;
-	for (j = 0; j < deck.size(); j++)   // создаем упорядоченную колоду карт
+	for (j = 0; j < deckSize; j++)   // создаем упорядоченную колоду карт
 	{
 		int num = (j % 13) + 2;
 		Suit su = Suit(j / 13);
-		deck[j].set(num, su);
+		CGame::_deck[j].set(num, su);//здесь
 	}
 
 	// показываем исходную колоду
 	cout << "Исходная колода:\n";
-	for (j = 0; j < deck.size(); j++)
+	for (j = 0; j < CGame::_deck.size(); j++)
 	{
-		cout << deck[j].GetAsString().c_str();
+		cout << CGame::_deck[j].GetAsString().c_str();
 		cout << "  ";
 		if (!((j + 1) % 13))      // начинаем новую строку после каждой 13-й карты
 			cout << endl;
@@ -73,18 +78,18 @@ int main()
 	cout << endl;
 
 	srand(time(NULL));         // инициализируем генератор случайных чисел
-	for (j = 0; j < deck.size(); j++)
+	for (j = 0; j < CGame::_deck.size(); j++)
 	{
-		int k = rand() % deck.size();     // выбираем случайную карту
-		CCard temp = deck[j];     // и меняем ее с текущей
-		deck[j] = deck[k];
-		deck[k] = temp;
+		int k = rand() % CGame::_deck.size();     // выбираем случайную карту
+		CCard temp = CGame::_deck[j];     // и меняем ее с текущей
+		CGame::_deck[j] = CGame::_deck[k];
+		CGame::_deck[k] = temp;
 	}
 	// показываем исходную колоду
 	cout << "колода до раздачи:\n";
-	for (j = 0; j < deck.size(); j++)
+	for (j = 0; j < CGame::_deck.size(); j++)
 	{
-		cout << deck[j].GetAsString().c_str();
+		cout << CGame::_deck[j].GetAsString().c_str();
 		cout << "  ";
 		if (!((j + 1) % 13))      // начинаем новую строку после каждой 13-й карты
 			cout << endl;
@@ -94,23 +99,23 @@ int main()
 
 
 
-	switch (tolower(*argv[1]))
-	{
-		// Error. Unreachable declaration.  
-		char szChEntered[] = "Character entered was: ";
+	//switch (tolower(*argv[1]))
+	//{
+	//	// Error. Unreachable declaration.  
+	//	char szChEntered[] = "Character entered was: ";
 
-	case 'a':
-	{
-		// Declaration of szChEntered OK. Local scope.  
-		char szChEntered[] = "Character entered was: ";
-		cout << szChEntered << "a\n";
-	}
-	break;
+	//case 'a':
+	//{
+	//	// Declaration of szChEntered OK. Local scope.  
+	//	char szChEntered[] = "Character entered was: ";
+	//	cout << szChEntered << "a\n";
+	//}
+	//break;
 
-	case 'b':
-		// Value of szChEntered undefined.  
-		cout << szChEntered << "b\n";
-		break;
+	//case 'b':
+	//	// Value of szChEntered undefined.  
+	//	cout << szChEntered << "b\n";
+	//	break;
 
 
 

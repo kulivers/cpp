@@ -31,12 +31,13 @@ void Turn(vector<CPlayer>& _players, vector<CCard>& deck, int FirstTurnPlayer);/
 void TurnForTwoPlayers(vector<CPlayer>& _players, vector<CCard>& deck, int FirstTurnPlayer);
 bool AllPlayersHaveSixCards(vector<CPlayer> _players);
 bool AllPlayersHaveNoCards(vector<CPlayer> _players);
+bool PlayersHaveNotEnoughCards(vector<CPlayer> _players);
 
 
 class CGame
 {
 public:
-	enum Condition { StartOfTheGame, AfterDistribution, PlayerCanPopUp, PlayerCantPopUp, PlayerCanCoverCard, PlayerCantCoverCard, TheEndOfGame };
+	enum Condition { StartOfTheGame, AfterDistribution, PlayerCanPopUp, PlayerCantPopUp, PlayerCanCoverCard, PlayerCantCoverCard, TheEndOfGame, PlayersHaventEnoughCards, PlayerAttacking};
 	/*static vector<CCard> _deck;
 	static vector<CPlayer> _players;
 	static CTable _table;
@@ -66,6 +67,8 @@ public:
 	static CTable _table;
 	static int AttackPlayer;
 	static int DefendPlayer;
+
+
 
 	static Condition SetCondition()
 	{
@@ -99,8 +102,12 @@ public:
 			return  PlayerCantCoverCard;
 
 
+		if (PlayersHaveNotEnoughCards(_players))
+			return PlayersHaventEnoughCards;
 
 
+		if (_table.GetSize() == 0)
+			return PlayerAttacking;
 		
 
 	}

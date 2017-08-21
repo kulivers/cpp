@@ -56,14 +56,15 @@ int main()
 
 
 	const int deckSize = 36;
-	
+
 	int j;
 	cout << endl;
 	for (j = 0; j < deckSize; j++)   // создаем упорядоченную колоду карт
 	{
 		int num = (j % 13) + 2;
 		Suit su = Suit(j / 13);
-		CGame::_deck[j].set(num, su);//здесь
+		CGame::_deck.push_back(CCard(num, su));
+
 	}
 
 	// показываем исходную колоду
@@ -97,33 +98,78 @@ int main()
 	cout << endl;
 
 
+	//StartOfTheGame0, AfterDistribution1, PlayerCanPopUp2, PlayerCantPopUp3, PlayerCanCoverCard4, PlayerCantCoverCard5, TheEndOfGame6, PlayersHaventEnoughCards7, PlayerAttacking8
 
+	CGame::condition = CGame::SetCondition();
 
-	//switch (tolower(*argv[1]))
-	//{
-	//	// Error. Unreachable declaration.  
-	//	char szChEntered[] = "Character entered was: ";
+	while (CGame::condition != 6)
+	{
+		switch (CGame::condition)
+	{
+		case 0: 
+		{
+			Distribution(CGame::_players, CGame::_deck);
+			break;
+		}
 
-	//case 'a':
-	//{
-	//	// Declaration of szChEntered OK. Local scope.  
-	//	char szChEntered[] = "Character entered was: ";
-	//	cout << szChEntered << "a\n";
-	//}
-	//break;
+		case 1:
+		{
+			CGame::AttackPlayer = WhoPlaysFirst(CGame::_deck, CGame::_players, CGame::_table);
 
-	//case 'b':
-	//	// Value of szChEntered undefined.  
-	//	cout << szChEntered << "b\n";
-	//	break;
+			if (CGame::AttackPlayer == 0)
+				CGame::DefendPlayer = 1;
+			else
+				CGame::DefendPlayer = 0;
+			break;
+		}
 
+		case 2:
+		{
+				
+			break;
+		}
+		case 3:
+		{
+		
+			break;
+		}
+		case 4://PlayerCanCoverCard4
+		{
+			if (CGame::_table.GetCard(CGame::_table.GetSize() - 1).GetSuit() == CGame::_table.getTrump())
+				CGame::_players[CGame::DefendPlayer].DropToTableCard(CGame::_players[CGame::DefendPlayer].CanCoverASuit(CGame::_table.GetCard(CGame::_table.GetSize() - 1)));
+			else
+				CGame::_players[CGame::DefendPlayer].DropToTableCard(CGame::_players[CGame::DefendPlayer].CanCoverNotASuit(CGame::_table.GetCard(CGame::_table.GetSize() - 1), CGame::_table.getTrump()));
+			
 
+			break;
+		}
+		case 5:
+		{
+		
+			break;
+		}
+		case 6:
+		{
 
+			break;
+		}
+		case 7:
+		{
+			
+			break;
+		}
+		case 8: //PlayerAttacking
+		{
+			CGame::_players[CGame::AttackPlayer].DropToTableCard(CGame::_players[CGame::AttackPlayer].GetRandomCard());
+			break;
+		}
+}
+		CGame::condition = CGame::SetCondition();
+}
 
 
 	return 0;
 }
-
 
 
 

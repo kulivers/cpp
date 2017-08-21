@@ -324,6 +324,17 @@ bool AllPlayersHaveNoCards(vector<CPlayer> _players)
 	return true;
 }
 
+
+bool PlayersHaveNotEnoughCards(vector<CPlayer> _players)
+{
+	for (int i = 0; i < _players.size(); i++)
+	{
+		if (_players[i].GetSize() < 6)
+			return true;
+	}
+	return false;
+}
+
 int b_main()
 {
 	return 0;

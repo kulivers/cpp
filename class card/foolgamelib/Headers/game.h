@@ -69,15 +69,16 @@ public:
 	static int DefendPlayer;
 	static int NumberOfTurn;
 	
-	void setTurnZero()
+	static void setTurnZero()
 	{
 		NumberOfTurn = 0;
 	}
 
-	void addTurn()
+	static void addTurn()
 	{
 		NumberOfTurn++;
 	}
+
 	static Condition SetCondition()
 	{
 		

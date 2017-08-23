@@ -123,7 +123,7 @@ int main()
 			else
 				CGame::DefendPlayer = 0;
 
-			CGame::NumberOfTurn++;
+			CGame::addTurn();
 			break;
 		}
 
@@ -165,7 +165,6 @@ int main()
 			}
 
 
-			CGame::NumberOfTurn++;
 			break;
 		}
 
@@ -185,7 +184,7 @@ int main()
 			CGame::_players[CGame::DefendPlayer].TakeCardInHand();
 			// аттакер и дефендер остаются
 
-			CGame::NumberOfTurn++;
+			
 			break;
 		}
 }

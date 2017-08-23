@@ -132,8 +132,8 @@ public:
 		{
 
 			add(CTable::GetCard(i));// кладем игроку карту в руку
-			CTable::DeleteItem(CTable::GetCard(i)); // убираем ее со стола
 		}
+		CTable::ClearTheBoard();
 	}
 
 	CPlayer equal(CPlayer player)

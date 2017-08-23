@@ -101,9 +101,9 @@ int main()
 	//-StartOfTheGame0, -AfterDistribution1, -PlayerCanPopUp2, -PlayerCantPopUp3, -PlayerCanCoverCard4, -PlayerCantCoverCard5, -TheEndOfGame6, PlayersHaventEnoughCards7, -PlayerAttacking8
 
 	//StartOfTheGame0, AfterDistribution1, PlayersHaventEnoughCards2, PlayerAttacking3, TheEndOfGame4, PlayerCanPopUp5, PlayerCantPopUp6, PlayerCanCoverCard7, PlayerCantCoverCard8
-	CGame::setTurnZero();
-	CGame::condition = CGame::SetCondition();
 
+	CGame::condition = CGame::SetCondition();
+	CGame::NumberOfTurn;
 	while (CGame::condition != 4)
 	{
 		switch (CGame::condition)
@@ -122,8 +122,8 @@ int main()
 				CGame::DefendPlayer = 1;
 			else
 				CGame::DefendPlayer = 0;
-
-			CGame::addTurn();
+			CGame::NumberOfTurn = 1;
+	
 			break;
 		}
 
@@ -179,7 +179,7 @@ int main()
 
 			break;
 		}
-		case 8:// PlayerCantCoverCard8
+		case 8:// PlayerCantCoverCard8  отсюда не уходит
 		{
 			CGame::_players[CGame::DefendPlayer].TakeCardInHand();
 			// аттакер и дефендер остаются
@@ -191,7 +191,7 @@ int main()
 		CGame::condition = CGame::SetCondition();
 }
 
-
+	cout << "The end oof game" << endl;
 	return 0;
 }
 

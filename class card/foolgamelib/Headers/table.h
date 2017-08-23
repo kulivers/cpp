@@ -66,7 +66,7 @@ public:
 		return CCard(_cozir.GetNumb(), _cozir.GetSuit());
 	}
 
-	void ClearTheBoard()
+	static void ClearTheBoard()
 	{
 		_cardsOnTable.clear();
 	}

@@ -69,15 +69,8 @@ public:
 	static int DefendPlayer;
 	static int NumberOfTurn;
 	
-	static void setTurnZero()
-	{
-		NumberOfTurn = 0;
-	}
 
-	static void addTurn()
-	{
-		NumberOfTurn++;
-	}
+	
 
 	static Condition SetCondition()
 	{
@@ -88,18 +81,24 @@ public:
 			return StartOfTheGame;
 		}
 
-		if (AllPlayersHaveSixCards(_players) && _deck.size() == (36 - 6 * _players.size()) )
+		if (AllPlayersHaveSixCards(_players) && _deck.size() == (36 - 6 * _players.size()) && CGame::NumberOfTurn == 0)
 		{
 				return  AfterDistribution;
 		}
 		
 
-		if (PlayersHaveNotEnoughCards(_players) && CGame::_table.GetSize() == 0)
+		if (PlayersHaveNotEnoughCards(_players) && CGame::_table.GetSize() == 0 && CGame::_deck.size() != 0)
 			return PlayersHaventEnoughCards;
 
 
 		if (_table.GetSize() == 0)
 			return PlayerAttacking;
+
+		if (_table.GetSize() % 2 != 0 && _players[DefendPlayer].CanBeat(CGame::_table.GetCard(_table.GetSize() - 1)) == false)
+			if (IsTheEndOfGame(_players, _deck) == true)
+				return  TheEndOfGame;
+			else
+				return  PlayerCantCoverCard;
 
 
 
@@ -117,12 +116,7 @@ public:
 			return  PlayerCanCoverCard;
 
 
-		if (_table.GetSize() % 2 != 0 && _players[DefendPlayer].CanBeat(CGame::_table.GetCard(_table.GetSize() - 1))==false)
-			if (IsTheEndOfGame(_players, _deck) == true)
-				return  TheEndOfGame;
-			else
-			return  PlayerCantCoverCard;
-
+		
 
 
 

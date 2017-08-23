@@ -26,7 +26,7 @@ vector<CPlayer> CGame::_players;
 CTable CGame::_table;
 int CGame::AttackPlayer;
 int CGame::DefendPlayer;
-
+int CGame::NumberOfTurn;
 
 void SpreadCards(vector<CCard>& deck, CPlayer& p)        //раздача карт одному игроку
 {

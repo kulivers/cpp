@@ -98,21 +98,23 @@ int main()
 	cout << endl;
 
 
-	//StartOfTheGame0, AfterDistribution1, PlayerCanPopUp2, PlayerCantPopUp3, PlayerCanCoverCard4, PlayerCantCoverCard5, TheEndOfGame6, PlayersHaventEnoughCards7, PlayerAttacking8
+	//-StartOfTheGame0, -AfterDistribution1, -PlayerCanPopUp2, -PlayerCantPopUp3, -PlayerCanCoverCard4, -PlayerCantCoverCard5, -TheEndOfGame6, PlayersHaventEnoughCards7, -PlayerAttacking8
 
+	//StartOfTheGame0, AfterDistribution1, PlayersHaventEnoughCards2, PlayerAttacking3, TheEndOfGame4, PlayerCanPopUp5, PlayerCantPopUp6, PlayerCanCoverCard7, PlayerCantCoverCard8
+	CGame::setTurnZero();
 	CGame::condition = CGame::SetCondition();
 
-	while (CGame::condition != 6)
+	while (CGame::condition != 4)
 	{
 		switch (CGame::condition)
 	{
-		case 0: 
+		case 0: //StartOfTheGame0
 		{
 			Distribution(CGame::_players, CGame::_deck);
 			break;
 		}
 
-		case 1:
+		case 1://AfterDistribution1
 		{
 			CGame::AttackPlayer = WhoPlaysFirst(CGame::_deck, CGame::_players, CGame::_table);
 
@@ -120,47 +122,70 @@ int main()
 				CGame::DefendPlayer = 1;
 			else
 				CGame::DefendPlayer = 0;
+
+			CGame::NumberOfTurn++;
 			break;
 		}
 
-		case 2:
+		case 2: //PlayersHaventEnoughCards2
 		{
-				
+			DistributionOfLakingCards(CGame::_players, CGame::_deck);
 			break;
 		}
-		case 3:
+		case 3://PlayerAttacking 
 		{
-		
+			
+			CGame::_players[CGame::AttackPlayer].DropToTableCard(CGame::_players[CGame::AttackPlayer].GetRandomCard());
+				break;
+		}
+		case 4://TheEndOfGame4
+		{
+			cout << "The end oof game" << endl;
+
 			break;
 		}
-		case 4://PlayerCanCoverCard4
+		case 5: //PlayerCanPopUp5
 		{
+			CGame::_players[CGame::AttackPlayer].DropToTableCard(CGame::_players[CGame::AttackPlayer].PopUpCard());
+			break;
+		}
+		case 6://PlayerCantPopUp6
+		{
+			CGame::_table.ClearTheBoard();
+
+			if (CGame::AttackPlayer == 0)
+			{
+				CGame::AttackPlayer = 1;
+				CGame::DefendPlayer = 0;
+			}
+			else
+			{
+				CGame::AttackPlayer = 0;
+				CGame::DefendPlayer = 1;
+			}
+
+
+			CGame::NumberOfTurn++;
+			break;
+		}
+
+
+		case 7://PlayerCanCoverCard
+		{
+
 			if (CGame::_table.GetCard(CGame::_table.GetSize() - 1).GetSuit() == CGame::_table.getTrump())
 				CGame::_players[CGame::DefendPlayer].DropToTableCard(CGame::_players[CGame::DefendPlayer].CanCoverASuit(CGame::_table.GetCard(CGame::_table.GetSize() - 1)));
 			else
 				CGame::_players[CGame::DefendPlayer].DropToTableCard(CGame::_players[CGame::DefendPlayer].CanCoverNotASuit(CGame::_table.GetCard(CGame::_table.GetSize() - 1), CGame::_table.getTrump()));
-			
 
 			break;
 		}
-		case 5:
+		case 8:// PlayerCantCoverCard8
 		{
-		
-			break;
-		}
-		case 6:
-		{
+			CGame::_players[CGame::DefendPlayer].TakeCardInHand();
+			// аттакер и дефендер остаются
 
-			break;
-		}
-		case 7:
-		{
-			
-			break;
-		}
-		case 8: //PlayerAttacking
-		{
-			CGame::_players[CGame::AttackPlayer].DropToTableCard(CGame::_players[CGame::AttackPlayer].GetRandomCard());
+			CGame::NumberOfTurn++;
 			break;
 		}
 }

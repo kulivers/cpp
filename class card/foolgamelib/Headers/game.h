@@ -37,7 +37,7 @@ bool PlayersHaveNotEnoughCards(vector<CPlayer> _players);
 class CGame
 {
 public:
-	enum Condition { StartOfTheGame, AfterDistribution, PlayerCanPopUp, PlayerCantPopUp, PlayerCanCoverCard, PlayerCantCoverCard, TheEndOfGame, PlayersHaventEnoughCards, PlayerAttacking};
+	enum Condition { StartOfTheGame, AfterDistribution, PlayersHaventEnoughCards, PlayerAttacking, TheEndOfGame, PlayerCanPopUp, PlayerCantPopUp, PlayerCanCoverCard, PlayerCantCoverCard };
 	/*static vector<CCard> _deck;
 	static vector<CPlayer> _players;
 	static CTable _table;
@@ -67,19 +67,39 @@ public:
 	static CTable _table;
 	static int AttackPlayer;
 	static int DefendPlayer;
+	static int NumberOfTurn;
+	
+	void setTurnZero()
+	{
+		NumberOfTurn = 0;
+	}
 
-
-
+	void addTurn()
+	{
+		NumberOfTurn++;
+	}
 	static Condition SetCondition()
 	{
+		
 
 		if (_deck.size() == 36)
+		{
 			return StartOfTheGame;
+		}
+
+		if (AllPlayersHaveSixCards(_players) && _deck.size() == (36 - 6 * _players.size()) )
+		{
+				return  AfterDistribution;
+		}
+		
+
+		if (PlayersHaveNotEnoughCards(_players) && CGame::_table.GetSize() == 0)
+			return PlayersHaventEnoughCards;
 
 
+		if (_table.GetSize() == 0)
+			return PlayerAttacking;
 
-		if (AllPlayersHaveSixCards(_players) && _deck.size() == (36 - 6 * _players.size()))
-			return  AfterDistribution;
 
 
 		if (_table.GetSize() != 0 && _table.GetSize() % 2 == 0 && _players[AttackPlayer].CanPopUp() == true)
@@ -95,6 +115,7 @@ public:
 		if (_table.GetSize() % 2 != 0 && _players[DefendPlayer].CanBeat(CGame::_table.GetCard(_table.GetSize() - 1)))
 			return  PlayerCanCoverCard;
 
+
 		if (_table.GetSize() % 2 != 0 && _players[DefendPlayer].CanBeat(CGame::_table.GetCard(_table.GetSize() - 1))==false)
 			if (IsTheEndOfGame(_players, _deck) == true)
 				return  TheEndOfGame;
@@ -102,15 +123,10 @@ public:
 			return  PlayerCantCoverCard;
 
 
-		if (PlayersHaveNotEnoughCards(_players))
-			return PlayersHaventEnoughCards;
 
-
-		if (_table.GetSize() == 0)
-			return PlayerAttacking;
-		
 
 	}
+
 	static bool IsTheEndOfGame(const vector<CPlayer>& players, const vector<CCard>& deck);
 
 

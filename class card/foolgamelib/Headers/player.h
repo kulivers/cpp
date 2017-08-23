@@ -285,6 +285,22 @@ public:
 	}
 
 
+	CCard PopUpCard()//подкинуть
+	{
+		for (int i = 0; i < CTable::GetSize(); i++)
+		{
+			for (int j = 0; j < _cardsInHand.size(); j++)
+			{
+				if (CTable::GetCard(i).GetNumb() == _cardsInHand[j].GetNumb())
+					return _cardsInHand[j];
+			}
+		}
+
+
+
+	}
+
+
 	bool CanBeat(CCard card)
 	{
 		if (card.GetSuit() == CTable::getTrump())

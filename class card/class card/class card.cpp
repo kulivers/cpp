@@ -165,24 +165,42 @@ int main()
 			}
 
 
+
 			break;
 		}
+
+	cout << "Kозырь: ";
+	ShowTrump(table);
+	cout << endl;
 
 
 		case 7://PlayerCanCoverCard
 		{
+
 
 			if (CGame::_table.GetCard(CGame::_table.GetSize() - 1).GetSuit() == CGame::_table.getTrump())
 				CGame::_players[CGame::DefendPlayer].DropToTableCard(CGame::_players[CGame::DefendPlayer].CanCoverASuit(CGame::_table.GetCard(CGame::_table.GetSize() - 1)));
 			else
 				CGame::_players[CGame::DefendPlayer].DropToTableCard(CGame::_players[CGame::DefendPlayer].CanCoverNotASuit(CGame::_table.GetCard(CGame::_table.GetSize() - 1), CGame::_table.getTrump()));
 
+
+
+	//иногда не показывается номер карты(перд diemonds вроде только), не меняются аттакер и дефендер
+	//дада я знаю про switch  case, но сделал потупому потому что запутался с enumами
+	while (TheEndOfGame(_players) != true)
+	{
+
+
 			break;
 		}
 		case 8:// PlayerCantCoverCard8  отсюда не уходит
 		{
+
 			CGame::_players[CGame::DefendPlayer].TakeCardInHand();
 			// аттакер и дефендер остаются
+
+			AttackPlayer = WhoPlaysFirst(deck, _players, table);
+			cout << "Начало " << numbOfTurn + 1 << "го хода" << endl;
 
 			
 			break;
@@ -196,8 +214,16 @@ int main()
 }
 
 
+			if (AttackPlayer == 1)// меняем
+				AttackPlayer = 0;
+			else
+				AttackPlayer = 1;
 
 
+			
+
+			table.ClearTheBoard();
+			//_getch();
 
 
 
@@ -323,3 +349,29 @@ int main()
 	//	table.ClearTheBoard();
 	//}
 	//cout << endl;
+			for (int i = 0; i < _players.size(); i++)
+			{
+				cout << i + 1 << "й игрок: " << endl;
+				_players[i].DisplayCards();
+				cout << endl;
+			}
+			cout << "Конец хода" << endl;
+			numbOfTurn++;
+
+			if (AttackPlayer == 1)// меняем
+				AttackPlayer = 0;
+			else
+				AttackPlayer = 1;
+
+			
+		}
+
+
+			table.ClearTheBoard();
+
+	}
+
+
+	cout << "кОНЕЦ ИГРЫ" << endl;
+	return 0;
+}

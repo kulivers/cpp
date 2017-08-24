@@ -22,7 +22,6 @@ const int ace = 14;
 
 
 
-
 class CCard
 {
 private:

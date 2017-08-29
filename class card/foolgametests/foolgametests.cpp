@@ -515,4 +515,84 @@ SCENARIO("Testing Conditions 6")
 			}
 		}
 	}
+
+
+}
+
+//»ÕŒ√ƒ¿ ¡‹≈“—ﬂ  ¿–“Œ… Ã≈Õ‹ÿ≈ ◊≈Ã Õ¿ —“ŒÀ≈(Õ≈  Œ«€–‹) » »ÕŒ√ƒ¿  »ƒ¿≈“ (Œ“¡»¬¿≈“—ﬂ) “≈Ã ◊“Œ ”∆≈ ≈—“‹ Õ¿ —“ŒÀ≈
+//
+//if (CGame::_table.GetCard(CGame::_table.GetSize() - 1).GetSuit() == CGame::_table.getTrump())
+//CGame::_players[CGame::DefendPlayer].DropToTableCard(CGame::_players[CGame::DefendPlayer].CanCoverASuit(CGame::_table.GetCard(CGame::_table.GetSize() - 1)));
+//else
+//CGame::_players[CGame::DefendPlayer].DropToTableCard(CGame::_players[CGame::DefendPlayer].CanCoverNotASuit(CGame::_table.GetCard(CGame::_table.GetSize() - 1), CGame::_table.getTrump()));
+SCENARIO("Testing Covering Card")
+{
+	GIVEN("CGame")
+	{
+		CGame::_deck.clear();
+		CGame::_players.clear();
+		CGame::_table.ClearTheBoard();
+		CGame::DefendPlayer = 1;
+		CGame::AttackPlayer = 0;
+
+		CGame::_players.push_back(CPlayer());
+		CGame::_players.push_back(CPlayer());
+
+		CGame::_table.setTrump(CCard(3, diamonds));
+		CGame::_table.PutOnTable(CCard(jack, hearts));
+
+
+		CGame::_players[0].add(CCard(7, diamonds));
+		CGame::_players[0].add(CCard(11, diamonds));
+		CGame::_players[0].add(CCard(7, clubs));
+		CGame::_players[0].add(CCard(10, hearts));
+		CGame::_players[0].add(CCard(2, hearts));
+		CGame::_players[0].add(CCard(5, clubs));
+
+		CGame::_players[1].add(CCard(jack, hearts));
+		CGame::_players[1].add(CCard(11, diamonds));
+		CGame::_players[1].add(CCard(6, diamonds));
+		CGame::_players[1].add(CCard(jack, clubs));
+		CGame::_players[1].add(CCard(8, hearts));
+		CGame::_players[1].add(CCard(10, diamonds));
+
+
+
+
+
+
+		
+
+		bool requred;
+		
+
+		//Ò˛‰‡
+		
+
+		
+
+
+
+
+
+
+
+/*if (CGame::_table.GetCard(1) == CCard(jack, diamonds) || CGame::_table.GetCard(1) == CCard(10, diamonds) || CGame::_table.GetCard(1) == CCard(queen, hearts))
+			requred = 1;
+		else 
+			requred = 0;*/
+
+		WHEN("PlayerCoverCard")
+		{
+			THEN("Func = true")
+			{
+				{
+					
+					REQUIRE(requred == 1);
+				}
+			}
+		}
+	}
+
+
 }

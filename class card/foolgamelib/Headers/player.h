@@ -201,42 +201,60 @@ public:
 	{
 		CCard save;
 		save.set(0, trump); // если есть козыря но не может побить то вернется ето
-		std::vector<CCard> CanCover;  // карты которыми мы можем покрыть (не козыря) сначала, а потом елси таких нет, пихаем туда все козыря и ищем наименьший
+		std::vector<CCard> CanCoverByNotASuit;  // карты которыми мы можем покрыть (не козыря) сначала, а потом елси таких нет, пихаем туда все козыря и ищем наименьший
+		std::vector<CCard> CanCoverByASuit;
+
+
 		for (int i = 0; i < GetSize(); i++)
 		{
 			if (GetNumbC(i) > card.GetNumb() && GetSuitC(i) == card.GetSuit())
-				CanCover.push_back(GetCardC(i));
-			if (GetSuitC(i) == CTable::getTrump())
-				CanCover.push_back(GetCardC(i));
+				CanCoverByNotASuit.push_back(GetCardC(i));
 		}
 
-		//numbers.empty()=1 если вектор пустой
-		if (CanCover.size() == 0)// ищем козыря
+
+		if (CanCoverByNotASuit.size() == 0)
 		{
 			for (int i = 0; i < GetSize(); i++)
 			{
 				if (GetSuitC(i) == CTable::getTrump())
-					CanCover.push_back(GetCardC(i));
+					CanCoverByASuit.push_back(GetCardC(i));
+			}
+		}
+
+
+
+		if (CanCoverByNotASuit.size() != 0)
+		{
+			
+			int minNumb = 1000;
+
+			for (int i = 0; i < CanCoverByNotASuit.size(); i++)//выбираем наименьший
+			{
+				if (minNumb < CanCoverByNotASuit[i].GetNumb())
+				{
+					minNumb = CanCoverByNotASuit[i].GetNumb();
+					save.set(minNumb, CanCoverByNotASuit[i].GetSuit());
+				}
 			}
 
-			int minSuit = 1000;
-			for (int i = 0; i < CanCover.size(); i++)//выбираем наименьший
-			{
-				if (minSuit < CanCover[i].GetNumb())
-					minSuit = CanCover[i].GetNumb();
-			}
-			save.set(minSuit, trump);
 		}
-		else// если можно побить не козырем                        //здесь начал тупить, ниже проверить 
+
+		else
 		{
+
 			int minNumb = 1000;
-			for (int i = 0; i < CanCover.size(); i++)//выбираем наименьший
+			for (int i = 0; i < CanCoverByASuit.size(); i++)//выбираем наименьший
 			{
-				if (CanCover[i].GetNumb() < minNumb)
-					minNumb = CanCover[i].GetNumb();
+				if (minNumb < CanCoverByASuit[i].GetNumb())
+				{
+					minNumb = CanCoverByASuit[i].GetNumb();
+					save.set(minNumb, CanCoverByASuit[i].GetSuit());
+				}
 			}
-			save.set(minNumb, card.GetSuit());
+			
 		}
+		
+
 
 		return save;// возвращает карту с 1000 номером если не может
 

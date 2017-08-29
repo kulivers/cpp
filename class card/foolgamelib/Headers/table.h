@@ -41,9 +41,14 @@ public:
 			if (card.GetAsString() == _cardsOnTable[i].GetAsString())
 				n = i;
 		}
+
+		_cardsOnTable.erase(_cardsOnTable.begin() + n, _cardsOnTable.begin() + n);//не работает
+
+
 		_cardsOnTable.erase(_cardsOnTable.begin() + n);// ЗДЕСЬ НИЧЕГО НЕ ПРОИСХОДИИТ
 
 		//vecIntSecond.erase(vecIntSecond.begin() + 1);///стираем 1 элемент вектора
+
 
 	}
 
@@ -62,15 +67,17 @@ public:
 		return _cozir.GetSuit();
 	}
 	
-
-
-	void ClearTheBoard()
+	static CCard getTrumpCard()
 	{
-		for (int i = 0; i < CTable::GetSize(); i++)
-		{
-			DeleteItem(GetCard(i));
-		}
+		return CCard(_cozir.GetNumb(), _cozir.GetSuit());
 	}
+
+	static void ClearTheBoard()
+	{
+		_cardsOnTable.clear();
+	}
+	
+
 
 	~CTable()
 	{ }

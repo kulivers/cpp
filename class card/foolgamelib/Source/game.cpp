@@ -2,12 +2,13 @@
 
 
 #include "stdafx.h"
+#include <iostream>
+#include <algorithm>
+#include <iterator>
 #include "card.h"
 #include "table.h"
 #include "player.h"
-#include <iterator>
-#include <algorithm>
-#include "Functions.h"
+#include "game.h"
 
 using namespace std;
 
@@ -19,10 +20,19 @@ using namespace std;
 CCard CTable::_cozir;
 std::vector <CCard> CTable::_cardsOnTable;
 
+CGame::Condition CGame::condition;
+vector<CCard> CGame::_deck;
+vector<CPlayer> CGame::_players;
+CTable CGame::_table;
+int CGame::AttackPlayer;
+int CGame::DefendPlayer;
+int CGame::NumberOfTurn;
 
 void SpreadCards(vector<CCard>& deck, CPlayer& p)        //раздача карт одному игроку
 {
 	while (p.GetSize() < 6 && !deck.empty())
+
+
 	{
 		p.add(deck.back());
 		deck.pop_back();
@@ -115,6 +125,9 @@ void DistributionOfLakingCards(vector<CPlayer>& _players, vector<CCard>& deck)//
 		{
 			while (_players[i].GetSize() != 6)
 			{
+				if (deck.size() == 0)
+					return;
+
 				if (deck.size() != 0)
 				{
 				save = deck.back();
@@ -133,18 +146,18 @@ void Distribution(vector<CPlayer>& _players, vector<CCard>& deck)
 	DistributionOfLakingCards(_players, deck);
 }
 
-bool TheEndOfGame(vector<CPlayer>& players)
+ bool CGame::IsTheEndOfGame(const vector<CPlayer>& players, const vector<CCard>& deck)// добавить условие что в колоде тоже нет карт
 {
-	int CountNotAnEmptyPlayers = 0; //колличество непустых игроков
+	if (deck.size() != 0)
+		return false;
+
 	for (int i = 0; i < players.size(); i++)
 	{
-		if (players[i].HasCards() == true)
-			CountNotAnEmptyPlayers++;
+		if (!(players[i].HasCards()) && _deck.size() == 0)
+			return true;
 	}
-	if (CountNotAnEmptyPlayers == 1)
-		return true;
-	else
-		return false;
+
+	return false;
 }
 
 
@@ -270,6 +283,8 @@ void TurnForTwoPlayers(vector<CPlayer>& _players, vector<CCard>& deck, int Attac
 
 
 	CCard lastcard = DropToTableRandCard(_players[AttackPlayer]); //здесь атакер кидает под дефуендера 
+	cout << "Игрок " << AttackPlayer + 1 << " кидает на стол: " << lastcard.GetNumb() << " " << lastcard.GetSuit() << endl;
+
 	cout << "Игрок " << AttackPlayer+1 << " кидает на стол: " ;
 	//enum Suit { clubs, diamonds, hearts, spades };
 
@@ -305,7 +320,7 @@ void TurnForTwoPlayers(vector<CPlayer>& _players, vector<CCard>& deck, int Attac
 
 	// здесь дефендер бьется
 
-	cout << "Игрок " << DefendPlayer+1 << " кидает на стол: ";
+	cout << "Игрок " << DefendPlayer + 1 << " кидает на стол: ";
 	_players[DefendPlayer].BeatOneCard(lastcard);//ОК
 	CCard dropToTable;
 
@@ -322,7 +337,7 @@ void TurnForTwoPlayers(vector<CPlayer>& _players, vector<CCard>& deck, int Attac
 				break;
 			else
 			{
-					lastcard = DropToTableRandCard(_players[AttackPlayer]);// здесь адо чтобы подкидывал ту которую можно, а не рандомную
+				lastcard = DropToTableRandCard(_players[AttackPlayer]);// здесь адо чтобы подкидывал ту которую можно, а не рандомную
 			}
 		}
 
@@ -346,9 +361,41 @@ void TurnForTwoPlayers(vector<CPlayer>& _players, vector<CCard>& deck, int Attac
 			}
 		}
 	}
-	
-
 
 }
 
+bool AllPlayersHaveSixCards(vector<CPlayer> _players)
+{
+	for (int i = 0; i < _players.size(); i++)
+	{
+		if (_players[i].GetSize() != 6)
+			return false;
+	}
+	return true;
+}
 
+bool AllPlayersHaveNoCards(vector<CPlayer> _players)
+{
+	for (int i = 0; i < _players.size(); i++)
+	{
+		if (_players[i].GetSize() != 0)
+			return false;
+	}
+	return true;
+}
+
+
+bool PlayersHaveNotEnoughCards(vector<CPlayer> _players)
+{
+	for (int i = 0; i < _players.size(); i++)
+	{
+		if (_players[i].GetSize() < 6)
+			return true;
+	}
+	return false;
+}
+
+int b_main()
+{
+	return 0;
+}

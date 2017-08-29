@@ -9,8 +9,9 @@
 #include <string.h>
 #include <vector>
 #include <algorithm>
-
+#include "table.h"
 #include "card.h"
+
 /*
 ENUM
 ATTACKER
@@ -53,7 +54,7 @@ public:
 	bool HasTrump(Suit trump)
 	{
 		bool HasAnyTrumps = false;
-		for (int i = 0; i < _cardsInHand.size(); i++)
+		for (size_t i = 0; i < _cardsInHand.size(); i++)
 		{
 			if (_cardsInHand[i].GetSuit() == trump)
 				HasAnyTrumps = true;
@@ -86,12 +87,9 @@ public:
 		return _cardsInHand[randomNumb];
 	}
 
-	bool HasCards()
+	bool HasCards() const
 	{
-		if (!_cardsInHand.empty())
-			return true;
-		else
-			return false;
+		return !_cardsInHand.empty();
 	}
 
 	CCard GetCardC(int i)
@@ -153,8 +151,8 @@ public:
 		{
 
 			add(CTable::GetCard(i));// кладем игроку карту в руку
-			CTable::DeleteItem(CTable::GetCard(i)); // убираем ее со стола
 		}
+		CTable::ClearTheBoard();
 	}
 
 	CPlayer equal(CPlayer player)
@@ -167,14 +165,15 @@ public:
 		return save;
 	}
 
-
+	
 	CCard CanCoverASuit(CCard card)//  возвращает карту с 1000 номером если не может (ок)
 
 	{
 		CCard save;
 		std::vector<CCard> CanCover; //козыря больше нашего, выберем наименьший
 		save.set(0, CTable::getTrump()); // если есть козыря но не может побить то вернется ето
-		if (HasTrump(CTable::getTrump()))// у игрока есть козыря?
+	
+		if (HasTrump(CTable::getTrump())) 
 		{
 			for (int i = 0; i < GetSize(); i++)
 			{
@@ -185,7 +184,9 @@ public:
 				}
 			}
 		}
+
 		int minSuit = 1000;
+
 		for (int i = 0; i < CanCover.size(); i++)//выбираем наименьший
 		{
 			if (CanCover[i].GetNumb() < minSuit)
@@ -200,42 +201,60 @@ public:
 	{
 		CCard save;
 		save.set(0, trump); // если есть козыря но не может побить то вернется ето
-		std::vector<CCard> CanCover;  // карты которыми мы можем покрыть (не козыря) сначала, а потом елси таких нет, пихаем туда все козыря и ищем наименьший
+		std::vector<CCard> CanCoverByNotASuit;  // карты которыми мы можем покрыть (не козыря) сначала, а потом елси таких нет, пихаем туда все козыря и ищем наименьший
+		std::vector<CCard> CanCoverByASuit;
+
+
 		for (int i = 0; i < GetSize(); i++)
 		{
 			if (GetNumbC(i) > card.GetNumb() && GetSuitC(i) == card.GetSuit())
-				CanCover.push_back(GetCardC(i));
-			if (GetSuitC(i) == CTable::getTrump())
-				CanCover.push_back(GetCardC(i));
+				CanCoverByNotASuit.push_back(GetCardC(i));
 		}
 
-		//numbers.empty()=1 если вектор пустой
-		if (CanCover.size() == 0)// ищем козыря
+
+		if (CanCoverByNotASuit.size() == 0)
 		{
 			for (int i = 0; i < GetSize(); i++)
 			{
 				if (GetSuitC(i) == CTable::getTrump())
-					CanCover.push_back(GetCardC(i));
+					CanCoverByASuit.push_back(GetCardC(i));
+			}
+		}
+
+
+
+		if (CanCoverByNotASuit.size() != 0)
+		{
+			
+			int minNumb = 1000;
+
+			for (int i = 0; i < CanCoverByNotASuit.size(); i++)//выбираем наименьший
+			{
+				if (minNumb < CanCoverByNotASuit[i].GetNumb())
+				{
+					minNumb = CanCoverByNotASuit[i].GetNumb();
+					save.set(minNumb, CanCoverByNotASuit[i].GetSuit());
+				}
 			}
 
-			int minSuit = 1000;
-			for (int i = 0; i < CanCover.size(); i++)//выбираем наименьший
-			{
-				if (minSuit < CanCover[i].GetNumb())
-					minSuit = CanCover[i].GetNumb();
-			}
-			save.set(minSuit, trump);
 		}
-		else// если можно побить не козырем                        //здесь начал тупить, ниже проверить 
+
+		else
 		{
+
 			int minNumb = 1000;
-			for (int i = 0; i < CanCover.size(); i++)//выбираем наименьший
+			for (int i = 0; i < CanCoverByASuit.size(); i++)//выбираем наименьший
 			{
-				if (CanCover[i].GetNumb() < minNumb)
-					minNumb = CanCover[i].GetNumb();
+				if (minNumb < CanCoverByASuit[i].GetNumb())
+				{
+					minNumb = CanCoverByASuit[i].GetNumb();
+					save.set(minNumb, CanCoverByASuit[i].GetSuit());
+				}
 			}
-			save.set(minNumb, card.GetSuit());
+			
 		}
+		
+
 
 		return save;// возвращает карту с 1000 номером если не может
 
@@ -312,7 +331,7 @@ public:
 	}
 
 
-	bool CanPopUp()
+	bool CanPopUp()//подкинуть
 	{
 		for (int i = 0; i < CTable::GetSize(); i++)
 		{
@@ -328,6 +347,35 @@ public:
 
 	}
 
+
+	CCard PopUpCard()//подкинуть
+	{
+		for (int i = 0; i < CTable::GetSize(); i++)
+		{
+			for (int j = 0; j < _cardsInHand.size(); j++)
+			{
+				if (CTable::GetCard(i).GetNumb() == _cardsInHand[j].GetNumb())
+					return _cardsInHand[j];
+			}
+		}
+
+
+
+	}
+
+
+	bool CanBeat(CCard card)
+	{
+		if (card.GetSuit() == CTable::getTrump())
+			if (CanCoverASuit(card).GetNumb() != 1000)
+				return true;
+		if (card.GetSuit() != CTable::getTrump())
+			if (CanCoverNotASuit(card, CTable::getTrump()).GetNumb() != 1000)
+				return true;
+
+		return false;
+		
+	}
 
 
 	~CPlayer()

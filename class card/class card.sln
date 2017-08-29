@@ -4,6 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "class card", "class card\class card.vcxproj", "{2D93C957-FA54-4C02-8FE5-8D1BF628E66D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{408AB39D-E5E7-4644-91FE-B1F7D0B9D5C6} = {408AB39D-E5E7-4644-91FE-B1F7D0B9D5C6}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "foolgamelib", "foolgamelib\foolgamelib.vcxproj", "{408AB39D-E5E7-4644-91FE-B1F7D0B9D5C6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "foolgametests", "foolgametests\foolgametests.vcxproj", "{3044CCAF-A70E-42C1-8D99-6B88B7391544}"
+	ProjectSection(ProjectDependencies) = postProject
+		{408AB39D-E5E7-4644-91FE-B1F7D0B9D5C6} = {408AB39D-E5E7-4644-91FE-B1F7D0B9D5C6}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +25,14 @@ Global
 		{2D93C957-FA54-4C02-8FE5-8D1BF628E66D}.Debug|Win32.Build.0 = Debug|Win32
 		{2D93C957-FA54-4C02-8FE5-8D1BF628E66D}.Release|Win32.ActiveCfg = Release|Win32
 		{2D93C957-FA54-4C02-8FE5-8D1BF628E66D}.Release|Win32.Build.0 = Release|Win32
+		{408AB39D-E5E7-4644-91FE-B1F7D0B9D5C6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{408AB39D-E5E7-4644-91FE-B1F7D0B9D5C6}.Debug|Win32.Build.0 = Debug|Win32
+		{408AB39D-E5E7-4644-91FE-B1F7D0B9D5C6}.Release|Win32.ActiveCfg = Release|Win32
+		{408AB39D-E5E7-4644-91FE-B1F7D0B9D5C6}.Release|Win32.Build.0 = Release|Win32
+		{3044CCAF-A70E-42C1-8D99-6B88B7391544}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3044CCAF-A70E-42C1-8D99-6B88B7391544}.Debug|Win32.Build.0 = Debug|Win32
+		{3044CCAF-A70E-42C1-8D99-6B88B7391544}.Release|Win32.ActiveCfg = Release|Win32
+		{3044CCAF-A70E-42C1-8D99-6B88B7391544}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

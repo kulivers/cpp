@@ -9,17 +9,31 @@
 #include "card.h"
 #include "table.h"
 #include "player.h"
-#include "Functions.h"
+#include "game.h"
 
 
 
-using namespace std;
+using namespace std; //ИНОГДА БЬЕТСЯ КАРТОЙ МЕНЬШЕ ЧЕМ НА СТОЛЕ(НЕ КОЗЫРЬ) И ИНОГДА КИДАЕТ (ОТБИВАЕТСЯ) ТЕМ ЧТО УЖЕ ЕСТЬ НА СТОЛЕ
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /////////////////////////////////////////////////////////////
-
-class CTable;
-class CCard;
-class CPlayer;
 
 /////////////////////////////////////////////////////////////
 
@@ -45,26 +59,37 @@ http://www.cplusplus.com/reference/vector/vector/pop_..
 int main()
 {
 	setlocale(LC_ALL, "RUS");
-	SetConsoleCP(1251);// установка кодовой страницы win-cp 1251 в поток ввода (CP_UTF8)
-	SetConsoleOutputCP(1251); // установка кодовой страницы win-cp 1251 в поток вывода
-	system("chcp 1251");
+	//SetConsoleCP(1251);// установка кодовой страницы win-cp 1251 в поток ввода (CP_UTF8)
+	//SetConsoleOutputCP(1251); // установка кодовой страницы win-cp 1251 в поток вывода
+	//system("chcp 1251");
 
-	const int deckSize = 17;
-	vector<CCard> deck(deckSize);
+
+
+	CGame::_deck.clear();
+	CGame::_players.clear();
+	CGame::_table.ClearTheBoard();
+
+	CGame::_players.push_back(CPlayer());
+	CGame::_players.push_back(CPlayer());
+
+
+	const int deckSize = 36;
+
 	int j;
 	cout << endl;
-	for (j = 0; j < deck.size(); j++)   // создаем упорядоченную колоду карт
+	for (j = 0; j < deckSize; j++)   // создаем упорядоченную колоду карт
 	{
 		int num = (j % 13) + 2;
 		Suit su = Suit(j / 13);
-		deck[j].set(num, su);
+		CGame::_deck.push_back(CCard(num, su));
+
 	}
 
 	// показываем исходную колоду
 	cout << "Исходная колода:\n";
-	for (j = 0; j < deck.size(); j++)
+	for (j = 0; j < CGame::_deck.size(); j++)
 	{
-		cout << deck[j].GetAsString().c_str();
+		cout << CGame::_deck[j].GetAsString().c_str();
 		cout << "  ";
 		if (!((j + 1) % 13))      // начинаем новую строку после каждой 13-й карты
 			cout << endl;
@@ -72,131 +97,310 @@ int main()
 	cout << endl;
 
 	srand(time(NULL));         // инициализируем генератор случайных чисел
-	for (j = 0; j < deck.size(); j++)
+	for (j = 0; j < CGame::_deck.size(); j++)
 	{
-		int k = rand() % deck.size();     // выбираем случайную карту
-		CCard temp = deck[j];     // и меняем ее с текущей
-		deck[j] = deck[k];
-		deck[k] = temp;
+		int k = rand() % CGame::_deck.size();     // выбираем случайную карту
+		CCard temp = CGame::_deck[j];     // и меняем ее с текущей
+		CGame::_deck[j] = CGame::_deck[k];
+		CGame::_deck[k] = temp;
 	}
 	// показываем исходную колоду
 	cout << "колода до раздачи:\n";
-	for (j = 0; j < deck.size(); j++)
+	for (j = 0; j < CGame::_deck.size(); j++)
 	{
-		cout << deck[j].GetAsString().c_str();
+		cout << CGame::_deck[j].GetAsString().c_str();
 		cout << "  ";
 		if (!((j + 1) % 13))      // начинаем новую строку после каждой 13-й карты
 			cout << endl;
 	}
-	cout << endl;
-
-
-
-
-	CTable table;
-	vector<CPlayer> _players(2);
 
 	cout << endl;
-	cout << endl;
-	cout << endl;
+	cout << "Trump: " ;
 
-	Distribution(_players, deck);
-
-
-	/*	cout << " колода после раздачи: " << endl;
-		for (j = 0; j < deck.size(); j++)
-		{
-		cout << deck[j].GetAsString().c_str();
-		cout << "  ";
-		if (!((j + 1) % 13))      // начинаем новую строку после каждой 13-й карты
-		cout << endl;
-		}
-		cout << endl;
-		*/
-
-	cout << "Раздача" << endl;
-	for (int i = 0; i < _players.size(); i++) // 
+	switch (CGame::_table.getTrump())//enum Suit { clubs, diamonds, hearts, spades };
+	{	
+	case 0:
 	{
-		cout << i + 1 << "й игрок: " << endl;
-		_players[i].DisplayCards();
-		cout << endl << endl;
+		cout << "clubs";
+		break;
+	}
+
+	case 1:
+	{
+		cout << "diamonds";
+		break;
+	}
+	
+	case 2:
+	{
+		cout << "hearts";
+		break;
+	}
+	
+	case 3:
+	{
+		cout << "spades";
+		break;
 	}
 
 
-	cout << "Kозырь: ";
-	ShowTrump(table);
+	}
+	cout << endl;
 	cout << endl;
 
 
-	int numbOfTurn = 0;
-	int AttackPlayer;
-	int DefendPlayer;
+	//-StartOfTheGame0, -AfterDistribution1, -PlayerCanPopUp2, -PlayerCantPopUp3, -PlayerCanCoverCard4, -PlayerCantCoverCard5, -TheEndOfGame6, PlayersHaventEnoughCards7, -PlayerAttacking8
 
+	//StartOfTheGame0, AfterDistribution1, PlayersHaventEnoughCards2, PlayerAttacking3, TheEndOfGame4, PlayerCanPopUp5, PlayerCantPopUp6, PlayerCanCoverCard7, PlayerCantCoverCard8
 
-
-	//иногда не показывается номер карты(перд diemonds вроде только), не меняются аттакер и дефендер
-	//дада я знаю про switch  case, но сделал потупому потому что запутался с enumами
-	while (TheEndOfGame(_players) != true)
+	CGame::condition = CGame::SetCondition();
+	CGame::NumberOfTurn;
+	while (CGame::condition != 4)
 	{
-
-			if (numbOfTurn == 0)
+		switch (CGame::condition)
 		{
-			AttackPlayer = WhoPlaysFirst(deck, _players, table);
-			cout << "Начало " << numbOfTurn + 1 << "го хода" << endl;
-
-			TurnForTwoPlayers(_players, deck, AttackPlayer);
-
-			for (int i = 0; i < _players.size(); i++)
+		case CGame::StartOfTheGame :
 			{
-				cout << i + 1 << "й игрок: " << endl;
-				_players[i].DisplayCards();
-				cout << endl;
+				cout << "StartOfTheGame" << endl;
+				Distribution(CGame::_players, CGame::_deck);
+				break;
 			}
 
-			cout << "Конец хода" << endl;
-			numbOfTurn++;
-
-			if (AttackPlayer == 1)// меняем
-				AttackPlayer = 0;
-			else
-				AttackPlayer = 1;
-
-
-			
-
-			table.ClearTheBoard();
-			//_getch();
-
-		}
-		else
-		{
-			cout << "Начало" << numbOfTurn + 1 << "го хода" << endl;
-
-			TurnForTwoPlayers(_players, deck, AttackPlayer); //ЗДЕСЬ
-
-			for (int i = 0; i < _players.size(); i++)
+			case 1://AfterDistribution1
 			{
-				cout << i + 1 << "й игрок: " << endl;
-				_players[i].DisplayCards();
-				cout << endl;
+				cout << "AfterDistribution1" << endl;
+				CGame::AttackPlayer = WhoPlaysFirst(CGame::_deck, CGame::_players, CGame::_table);
+
+				if (CGame::AttackPlayer == 0)
+					CGame::DefendPlayer = 1;
+				else
+					CGame::DefendPlayer = 0;
+				CGame::NumberOfTurn = 1;
+
+				break;
 			}
-			cout << "Конец хода" << endl;
-			numbOfTurn++;
 
-			if (AttackPlayer == 1)// меняем
-				AttackPlayer = 0;
-			else
-				AttackPlayer = 1;
+			case 2: //PlayersHaventEnoughCards2
+			{
+				cout << "PlayersHaventEnoughCards2" << endl;
+				DistributionOfLakingCards(CGame::_players, CGame::_deck);
+				break;
+			}
+			case 3://PlayerAttacking 
+			{
+				cout << "PlayerAttacking" << endl;
+				CGame::_players[CGame::AttackPlayer].DropToTableCard(CGame::_players[CGame::AttackPlayer].GetRandomCard());
+				break;
+			}
+			case 4://TheEndOfGame4
+			{
+				cout << "TheEndOfGame4" << endl;
+				cout << "The end oof game" << endl;
 
-			
+				break;
+			}
+			case 5: //PlayerCanPopUp5
+			{
+				cout << "PlayerCanPopUp5" << endl;
+				CGame::_players[CGame::AttackPlayer].DropToTableCard(CGame::_players[CGame::AttackPlayer].PopUpCard());
+				break;
+			}
+			case 6://PlayerCantPopUp6
+			{
+				cout << "PlayerCantPopUp6" << endl;
+				CGame::_table.ClearTheBoard();
+
+				if (CGame::AttackPlayer == 0)
+				{
+					CGame::AttackPlayer = 1;
+					CGame::DefendPlayer = 0;
+				}
+				else
+				{
+					CGame::AttackPlayer = 0;
+					CGame::DefendPlayer = 1;
+				}
+
+
+				break;
+			}
+
+
+			case 7://PlayerCanCoverCard
+			{
+				cout << "PlayerCanCoverCard" << endl;
+				if (CGame::_table.GetCard(CGame::_table.GetSize() - 1).GetSuit() == CGame::_table.getTrump())
+					CGame::_players[CGame::DefendPlayer].DropToTableCard(CGame::_players[CGame::DefendPlayer].CanCoverASuit(CGame::_table.GetCard(CGame::_table.GetSize() - 1)));
+				else
+					CGame::_players[CGame::DefendPlayer].DropToTableCard(CGame::_players[CGame::DefendPlayer].CanCoverNotASuit(CGame::_table.GetCard(CGame::_table.GetSize() - 1), CGame::_table.getTrump()));
+
+				break;
+			}
+			case 8:// PlayerCantCoverCard8 
+			{
+				cout << "PlayerCantCoverCard" << endl;
+				CGame::_players[CGame::DefendPlayer].TakeCardInHand();
+				// аттакер и дефендер остаются
+
+
+				break;
+			}
 		}
+		
+		cout << "Attacker: ";
+		CGame::_players[CGame::AttackPlayer].DisplayCards();
+		cout << endl;
 
+		cout << "Defender: ";
+		CGame::_players[CGame::DefendPlayer].DisplayCards();
+		cout << endl;
 
-			table.ClearTheBoard();
+		cout << "Table: ";
+		for (int c = 0; c < CTable::GetSize(); c++)
+			cout << CTable::GetCard(c).GetAsString().c_str() << " ";
 
+		cout << endl;
+
+		cout << endl;
+
+		cout << endl;
+
+		cout << "=====================" << endl;
+
+		_getch();
+
+		CGame::condition = CGame::SetCondition();
 	}
 
-
-	cout << "кОНЕЦ ИГРЫ" << endl;
+	cout << "The end oof game" << endl;
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//CTable table;
+//vector<CPlayer> _players(2);
+
+//cout << endl;
+//cout << endl;
+//cout << endl;
+
+//Distribution(_players, deck);
+
+
+///*	cout << " колода после раздачи: " << endl;
+//for (j = 0; j < deck.size(); j++)
+//{
+//cout << deck[j].GetAsString().c_str();
+//cout << "  ";
+//if (!((j + 1) % 13))      // начинаем новую строку после каждой 13-й карты
+//cout << endl;
+//}
+//cout << endl;
+//*/
+
+//cout << "Раздача" << endl;
+//for (int i = 0; i < _players.size(); i++) // 
+//{
+//	cout << i + 1 << "й игрок: " << endl;
+//	_players[i].DisplayCards();
+//	cout << endl << endl;
+//}
+
+
+//cout << "козырь:  clubs, diamonds, hearts, spades-----------";
+//ShowTrump(table);
+//cout << endl;
+
+
+//int numbOfTurn = 0;
+//int AttackPlayer;
+//int DefendPlayer;
+
+//while (IsTheEndOfGame(_players, deck) != true)
+//{
+
+//	if (numbOfTurn == 0)
+//	{
+//		AttackPlayer = WhoPlaysFirst(deck, _players, table);
+//		cout << "Начало" << numbOfTurn + 1 << "го хода" << endl;
+
+//		TurnForTwoPlayers(_players, deck, AttackPlayer);
+
+//		for (int i = 0; i < _players.size(); i++)
+//		{
+//			cout << i + 1 << "й игрок: " << endl;
+//			_players[i].DisplayCards();
+//			cout << endl;
+//		}
+
+//		cout << "Конец хода" << endl;
+//		numbOfTurn++;
+
+//		if (AttackPlayer == 1)// меняем
+//			DefendPlayer = 0;
+//		else
+//			DefendPlayer = 1;
+
+//		if (DefendPlayer == 1)// меняем
+//			AttackPlayer = 0;
+//		else
+//			AttackPlayer = 1;
+//		table.ClearTheBoard();
+//		//_getch();
+
+//	}
+//	else
+//	{
+//		cout << "Начало" << numbOfTurn + 1 << "го хода" << endl;
+
+//		TurnForTwoPlayers(_players, deck, AttackPlayer); //ЗДЕСЬ
+
+//		for (int i = 0; i < _players.size(); i++)
+//		{
+//			cout << i + 1 << "й игрок: " << endl;
+//			_players[i].DisplayCards();
+//			cout << endl;
+//		}
+//		cout << "Конец хода" << endl;
+
+//		if (AttackPlayer == 1)// меняем
+//			AttackPlayer = 0;
+//		else
+//			AttackPlayer = 1;
+
+//		if (DefendPlayer == 1)// меняем
+//			DefendPlayer = 0;
+//		else
+//			if (AttackPlayer == 1)// меняем
+//				AttackPlayer = 0;
+//			else
+//				AttackPlayer = 1;
+
+//		if (DefendPlayer == 1)// меняем
+//			DefendPlayer = 0;
+//		else
+//			DefendPlayer = 1;
+//	}
+
+
+//	table.ClearTheBoard();
+//}
+//cout << endl;

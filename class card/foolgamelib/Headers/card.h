@@ -29,7 +29,15 @@ private:
 	Suit _suit;
 public:
 	CCard()
-	{ }
+	{
+	
+	}
+
+	CCard (int n, Suit s)
+	{
+		_suit = s; _number = n;
+	}
+
 	void set(int n, Suit s)
 	{
 		_suit = s; _number = n;

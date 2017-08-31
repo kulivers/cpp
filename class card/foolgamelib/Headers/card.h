@@ -86,8 +86,18 @@ public:
 			case queen: result = 'Q'; break;
 			case king:  result = 'K'; break;
 			case ace:   result = 'A'; break;
+			default: throw "invalid suit";
 			}
 		}
+
+
+
+
+
+
+
+
+
 		switch (_suit)
 		{
 		case clubs:    result += 'c'; break;

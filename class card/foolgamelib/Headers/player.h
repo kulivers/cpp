@@ -167,11 +167,10 @@ public:
 
 	
 	CCard CanCoverASuit(CCard card)//  возвращает карту с 1000 номером если не может (ок)
-
 	{
 		CCard save;
 		std::vector<CCard> CanCover; //козыря больше нашего, выберем наименьший
-		save.set(0, CTable::getTrump()); // если есть козыря но не может побить то вернется ето
+		save.set(1000, CTable::getTrump()); // если есть козыря но не может побить то вернется ето
 	
 		if (HasTrump(CTable::getTrump())) 
 		{
@@ -200,7 +199,7 @@ public:
 	CCard CanCoverNotASuit(CCard card, Suit trump)// может побить не козырь ?  (ок)
 	{
 		CCard save;
-		save.set(0, trump); // если есть козыря но не может побить то вернется ето
+		save.set(1000, trump); // если есть козыря но не может побить то вернется ето
 		std::vector<CCard> CanCoverByNotASuit;  // карты которыми мы можем покрыть (не козыря) сначала, а потом елси таких нет, пихаем туда все козыря и ищем наименьший
 		std::vector<CCard> CanCoverByASuit;
 
@@ -230,7 +229,7 @@ public:
 
 			for (int i = 0; i < CanCoverByNotASuit.size(); i++)//выбираем наименьший
 			{
-				if (minNumb < CanCoverByNotASuit[i].GetNumb())
+				if (minNumb > CanCoverByNotASuit[i].GetNumb())
 				{
 					minNumb = CanCoverByNotASuit[i].GetNumb();
 					save.set(minNumb, CanCoverByNotASuit[i].GetSuit());
@@ -245,7 +244,7 @@ public:
 			int minNumb = 1000;
 			for (int i = 0; i < CanCoverByASuit.size(); i++)//выбираем наименьший
 			{
-				if (minNumb < CanCoverByASuit[i].GetNumb())
+				if (minNumb > CanCoverByASuit[i].GetNumb())
 				{
 					minNumb = CanCoverByASuit[i].GetNumb();
 					save.set(minNumb, CanCoverByASuit[i].GetSuit());
@@ -369,6 +368,7 @@ public:
 		if (card.GetSuit() == CTable::getTrump())
 			if (CanCoverASuit(card).GetNumb() != 1000)
 				return true;
+
 		if (card.GetSuit() != CTable::getTrump())
 			if (CanCoverNotASuit(card, CTable::getTrump()).GetNumb() != 1000)
 				return true;

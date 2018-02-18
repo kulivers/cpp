@@ -63,91 +63,12 @@ int main()
 	//SetConsoleOutputCP(1251); // установка кодовой страницы win-cp 1251 в поток вывода
 	//system("chcp 1251");
 
-
-
-	CGame::_deck.clear();
-	CGame::_players.clear();
-	CGame::_table.ClearTheBoard();
-
-	CGame::_players.push_back(CPlayer());
-	CGame::_players.push_back(CPlayer());
-
-
-	const int deckSize = 36;
+	CGame::CleaningResurses();
 
 	int j;
 	cout << endl;
-	for (j = 0; j < deckSize; j++)   // создаем упорядоченную колоду карт
-	{
-		int num = (j % 13) + 2;
-		Suit su = Suit(j / 13);
-		CGame::_deck.push_back(CCard(num, su));
 
-	}
-
-	// показываем исходную колоду
-	cout << "Исходная колода:\n";
-	for (j = 0; j < CGame::_deck.size(); j++)
-	{
-		cout << CGame::_deck[j].GetAsString().c_str();
-		cout << "  ";
-		if (!((j + 1) % 13))      // начинаем новую строку после каждой 13-й карты
-			cout << endl;
-	}
-	cout << endl;
-
-	srand(time(NULL));         // инициализируем генератор случайных чисел
-	for (j = 0; j < CGame::_deck.size(); j++)
-	{
-		int k = rand() % CGame::_deck.size();     // выбираем случайную карту
-		CCard temp = CGame::_deck[j];     // и меняем ее с текущей
-		CGame::_deck[j] = CGame::_deck[k];
-		CGame::_deck[k] = temp;
-	}
-	// показываем исходную колоду
-	cout << "колода до раздачи:\n";
-	for (j = 0; j < CGame::_deck.size(); j++)
-	{
-		cout << CGame::_deck[j].GetAsString().c_str();
-		cout << "  ";
-		if (!((j + 1) % 13))      // начинаем новую строку после каждой 13-й карты
-			cout << endl;
-	}
-
-	cout << endl;
-	cout << "Trump: " ;
-
-	switch (CGame::_table.getTrump())//enum Suit { clubs, diamonds, hearts, spades };
-	{	
-	case 0:
-	{
-		cout << "clubs";
-		break;
-	}
-
-	case 1:
-	{
-		cout << "diamonds";
-		break;
-	}
-	
-	case 2:
-	{
-		cout << "hearts";
-		break;
-	}
-	
-	case 3:
-	{
-		cout << "spades";
-		break;
-	}
-
-
-	}
-	cout << endl;
-	cout << endl;
-
+	CGame::MakeAndShowDeck();
 
 	//-StartOfTheGame0, -AfterDistribution1, -PlayerCanPopUp2, -PlayerCantPopUp3, -PlayerCanCoverCard4, -PlayerCantCoverCard5, -TheEndOfGame6, PlayersHaventEnoughCards7, -PlayerAttacking8
 
@@ -155,6 +76,7 @@ int main()
 
 	CGame::condition = CGame::SetCondition();
 	CGame::NumberOfTurn;
+
 	while (CGame::condition != 4)
 	{
 		switch (CGame::condition)
@@ -166,67 +88,55 @@ int main()
 				break;
 			}
 
-			case 1://AfterDistribution1
+		case CGame::AfterDistribution:
 			{
 				cout << "AfterDistribution1" << endl;
 				CGame::AttackPlayer = WhoPlaysFirst(CGame::_deck, CGame::_players, CGame::_table);
 
-				if (CGame::AttackPlayer == 0)
-					CGame::DefendPlayer = 1;
-				else
-					CGame::DefendPlayer = 0;
+				CGame::ChangeAttackerAndDefender();
 				CGame::NumberOfTurn = 1;
 
 				break;
 			}
 
-			case 2: //PlayersHaventEnoughCards2
+		case CGame::PlayersHaventEnoughCards: 
 			{
 				cout << "PlayersHaventEnoughCards2" << endl;
 				DistributionOfLakingCards(CGame::_players, CGame::_deck);
 				break;
 			}
-			case 3://PlayerAttacking 
+		case CGame::PlayerAttacking : 
 			{
 				cout << "PlayerAttacking" << endl;
 				CGame::_players[CGame::AttackPlayer].DropToTableCard(CGame::_players[CGame::AttackPlayer].GetRandomCard());
 				break;
 			}
-			case 4://TheEndOfGame4
+		case CGame::TheEndOfGame :
 			{
 				cout << "TheEndOfGame4" << endl;
 				cout << "The end oof game" << endl;
 
 				break;
 			}
-			case 5: //PlayerCanPopUp5
+		case CGame::PlayerCanPopUp : 
 			{
 				cout << "PlayerCanPopUp5" << endl;
 				CGame::_players[CGame::AttackPlayer].DropToTableCard(CGame::_players[CGame::AttackPlayer].PopUpCard());
 				break;
 			}
-			case 6://PlayerCantPopUp6
+		case CGame::PlayerCantPopUp:
 			{
 				cout << "PlayerCantPopUp6" << endl;
 				CGame::_table.ClearTheBoard();
 
-				if (CGame::AttackPlayer == 0)
-				{
-					CGame::AttackPlayer = 1;
-					CGame::DefendPlayer = 0;
-				}
-				else
-				{
-					CGame::AttackPlayer = 0;
-					CGame::DefendPlayer = 1;
-				}
+				CGame::ChangeAttackerAndDefender();
 
 
 				break;
 			}
 
 
-			case 7://PlayerCanCoverCard
+		case CGame::PlayerCanCoverCard:
 			{
 				cout << "PlayerCanCoverCard" << endl;
 				if (CGame::_table.GetCard(CGame::_table.GetSize() - 1).GetSuit() == CGame::_table.getTrump())
@@ -236,7 +146,7 @@ int main()
 
 				break;
 			}
-			case 8:// PlayerCantCoverCard8 
+		case CGame::PlayerCantCoverCard :
 			{
 				cout << "PlayerCantCoverCard" << endl;
 				CGame::_players[CGame::DefendPlayer].TakeCardInHand();

@@ -549,38 +549,21 @@ SCENARIO("Testing Covering Card")
 		CGame::_players[0].add(CCard(2, hearts));
 		CGame::_players[0].add(CCard(5, clubs));
 
-		CGame::_players[1].add(CCard(jack, hearts));
-		CGame::_players[1].add(CCard(11, diamonds));
-		CGame::_players[1].add(CCard(6, diamonds));
+		CGame::_players[1].add(CCard(jack, diamonds));
+		CGame::_players[1].add(CCard(11, clubs));
+		CGame::_players[1].add(CCard(6, clubs));
 		CGame::_players[1].add(CCard(jack, clubs));
 		CGame::_players[1].add(CCard(8, hearts));
-		CGame::_players[1].add(CCard(10, diamonds));
-
-
-
-
-
-
+		CGame::_players[1].add(CCard(queen, hearts));
 		
 
 		bool requred;
-		
+		CGame::_players[1].DropToTableCard(CGame::_players[1].CanCoverNotASuit(CGame::_table.GetCard(0), CGame::_table.getTrump()));
 
-		//сюда
-		
-
-		
-
-
-
-
-
-
-
-/*if (CGame::_table.GetCard(1) == CCard(jack, diamonds) || CGame::_table.GetCard(1) == CCard(10, diamonds) || CGame::_table.GetCard(1) == CCard(queen, hearts))
+		if (CGame::_table.GetCard(1) == CCard(jack, diamonds) || CGame::_table.GetCard(1) == CCard(queen, hearts))
 			requred = 1;
 		else 
-			requred = 0;*/
+			requred = 0;
 
 		WHEN("PlayerCoverCard")
 		{

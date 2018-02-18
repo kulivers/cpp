@@ -123,6 +123,8 @@ public:
 	}
 
 	static bool IsTheEndOfGame(const vector<CPlayer>& players, const vector<CCard>& deck);
-
+	static void CleaningResurses();
+	static void MakeAndShowDeck();
+	static void ChangeAttackerAndDefender();
 
 };

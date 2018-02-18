@@ -31,45 +31,43 @@ int CGame::NumberOfTurn;
 void SpreadCards(vector<CCard>& deck, CPlayer& p)        //раздача карт одному игроку
 {
 	while (p.GetSize() < 6 && !deck.empty())
-
-
 	{
 		p.add(deck.back());
 		deck.pop_back();
 	}
 }
 
-void ShowTrump(const CTable& t) // показать козырь
-{
-	if (t.getNumbOfTrump() < 11 )
-		cout << t.getNumbOfTrump() << " " ;
-	
-	if (t.getNumbOfTrump() == 11)
-		cout << "jack " ;
-	if (t.getNumbOfTrump() == 12)
-		cout << "queen ";
-	if (t.getNumbOfTrump() == 13)
-		cout << "king ";
-	if (t.getNumbOfTrump() == 14)
-		cout << "ace ";
-
-
-
-	if (t.getTrump() == clubs)
-		cout << "clubs" << endl;
-
-	if (t.getTrump() == diamonds)
-		cout << "diamonds" << endl;
-
-	if (t.getTrump() == hearts)
-		cout << "hearts" << endl;
-
-	if (t.getTrump() == spades)
-		cout << "spades" << endl;
-
-
-
-}
+//void ShowTrump(const CTable& t) // показать козырь
+//{
+//	if (t.getNumbOfTrump() < 11 )
+//		cout << t.getNumbOfTrump() << " " ;
+//	
+//	if (t.getNumbOfTrump() == 11)
+//		cout << "jack " ;
+//	if (t.getNumbOfTrump() == 12)
+//		cout << "queen ";
+//	if (t.getNumbOfTrump() == 13)
+//		cout << "king ";
+//	if (t.getNumbOfTrump() == 14)
+//		cout << "ace ";
+//
+//
+//
+//	if (t.getTrump() == clubs)
+//		cout << "clubs" << endl;
+//
+//	if (t.getTrump() == diamonds)
+//		cout << "diamonds" << endl;
+//
+//	if (t.getTrump() == hearts)
+//		cout << "hearts" << endl;
+//
+//	if (t.getTrump() == spades)
+//		cout << "spades" << endl;
+//
+//
+//
+//}
 
 
 
@@ -177,192 +175,7 @@ int NumberOfPlayer(CPlayer a, vector<CPlayer> players)
 
 
 
-void Turn(vector<CPlayer>& _players, vector<CCard>& deck, int FirstTurnPlayer)//в цикле после первого хода
-{
-	if (deck.size() != 0)
-		DistributionOfLakingCards(_players, deck); //раздаем карты кому не хватает
 
-
-
-
-	int AttackPlayer = FirstTurnPlayer + 1;
-	int DefendPlayer;
-	int FirstPopUpPlayer;
-	int SecondPopUpPlayer;
-
-	if (AttackPlayer == _players.size())// задаем DefendPlayer
-	{
-		DefendPlayer = 0;
-	}
-	else
-	{
-		DefendPlayer = AttackPlayer + 1;
-	}
-
-
-	////Задаем подкидывающих
-	FirstPopUpPlayer = DefendPlayer - 1;
-	SecondPopUpPlayer = DefendPlayer + 1;
-	if (DefendPlayer == _players.size())
-	{
-		FirstPopUpPlayer = DefendPlayer - 1;
-		SecondPopUpPlayer = 0;
-	}
-	if (DefendPlayer == 0)
-	{
-		FirstPopUpPlayer = _players.size();
-		SecondPopUpPlayer = DefendPlayer + 1;
-	}
-
-	CCard lastcard = DropToTableRandCard(_players[AttackPlayer]); //здесь атакер кидает под дефуендера
-
-	// сделать так, что если колличество карт на столе - четное значение, то кидает карту Подкидывающий 1 или 2(только одну), а если нечетное то Дефендер отбивается
-	// цикл пока подкидывальщики могут подкинуть подкидывают )0)) а дефендер отбивается если может
-
-	// здесь дефендер бьется
-	_players[DefendPlayer].BeatOneCard(lastcard);
-
-
-	while (_players[FirstPopUpPlayer].CanPopUp() || _players[SecondPopUpPlayer].CanPopUp())
-	{
-		//если на столе четное колличество карт то подкидывают одну карту
-		CCard lastCard;
-		CCard dropToTable;
-		if (CTable::GetSize() % 2 == 0)
-		{
-			if (_players[FirstPopUpPlayer].CanPopUp())
-				lastCard = DropToTableRandCard(_players[FirstPopUpPlayer]);
-			else
-				lastCard = DropToTableRandCard(_players[SecondPopUpPlayer]);
-		}
-
-
-		// если нечетное то бьется
-		if (CTable::GetSize() % 2 != 0)
-		{
-			if (lastCard.GetSuit() == CTable::getTrump()) // если последняя карта на столе(которую подкинули), это козырь
-			{
-				dropToTable = _players[DefendPlayer].CanCoverASuit(lastCard); //возвращает карту
-				_players[DefendPlayer].DropToTableCard(dropToTable);
-			}
-			else
-			{
-				dropToTable = dropToTable = _players[DefendPlayer].CanCoverNotASuit(lastCard, CTable::getTrump());
-				_players[DefendPlayer].DropToTableCard(dropToTable);
-			}
-			if (dropToTable.GetNumb() == 0)
-			{
-				_players[DefendPlayer].TakeCardInHand();
-			}
-		}
-	}
-
-
-
-}
-
-
-void TurnForTwoPlayers(vector<CPlayer>& _players, vector<CCard>& deck, int AttackPlayer)
-{
-	if (deck.size() != 0)
-		DistributionOfLakingCards(_players, deck); //раздаем карты кому не хватает
-
-
-
-	int DefendPlayer;
-
-	if (AttackPlayer == 1)// задаем DefendPlayer
-	{
-		DefendPlayer = 0;
-	}
-	else
-	{
-		DefendPlayer = 1;
-	}
-
-
-
-	CCard lastcard = DropToTableRandCard(_players[AttackPlayer]); //здесь атакер кидает под дефуендера 
-	cout << "Игрок " << AttackPlayer + 1 << " кидает на стол: " << lastcard.GetNumb() << " " << lastcard.GetSuit() << endl;
-
-	cout << "Игрок " << AttackPlayer+1 << " кидает на стол: " ;
-	//enum Suit { clubs, diamonds, hearts, spades };
-
-
-	if (lastcard.GetNumb() < 11)
-		cout << lastcard.GetNumb() << " ";
-
-	if (lastcard.GetNumb() == 11)
-		cout << "jack ";
-	if (lastcard.GetNumb() == 12)
-		cout << "queen ";
-	if (lastcard.GetNumb() == 13)
-		cout << "king ";
-	if (lastcard.GetNumb() == 14)
-		cout << "ace ";
-
-
-	if (lastcard.GetSuit() == clubs)
-		cout << "clubs" << endl;
-
-	if (lastcard.GetSuit() == diamonds)
-		cout << "diamonds" << endl;
-
-	if (lastcard.GetSuit() == hearts)
-		cout << "hearts" << endl;
-	
-	if (lastcard.GetSuit() == spades)
-		cout << "spades" << endl;
-
-
-	// сделать так, что если колличество карт на столе - четное значение, то кидает карту Подкидывающий 1 или 2(только одну), а если нечетное то Дефендер отбивается
-	// цикл пока подкидывальщики могут подкинуть подкидывают )0)) а дефендер отбивается если может
-
-	// здесь дефендер бьется
-
-	cout << "Игрок " << DefendPlayer + 1 << " кидает на стол: ";
-	_players[DefendPlayer].BeatOneCard(lastcard);//ОК
-	CCard dropToTable;
-
-
-
-	while (_players[AttackPlayer].CanPopUp()) //Здесь cоответсятвенно тоже
-	{
-		//если на столе четное колличество карт то подкидывают одну карту
-
-
-		if (CTable::GetSize() % 2 == 0)
-		{
-			if (CTable::GetSize() == 0)   // если вообще нет карт то выходим 
-				break;
-			else
-			{
-				lastcard = DropToTableRandCard(_players[AttackPlayer]);// здесь адо чтобы подкидывал ту которую можно, а не рандомную
-			}
-		}
-
-
-		// если нечетное то бьется
-		if (CTable::GetSize() % 2 != 0)
-		{
-			if (lastcard.GetSuit() == CTable::getTrump()) // если последняя карта на столе(которую подкинули), это козырь
-			{
-				dropToTable = _players[DefendPlayer].CanCoverASuit(lastcard); //возвращает карту      
-				_players[DefendPlayer].DropToTableCard(dropToTable);
-			}
-			else
-			{
-				dropToTable = dropToTable = _players[DefendPlayer].CanCoverNotASuit(lastcard, CTable::getTrump());
-				_players[DefendPlayer].DropToTableCard(dropToTable);
-			}
-			if (dropToTable.GetNumb() == 0)
-			{
-				_players[DefendPlayer].TakeCardInHand();
-			}
-		}
-	}
-
-}
 
 bool AllPlayersHaveSixCards(vector<CPlayer> _players)
 {
@@ -394,6 +207,113 @@ bool PlayersHaveNotEnoughCards(vector<CPlayer> _players)
 	}
 	return false;
 }
+
+
+static void CleaningResurses()
+{
+	CGame::_deck.clear();
+	CGame::_players.clear();
+	CGame::_table.ClearTheBoard();
+	CGame::_players.push_back(CPlayer());
+	CGame::_players.push_back(CPlayer());
+
+}
+
+
+static void ChangeAttackerAndDefender()
+{
+	if (CGame::AttackPlayer == 0)
+		
+		CGame::DefendPlayer = 1;
+	else
+	{ 
+	CGame::AttackPlayer = 1;
+	CGame::DefendPlayer = 0;
+	}
+}
+
+
+
+static void MakeAndShowDeck()
+{
+
+	static const  int deckSize = 36;
+	int j;
+	for (j = 0; j < deckSize; j++)   // создаем упорядоченную колоду карт
+	{
+		int num = (j % 13) + 2;
+		Suit su = Suit(j / 13);
+		CGame::_deck.push_back(CCard(num, su));
+
+	}
+
+
+	// показываем исходную колоду
+	cout << "Исходная колода:\n";
+	for (j = 0; j < CGame::_deck.size(); j++)
+	{
+		cout << CGame::_deck[j].GetAsString().c_str();
+		cout << "  ";
+		if (!((j + 1) % 13))      // начинаем новую строку после каждой 13-й карты
+			cout << endl;
+	}
+	cout << endl;
+
+	srand(time(NULL));         // инициализируем генератор случайных чисел
+	for (j = 0; j < CGame::_deck.size(); j++)
+	{
+		int k = rand() % CGame::_deck.size();     // выбираем случайную карту
+		CCard temp = CGame::_deck[j];     // и меняем ее с текущей
+		CGame::_deck[j] = CGame::_deck[k];
+		CGame::_deck[k] = temp;
+	}
+	// показываем исходную колоду
+	cout << "колода до раздачи:\n";
+	for (j = 0; j < CGame::_deck.size(); j++)
+	{
+		cout << CGame::_deck[j].GetAsString().c_str();
+		cout << "  ";
+		if (!((j + 1) % 13))      // начинаем новую строку после каждой 13-й карты
+			cout << endl;
+	}
+
+	cout << endl;
+	cout << "Trump: ";
+
+	switch (CGame::_table.getTrump())//enum Suit { clubs, diamonds, hearts, spades };
+	{
+	case 0:
+	{
+		cout << "clubs";
+		break;
+	}
+
+	case 1:
+	{
+		cout << "diamonds";
+		break;
+	}
+
+	case 2:
+	{
+		cout << "hearts";
+		break;
+	}
+
+	case 3:
+	{
+		cout << "spades";
+		break;
+	}
+
+
+	}
+	cout << endl;
+	cout << endl;
+
+}
+	
+
 
 int b_main()
 {
